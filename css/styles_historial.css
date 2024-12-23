@@ -1,0 +1,522 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo {
+    font-family: 'Poppins', regular;
+    font-size: 38px;
+    font-weight: bold;
+    color: #e91d29; /* Color del texto */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    transition: transform 0.3s; /* Animación */
+}
+
+.logo:hover {
+    transform: scale(1.1); /* Aumenta el tamaño cuando pasas el cursor por encima */
+}
+
+
+
+main h2 {
+    padding-left: 20px; /* Ajusta este valor según tus necesidades. */
+    color: #e91d29;
+}
+
+h2
+{
+    padding-left: 20px; /* Ajusta este valor según tus necesidades. */
+    color: #e91d29;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e91d29; /* Color de fondo */
+    color: #fff; /* Color de texto */
+    border: none;
+    border-radius: 4px;
+    text-decoration: none; /* Elimina el subrayado típico de los enlaces */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Efecto de transición */
+    margin-top: 10px; /* Ajusta el valor según el espacio que necesites */
+
+}
+
+
+button:hover {
+    background-color: #123d4e; /* Cambio de color al hacer hover */
+}
+
+.cart h2 {
+    text-align: center;
+}
+
+.large-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #e91d29;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.product {
+    text-align: center;
+}
+
+.decorative-line {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+footer {
+    padding: 20px;
+    background-color: #e91d29;
+    color: white;
+    text-align: center;
+}
+
+
+.cart {
+    position: fixed;
+    top: 0;
+    right: 0; /* Cambiamos de left a right */
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    overflow-x: hidden;
+    transform: translateX(100%); /* Esto garantiza que el carrito esté fuera de la vista por defecto a la derecha */
+    transition: transform 0.3s;
+}
+
+.cart.show {
+    transform: translateX(0); /* Establece el carrito en su posición original cuando se muestra */
+}
+
+
+.cart img {
+    width: 52px;
+    height: 52px;
+    color: #e91d29;
+}
+
+.cart-icon i.fa-shopping-cart {
+    font-size: 24px;  /* Tamaño de fuente incrementado para hacer el icono más grande */
+    color: #e91d29;
+}
+
+/* Estilos iniciales para la animación */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+body {
+    opacity: 0; /* Estado inicial, la página inicia transparente */
+    animation: fadeIn 1s forwards; /* Aplicamos la animación, que dura 1 segundo */
+}
+
+/* Estilos para los formularios de búsqueda */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Estilos para los inputs de búsqueda */
+.search-form input[type="text"] {
+    font-size: 16px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    margin-right: 10px;
+    width: 100%; /* Los inputs de búsqueda ocupan todo el ancho disponible */
+}
+
+/* Estilos para el botón de búsqueda */
+.search-form input[type="submit"] {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #e91d29;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px 20px;
+    text-align: left;
+}
+
+th {
+    background-color: #222;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    table, th, td {
+        padding: 8px;
+    }
+}
+
+
+.no-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;  /* 50% de la altura de la ventana de visualización */
+    text-align: center;
+}
+
+.no-results p {
+    font-family: Arial, Helvetica, sans-serif;  /* La misma tipografía que tu logo */
+    font-size: 28px;  /* Tamaño grande para que destaque */
+    font-weight: bold;
+    color: #333;
+    max-width: 80%;  /* Esto asegura que en pantallas grandes el texto no se extienda demasiado */
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .no-results p {
+        font-size: 24px;  /* Un tamaño un poco más pequeño para pantallas más estrechas */
+    }
+}
+
+
+/* Estilo para el botón logout */
+.logout-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e91d29; /* Color de fondo */
+    color: #fff; /* Color de texto */
+    border: none;
+    border-radius: 4px;
+    text-decoration: none; /* Elimina el subrayado típico de los enlaces */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Efecto de transición */
+}
+
+.logout-button:hover {
+    background-color: #123d4e; /* Color de fondo cuando se pasa el ratón por encima */
+}
+
+
+.hamburger-menu {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.hamburger-menu i.fas.fa-bars {
+    font-size: 30px;
+    color: #e91d29;
+}
+
+.hamburger-menu.active i.fas.fa-bars {
+    color: #123d4e; /* Cambia el color o estilo cuando el menú esté activo */
+}
+
+
+/* Estilos del menú lateral oculto fuera de la pantalla */
+.dropdown-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    border-right: 1px solid #ccc;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    transform: translateX(-100%); /* Ocultar fuera de pantalla */
+    transition: transform 0.3s ease; /* Suave transición al aparecer */
+}
+
+.dropdown-menu.show-dropdown {
+    transform: translateX(0); /* Mostrar menú al deslizar desde la izquierda */
+}
+
+/* Animación para las opciones dentro del menú */
+.dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    color: #e91d29;
+    text-decoration: none;
+    opacity: 0;
+    animation: fadeInMenu 0.5s forwards;
+}
+
+.dropdown-menu a:hover {
+    background-color: #e91d29;
+    color: #fff;
+}
+
+@keyframes fadeInMenu {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* FOOTER */
+
+
+
+.footer {
+    background-color: #e91d29;
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px;
+}
+
+.footer-title {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #fa8e95;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.footer-section p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #f5f5f5;
+}
+
+.footer-bottom {
+    padding: 10px 0;
+    font-size: 14px;
+    background-color: #333;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+
+.countdown {
+    font-size: 24px; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    color: #007bff; /* Color azul */
+    background-color: #f8f9fa; /* Fondo gris claro */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #007bff; /* Borde azul */
+    border-radius: 5px; /* Bordes redondeados */
+    display: inline-block; /* Para evitar que ocupe todo el ancho */
+  }
+
+  /* Estilos para el texto si los días son menores que cero */
+  .expired {
+    color: #dc3545; /* Color rojo */
+    font-size: 20px; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    margin-top: 10px; /* Margen superior */
+  }
+
+
+    /* Añadir estilo para alinear el checkbox debajo de los botones */
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .action-buttons a {
+        margin-bottom: 5px; /* Espacio entre los botones y el checkbox */
+    }
+
+    .checkbox-container {
+        margin-top: 10px; /* Espacio entre los botones y el checkbox */
+        text-align: center;
+    }
+
+    .checkbox-container label {
+        margin-left: 5px;
+    }
+
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+    
+    .pedido-checkbox {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        accent-color: #007bff; /* Color del checkbox en navegadores compatibles */
+        transform: scale(1.2); /* Escala el checkbox para hacerlo más grande */
+        cursor: pointer;
+    }
+    
+    .checkbox-container label {
+        font-size: 18px;
+        color: #333;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .checkbox-container input:checked + label {
+        color: #007bff; /* Cambia el color de la etiqueta si el checkbox está seleccionado */
+    }
+    
+
+
+    /* Contenedor general para alinear el formulario a la izquierda */
+    .filtro-contenedor {
+        display: flex;
+        justify-content: space-between; /* Para alinear los elementos de izquierda a derecha */
+        gap: 20px; /* Espacio entre los dos bloques */
+        padding: 20px;
+    }
+
+/* Estilos del formulario */
+.filtro-formulario {
+    background-color: #fff5f5;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 250px;
+    font-family: 'Arial', sans-serif;
+    flex: 1; /* Para que ocupe el espacio necesario pero no se expanda demasiado */
+}
+
+
+
+/* Título del formulario */
+.filtro-formulario h2 {
+    color: #a80000; /* Rojo intenso */
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Ajustes de los filtros */
+.filters-container label {
+    color: #8b0000;
+    font-weight: 600;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+/* Estilo para los checkboxes */
+.filters-container input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #ff4d4d;
+}
+/* Botones */
+.button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #ff1a1a;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 8px;
+    text-transform: uppercase;
+}
+
+/* Efecto hover en los botones */
+.button:hover {
+    background-color: #a80000;
+    box-shadow: 0px 3px 8px rgba(168, 0, 0, 0.3);
+}

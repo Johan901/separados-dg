@@ -1,0 +1,544 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo {
+    font-family: 'Poppins', regular;
+    font-size: 38px;
+    font-weight: bold;
+    color: #e91d29; /* Color del texto */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    transition: transform 0.3s; /* Animación */
+
+}
+
+.logo:hover {
+    transform: scale(1.1); /* Aumenta el tamaño cuando pasas el cursor por encima */
+}
+
+
+
+main h2 {
+    padding-left: 20px; /* Ajusta este valor según tus necesidades. */
+    color: #e91d29;
+    margin: 20px auto; /* Centrar contenido principal con margen */
+    padding: 20px;
+    max-width: 1200px;
+}
+
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e91d29; /* Color de fondo */
+    color: #fff; /* Color de texto */
+    border: none;
+    border-radius: 4px;
+    text-decoration: none; /* Elimina el subrayado típico de los enlaces */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Efecto de transición */
+}
+
+.button:hover {
+    background-color: #123d4e; /* Color de fondo cuando se pasa el ratón por encima */
+}
+
+
+.cart h2 {
+    text-align: center;
+}
+
+.large-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #e91d29;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 30px; /* Añade margen inferior para separar del footer */
+
+}
+
+.products {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    justify-items: center;
+}
+
+
+
+.decorative-line {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+footer {
+    padding: 20px;
+    background-color: #e91d29;
+    color: white;
+    text-align: center;
+}
+
+
+.cart {
+    position: fixed;
+    top: 0;
+    right: 0; /* Cambiamos de left a right */
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    overflow-x: hidden;
+    transform: translateX(100%); /* Esto garantiza que el carrito esté fuera de la vista por defecto a la derecha */
+    transition: transform 0.3s;
+}
+
+.cart.show {
+    transform: translateX(0); /* Establece el carrito en su posición original cuando se muestra */
+}
+
+
+.cart img {
+    width: 52px;
+    height: 52px;
+    color: #e91d29;
+}
+
+.cart-icon i.fa-shopping-cart {
+    font-size: 24px;  /* Tamaño de fuente incrementado para hacer el icono más grande */
+    color: #e91d29;
+}
+
+/* Estilos iniciales para la animación */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+body {
+    opacity: 0; /* Estado inicial, la página inicia transparente */
+    animation: fadeIn 1s forwards; /* Aplicamos la animación, que dura 1 segundo */
+    margin: 0;
+    padding: 0 15px;
+}
+
+
+.search-form {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+/* Estilos para el cuadro de búsqueda */
+.search-form input[type="text"] {
+    font-size: 16px;  /* Tamaño de fuente incrementado */
+    padding: 10px 15px;  /* Padding incrementado para darle más espacio */
+    border: 1px solid #ccc;
+    border-radius: 25px;  /* Border-radius incrementado para hacerlo más redondo */
+    margin-right: 10px;
+}
+
+.search-form input[type="submit"] {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #e91d29;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: background-color 0.3s, transform 0.3s;  /* Agregamos transición para suavizar los cambios */
+}
+
+
+/* Estilo para el botón logout */
+.logout-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e91d29; /* Color de fondo */
+    color: #fff; /* Color de texto */
+    border: none;
+    border-radius: 4px;
+    text-decoration: none; /* Elimina el subrayado típico de los enlaces */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Efecto de transición */
+}
+
+.logout-button:hover {
+    background-color: #123d4e; /* Color de fondo cuando se pasa el ratón por encima */
+}
+
+
+
+.hamburger-menu {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+}
+
+.hamburger-menu i.fas.fa-bars {
+    font-size: 30px; /* Aumento del tamaño del ícono */
+    color: #e91d29;
+    margin-right: 0px; /* Espacio entre el ícono y el logo */
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; /* Alineamos el menú al lado izquierdo */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transform-origin: top left; /* Esto ayuda a que la animación comience desde la esquina superior izquierda */
+}
+
+/* Usamos una transición más suave para el menú */
+.dropdown-menu.show-dropdown {
+    display: block;
+    animation: slideDown 0.5s forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    color: #e91d29;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: #e91d29;
+    color: #fff;
+}
+
+.show-dropdown {
+    display: block;
+    animation: fadeInMenu 0.3s forwards;
+}
+
+@keyframes fadeInMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.forum-section {
+    padding: 20px;
+    width: 80%;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.comment-box textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.comment {
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.reactions {
+    display: flex;
+    gap: 10px;
+}
+
+.like, .dislike {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.like:hover, .dislike:hover {
+    transform: scale(1.1);
+}
+
+
+.comment-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-box textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    resize: none;
+    font-size: 16px;
+    line-height: 1.5;
+    height: 120px;
+    box-sizing: border-box;
+}
+
+.comment-box button {
+    background-color: #333; /* Color de fondo */
+    color: #fff; /* Color de texto */
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.comment-box button:hover {
+    background-color: #555; /* Color de fondo al pasar el mouse */
+}
+
+/* Puedes ajustar los colores a tu preferencia para que se adapten a tu diseño general. */
+
+
+
+
+/* FOOTER */
+
+
+
+.footer {
+    background-color: #e91d29;
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px;
+}
+
+.footer-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #fa8e95;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.footer-section p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #f5f5f5;
+}
+
+.footer-bottom {
+    padding: 10px 0;
+    font-size: 14px;
+    background-color: #333;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+
+/* Estilos para el formulario */
+.pedido-edit-form {
+    max-width: 600px; /* Ancho máximo del formulario */
+    margin: 20px auto; /* Centrar el formulario */
+    padding: 20px;
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #f9f9f9; /* Color de fondo */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.form-label {
+    display: block; /* Cada etiqueta en una línea nueva */
+    margin-bottom: 8px; /* Espacio debajo de cada etiqueta */
+    font-weight: bold; /* Negrita para las etiquetas */
+}
+
+.form-input {
+    width: 100%; /* Ancho completo */
+    padding: 10px; /* Espaciado interno */
+    margin-bottom: 15px; /* Espacio debajo de cada input */
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+}
+
+.form-input:focus {
+    border-color: #007BFF; /* Borde azul al enfocar */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra azul al enfocar */
+}
+
+.button {
+    background-color: #e91d29; /* Color de fondo azul */
+    color: white; /* Color del texto blanco */
+    padding: 10px 15px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cambiar el cursor al pasar el mouse */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+.button:hover {
+    background-color: #a2041e; /* Color de fondo más oscuro al pasar el mouse */
+}
+
+table {
+    border-collapse: separate; /* Separa las celdas para añadir espacio */
+    border-spacing: 10px 15px; /* Espaciado horizontal y vertical entre celdas */
+    width: 100%;
+}
+
+table th, table td {
+    padding: 15px; /* Espaciado dentro de cada celda */
+    color: #e91d29; /* Cambia el color del texto a rojo */
+    text-align: left; /* Alineación del texto */
+}
+
+th {
+    background-color: #222; /* Color de fondo azul */
+    color: white; /* Color del texto blanco */
+}
+
+tr:hover {
+    background-color: #ccc; /* Color de fondo al pasar el mouse */
+}
+
+
+ /* Añadir estilo para alinear el checkbox debajo de los botones */
+ .action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.action-buttons a {
+    margin-bottom: 5px; /* Espacio entre los botones y el checkbox */
+}
+
+.checkbox-container {
+    margin-top: 10px; /* Espacio entre los botones y el checkbox */
+    text-align: center;
+}
+
+.checkbox-container label {
+    margin-left: 5px;
+}
+
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.pedido-checkbox {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    accent-color: #007bff; /* Color del checkbox en navegadores compatibles */
+    transform: scale(1.2); /* Escala el checkbox para hacerlo más grande */
+    cursor: pointer;
+}
+
+.checkbox-container label {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.checkbox-container input:checked + label {
+    color: #007bff; /* Cambia el color de la etiqueta si el checkbox está seleccionado */
+}

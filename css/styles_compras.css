@@ -1,0 +1,314 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo {
+    font-family: 'Dancing Script', cursive;
+    font-size: 38px;
+    font-weight: bold;
+    color: #2b657c; /* Color del texto */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    transition: transform 0.3s; /* Animación */
+}
+
+.logo:hover {
+    transform: scale(1.1); /* Aumenta el tamaño cuando pasas el cursor por encima */
+}
+
+
+
+main h2 {
+    padding-left: 20px; /* Ajusta este valor según tus necesidades. */
+    color: #2b657c;
+}
+
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #2b657c; /* Color de fondo */
+    color: #fff; /* Color de texto */
+    border: none;
+    border-radius: 4px;
+    text-decoration: none; /* Elimina el subrayado típico de los enlaces */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Efecto de transición */
+}
+
+
+button:hover {
+    background-color: #123d4e; /* Cambio de color al hacer hover */
+}
+
+.cart h2 {
+    text-align: center;
+}
+
+.large-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #2b657c;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.product {
+    text-align: center;
+}
+
+.decorative-line {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+footer {
+    padding: 20px;
+    background-color: #2b657c;
+    color: white;
+    text-align: center;
+}
+
+
+.cart {
+    position: fixed;
+    top: 0;
+    right: 0; /* Cambiamos de left a right */
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    overflow-x: hidden;
+    transform: translateX(100%); /* Esto garantiza que el carrito esté fuera de la vista por defecto a la derecha */
+    transition: transform 0.3s;
+}
+
+.cart.show {
+    transform: translateX(0); /* Establece el carrito en su posición original cuando se muestra */
+}
+
+
+.cart img {
+    width: 52px;
+    height: 52px;
+    color: #2b657c;
+}
+
+.cart-icon i.fa-shopping-cart {
+    font-size: 24px;  /* Tamaño de fuente incrementado para hacer el icono más grande */
+    color: #2b657c;
+}
+
+/* Estilos iniciales para la animación */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+body {
+    opacity: 0; /* Estado inicial, la página inicia transparente */
+    animation: fadeIn 1s forwards; /* Aplicamos la animación, que dura 1 segundo */
+}
+
+
+.search-form {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+/* Estilos para el cuadro de búsqueda */
+.search-form input[type="text"] {
+    font-size: 16px;  /* Tamaño de fuente incrementado */
+    padding: 10px 15px;  /* Padding incrementado para darle más espacio */
+    border: 1px solid #ccc;
+    border-radius: 25px;  /* Border-radius incrementado para hacerlo más redondo */
+    margin-right: 10px;
+}
+
+.search-form input[type="submit"] {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #2b657c;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: background-color 0.3s, transform 0.3s;  /* Agregamos transición para suavizar los cambios */
+}
+
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px 20px;
+    text-align: left;
+}
+
+th {
+    background-color: #222;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    table, th, td {
+        padding: 8px;
+    }
+}
+
+
+.no-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;  /* 50% de la altura de la ventana de visualización */
+    text-align: center;
+}
+
+.no-results p {
+    font-family: Arial, Helvetica, sans-serif;  /* La misma tipografía que tu logo */
+    font-size: 28px;  /* Tamaño grande para que destaque */
+    font-weight: bold;
+    color: #333;
+    max-width: 80%;  /* Esto asegura que en pantallas grandes el texto no se extienda demasiado */
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .no-results p {
+        font-size: 24px;  /* Un tamaño un poco más pequeño para pantallas más estrechas */
+    }
+}
+
+
+
+/* Estilo para el botón logout */
+.logout-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #2b657c; /* Color de fondo */
+    color: #fff; /* Color de texto */
+    border: none;
+    border-radius: 4px;
+    text-decoration: none; /* Elimina el subrayado típico de los enlaces */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Efecto de transición */
+}
+
+.logout-button:hover {
+    background-color: #123d4e; /* Color de fondo cuando se pasa el ratón por encima */
+}
+
+
+
+.hamburger-menu {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+}
+
+.hamburger-menu i.fas.fa-bars {
+    font-size: 30px; /* Aumento del tamaño del ícono */
+    color: #2b657c;
+    margin-right: 0px; /* Espacio entre el ícono y el logo */
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; /* Alineamos el menú al lado izquierdo */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transform-origin: top left; /* Esto ayuda a que la animación comience desde la esquina superior izquierda */
+}
+
+/* Usamos una transición más suave para el menú */
+.dropdown-menu.show-dropdown {
+    display: block;
+    animation: slideDown 0.5s forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    color: #2b657c;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: #2b657c;
+    color: #fff;
+}
+
+.show-dropdown {
+    display: block;
+    animation: fadeInMenu 0.3s forwards;
+}
+
+@keyframes fadeInMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

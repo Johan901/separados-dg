@@ -30,10 +30,7 @@
     <div class="container">
         <h1>Reporte de Prendas Agotadas</h1>
         
-        <!-- Formulario para obtener prendas agotadas -->
-        <form id="filtro-asesor">
-            <button type="submit">Buscar si hay alguna prenda agotada</button>
-        </form>
+      
 
         <!-- Sección de reporte de prendas agotadas -->
         <div id="reporte" class="reporte-container"></div>
@@ -50,6 +47,19 @@
                 </thead>
                 <tbody></tbody>
             </table>
+        </div>
+
+        <!-- Sección para buscar cantidad por referencia -->
+        <div id="search-container" style="margin-top: 40px;">
+            <h2>Buscar Cantidad por Prenda</h2>
+            <form id="search-form" method="POST">
+                <label for="search-ref">Referencia:</label>
+                <input type="text" id="search-ref" name="search-ref" placeholder="Buscar por referencia">
+                <button type="submit">Buscar</button>
+            </form>
+
+            <!-- Resultados de la búsqueda de prendas por referencia -->
+            <div id="search-results" style="margin-top: 20px;"></div>
         </div>
     </div>
 

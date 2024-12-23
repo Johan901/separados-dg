@@ -116,7 +116,8 @@ $.ajax({
             confirmButtonText: 'Cerrar'
         });
     }
-});
+
+
 
 
             // Llamada Ajax para buscar la cantidad por referencia

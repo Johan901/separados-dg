@@ -67,55 +67,56 @@
     </div>
 
     <script>
-$(document).ready(function () {
-    // Llamada Ajax al servidor para verificar prendas agotadas
-    $('#filtro-asesor').on('submit', function (e) {
-        e.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
+$.ajax({
+    url: 'prendas_back.php',
+    type: 'POST',
+    success: function (response) {
+        try {
+            const data = JSON.parse(response); // Intentar parsear la respuesta
+            console.log(data); // Depuración para ver cómo está llegando la respuesta
 
-        $.ajax({
-            url: 'prendas_back.php',
-            type: 'POST',
-            success: function (response) {
-                console.log(response); // Esto te ayudará a ver la respuesta que recibes
-                const data = JSON.parse(response); // Parsear la respuesta JSON
+            if (data.agotadas && data.agotadas.length > 0) {
+                let tableRows = '';
+                data.agotadas.forEach(item => {
+                    tableRows += `
+                        <tr>
+                            <td>${item.ref}</td>
+                            <td>${item.color}</td>
+                        </tr>
+                    `;
+                });
 
-                // Verificar si hay prendas agotadas
-                if (data.agotadas && data.agotadas.length > 0) {
-                    let tableRows = '';
-                    data.agotadas.forEach(item => {
-                        tableRows += `
-                            <tr>
-                                <td>${item.ref}</td>
-                                <td>${item.color}</td>
-                            </tr>
-                        `;
-                    });
-
-                    // Mostrar la tabla con las prendas agotadas
-                    $('#tabla-agotadas').show(); // Asegurarse de que la tabla se muestre
-                    $('#tabla-prendas-agotadas tbody').html(tableRows); // Llenar la tabla con los datos
-                } else {
-                    // Si no hay prendas agotadas, mostrar SweetAlert
-                    Swal.fire({
-                        title: 'No hay prendas agotadas',
-                        text: 'No se han encontrado prendas agotadas en el inventario.',
-                        icon: 'info',
-                        confirmButtonText: 'Cerrar'
-                    });
-                    // Asegurarse de ocultar la tabla si no hay datos
-                    $('#tabla-agotadas').hide();
-                }
-            },
-            error: function () {
+                // Mostrar la tabla con las prendas agotadas
+                $('#tabla-agotadas').show(); // Asegurarse de que la tabla se muestre
+                $('#tabla-prendas-agotadas tbody').html(tableRows); // Llenar la tabla con los datos
+            } else {
                 Swal.fire({
-                    title: 'Error',
-                    text: 'Ocurrió un error al verificar el inventario.',
-                    icon: 'error',
+                    title: 'No hay prendas agotadas',
+                    text: 'No se han encontrado prendas agotadas en el inventario.',
+                    icon: 'info',
                     confirmButtonText: 'Cerrar'
                 });
+                $('#tabla-agotadas').hide(); // Asegurarse de ocultar la tabla si no hay datos
             }
+        } catch (e) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Ocurrió un error al procesar los datos de la respuesta.',
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+            });
+            console.error("Error al parsear JSON:", e);
+        }
+    },
+    error: function () {
+        Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error al verificar el inventario.',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
         });
-    });
+    }
+});
 
 
             // Llamada Ajax para buscar la cantidad por referencia

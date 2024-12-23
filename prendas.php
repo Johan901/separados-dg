@@ -51,129 +51,111 @@
                 <tbody></tbody>
             </table>
         </div>
-
-        <!-- Sección para buscar cantidad por referencia -->
-        <div id="search-container" style="margin-top: 40px;">
-            <h2>Buscar Cantidad por Prenda</h2>
-            <form id="search-form" method="POST">
-                <label for="search-ref">Referencia:</label>
-                <input type="text" id="search-ref" name="search-ref" placeholder="Buscar por referencia">
-                <button type="submit">Buscar</button>
-            </form>
-
-            <!-- Resultados de la búsqueda de prendas por referencia -->
-            <div id="search-results" style="margin-top: 20px;"></div>
-        </div>
     </div>
 
     <script>
         $(document).ready(function () {
-    // Llamada Ajax para obtener prendas agotadas solo cuando se haga clic en el botón
-    $('#filtro-asesor').on('submit', function (e) {
-        e.preventDefault(); // Prevenir el comportamiento por defecto del formulario (que recarga la página)
+            // Llamada Ajax para obtener prendas agotadas
+            $.ajax({
+                url: 'prendas_back.php',
+                type: 'POST',
+                success: function (response) {
+    try {
+        const data = typeof response === "string" ? JSON.parse(response) : response; // Solo parsear si es una cadena
+        console.log(data); // Depuración para ver cómo está llegando la respuesta
 
-        $.ajax({
-            url: 'prendas_back.php',
-            type: 'POST',
-            success: function (response) {
-                try {
-                    const data = JSON.parse(response); // Intentar parsear la respuesta
-                    console.log(data); // Depuración para ver cómo está llegando la respuesta
+        if (data.agotadas && data.agotadas.length > 0) {
+            let tableRows = '';
+            data.agotadas.forEach(item => {
+                tableRows += `
+                    <tr>
+                        <td>${item.ref}</td>
+                        <td>${item.color}</td>
+                    </tr>
+                `;
+            });
 
-                    if (data.agotadas && data.agotadas.length > 0) {
-                        let tableRows = '';
-                        data.agotadas.forEach(item => {
-                            tableRows += `
-                                <tr>
-                                    <td>${item.ref}</td>
-                                    <td>${item.color}</td>
-                                </tr>
-                            `;
-                        });
-
-                        // Mostrar la tabla con las prendas agotadas
-                        $('#tabla-agotadas').show(); // Asegurarse de que la tabla se muestre
-                        $('#tabla-prendas-agotadas tbody').html(tableRows); // Llenar la tabla con los datos
-                    } else {
-                        Swal.fire({
-                            title: 'No hay prendas agotadas',
-                            text: 'No se han encontrado prendas agotadas en el inventario.',
-                            icon: 'info',
-                            confirmButtonText: 'Cerrar'
-                        });
-                        $('#tabla-agotadas').hide(); // Asegurarse de ocultar la tabla si no hay datos
-                    }
-                } catch (e) {
+            // Mostrar la tabla con las prendas agotadas
+            $('#tabla-agotadas').show(); // Asegurarse de que la tabla se muestre
+            $('#tabla-prendas-agotadas tbody').html(tableRows); // Llenar la tabla con los datos
+        } else {
+            Swal.fire({
+                title: 'No hay prendas agotadas',
+                text: 'No se han encontrado prendas agotadas en el inventario.',
+                icon: 'info',
+                confirmButtonText: 'Cerrar'
+            });
+            $('#tabla-agotadas').hide(); // Asegurarse de ocultar la tabla si no hay datos
+        }
+    } catch (e) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error al procesar los datos de la respuesta.',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+        });
+        console.error("Error al parsear JSON:", e);
+    }
+},
+                error: function () {
                     Swal.fire({
                         title: 'Error',
-                        text: 'Ocurrió un error al procesar los datos de la respuesta.',
+                        text: 'Ocurrió un error al verificar el inventario.',
                         icon: 'error',
                         confirmButtonText: 'Cerrar'
                     });
-                    console.error("Error al parsear JSON:", e);
                 }
-            },
-            error: function () {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Ocurrió un error al verificar el inventario.',
-                    icon: 'error',
-                    confirmButtonText: 'Cerrar'
-                });
-            }
-        });
-    });
-
-    // Llamada Ajax para buscar la cantidad por referencia
-    $('#search-form').on('submit', function (e) {
-        e.preventDefault();
-
-        const ref = $('#search-ref').val();
-
-        if (ref === '') {
-            Swal.fire({
-                title: 'Error',
-                text: 'Por favor, ingrese una referencia.',
-                icon: 'error',
-                confirmButtonText: 'Cerrar'
             });
-            return;
-        }
 
-        $.ajax({
-            url: 'prendas_back.php',
-            type: 'POST',
-            data: { search_ref: ref },
-            success: function (response) {
-                const data = JSON.parse(response);
-                if (data.prendas.length > 0) {
-                    let tableRows = '<table border="1" style="width: 100%; border-collapse: collapse;"><thead><tr><th>Color</th><th>Cantidad</th></tr></thead><tbody>';
-                    data.prendas.forEach(item => {
-                        tableRows += `
-                            <tr>
-                                <td>${item.color}</td>
-                                <td>${item.cantidad}</td>
-                            </tr>
-                        `;
+            // Llamada Ajax para buscar la cantidad por referencia
+            $('#search-form').on('submit', function (e) {
+                e.preventDefault();
+
+                const ref = $('#search-ref').val();
+
+                if (ref === '') {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Por favor, ingrese una referencia.',
+                        icon: 'error',
+                        confirmButtonText: 'Cerrar'
                     });
-                    tableRows += '</tbody></table>';
-                    $('#search-results').html(tableRows);
-                } else {
-                    $('#search-results').html('<p>No se encontraron resultados para la referencia buscada.</p>');
+                    return;
                 }
-            },
-            error: function () {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Ocurrió un error al buscar la referencia.',
-                    icon: 'error',
-                    confirmButtonText: 'Cerrar'
-                });
-            }
-        });
-    });
-});
 
+                $.ajax({
+                    url: 'prendas_back.php',
+                    type: 'POST',
+                    data: { search_ref: ref },
+                    success: function (response) {
+                        const data = JSON.parse(response);
+                        if (data.prendas.length > 0) {
+                            let tableRows = '<table border="1" style="width: 100%; border-collapse: collapse;"><thead><tr><th>Color</th><th>Cantidad</th></tr></thead><tbody>';
+                            data.prendas.forEach(item => {
+                                tableRows += `
+                                    <tr>
+                                        <td>${item.color}</td>
+                                        <td>${item.cantidad}</td>
+                                    </tr>
+                                `;
+                            });
+                            tableRows += '</tbody></table>';
+                            $('#search-results').html(tableRows);
+                        } else {
+                            $('#search-results').html('<p>No se encontraron resultados para la referencia buscada.</p>');
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurrió un error al buscar la referencia.',
+                            icon: 'error',
+                            confirmButtonText: 'Cerrar'
+                        });
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     function drawChartConjunto() {
                         var data = google.visualization.arrayToDataTable($chartDataConjuntoJ
-                        despidete de diciembre
                         var options = {
                             title: 'Número de Pedidos por Asesor',
                             chartArea: {width: '70%', height: '70%'},

@@ -105,8 +105,7 @@
                 alert("Por favor, complete todos los campos.");
                 return;
             }
-            this date_interval_create_from_date_string <throw
-            #cal_info #$_COOKIE alert("Leganes tu paapchp")
+
             $.ajax({
                 url: 'separados_conjunto.php',
                 type: 'POST',

@@ -67,7 +67,7 @@
     </div>
 
     <script>
-   $(document).ready(function () {
+$(document).ready(function () {
     // Llamada Ajax al servidor para verificar prendas agotadas
     $('#filtro-asesor').on('submit', function (e) {
         e.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
@@ -115,7 +115,6 @@
             }
         });
     });
-});
 
 
             // Llamada Ajax para buscar la cantidad por referencia

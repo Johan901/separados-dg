@@ -30,10 +30,12 @@
     <div class="container">
         <h1>Reporte de Prendas Agotadas</h1>
         
+        <!-- Formulario para obtener prendas agotadas -->
         <form id="filtro-asesor" method="POST" action="prendas_back.php">
             <button type="submit">Buscar si hay alguna prenda agotada</button>
         </form>
 
+        <!-- Sección de reporte de prendas agotadas -->
         <div id="reporte" class="reporte-container"></div>
 
         <!-- Tabla para mostrar las prendas agotadas -->
@@ -50,6 +52,7 @@
             </table>
         </div>
 
+        <!-- Sección para buscar cantidad por referencia -->
         <div id="search-container" style="margin-top: 40px;">
             <h2>Buscar Cantidad por Prenda</h2>
             <form id="search-form" method="POST">
@@ -58,6 +61,7 @@
                 <button type="submit">Buscar</button>
             </form>
 
+            <!-- Resultados de la búsqueda de prendas por referencia -->
             <div id="search-results" style="margin-top: 20px;"></div>
         </div>
     </div>
@@ -86,7 +90,7 @@
                                 `;
                             });
 
-                            // Mostrar SweetAlert
+                            // Mostrar SweetAlert con lista de prendas agotadas
                             Swal.fire({
                                 title: 'Prendas Agotadas',
                                 text: message,
@@ -173,87 +177,84 @@
 </body>
 
 <style>
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+    }
 
-        .report-box {
-            margin-bottom: 30px; /* Espacio entre los cuadros */
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
+    .report-box {
+        margin-bottom: 30px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
 
-        .report-box h1 {
-            margin-bottom: 20px;
-        }
+    .report-box h1 {
+        margin-bottom: 20px;
+    }
 
-        .report-box form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    .report-box form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
 
-        .report-box input, .report-box select {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
+    .report-box input, .report-box select {
+        padding: 10px;
+        font-size: 16px;
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
 
-        .report-box button {
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #e91d29;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
+    .report-box button {
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #e91d29;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
 
-        .report-box button:hover {
-            background-color: #e91d29;
-        }
+    .report-box button:hover {
+        background-color: #e91d29;
+    }
 
-        #reporte, #reporte_conjunto {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-    
-        
+    #reporte, #reporte_conjunto {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
 </style>
 
 <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section about">
-                <h2 class="footer-title">Sobre Nosotros</h2>
-                <p>Somos una empresa comprometida en brindar el mejor servicio a nuestros clientes. Contáctanos para más información.</p>
-            </div>
-            <div class="footer-section links">
-                <h2 class="footer-title">Enlaces Rápidos</h2>
-                <ul>
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Servicios</a></li>
-                    <li><a href="#">Sobre Nosotros</a></li>
-                    <li><a href="#">Contacto</a></li>
-                </ul>
-            </div>
-            <div class="footer-section contact-form">
-                <h2 class="footer-title">Contáctanos</h2>
-                <p>Email: info@dulceguadalupe.com</p>
-                <p>Teléfono: +57 3153925613</p>
-            </div>
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h2 class="footer-title">Sobre Nosotros</h2>
+            <p>Somos una empresa comprometida en brindar el mejor servicio a nuestros clientes. Contáctanos para más información.</p>
         </div>
-        <div class="footer-bottom">
-        &copy; 2024 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de separodos e Inventario.
-    </div>        
-    </footer>
-
+        <div class="footer-section links">
+            <h2 class="footer-title">Enlaces Rápidos</h2>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Servicios</a></li>
+                <li><a href="#">Sobre Nosotros</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </div>
+        <div class="footer-section contact-form">
+            <h2 class="footer-title">Contáctanos</h2>
+            <p>Email: info@dulceguadalupe.com</p>
+            <p>Teléfono: +57 3153925613</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2024 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de Inventarios.
+    </div>
+</footer>
 </html>

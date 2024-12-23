@@ -1,5 +1,5 @@
 {
-    "name": "separados_dg",
+    "name": "dg/separados",
     "description": "Sistemas de separado e inventario",
     "require": {
       "php": ">=7.4"

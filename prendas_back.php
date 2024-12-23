@@ -25,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $prendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($agotadas) {
-                echo json_encode(array('agotadas' => $agotadas));
+            if (!empty($prendas)) {
+                echo json_encode(['prendas' => $prendas]);
             } else {
-                echo json_encode(array('agotadas' => []));
+                echo json_encode(['prendas' => []]);
             }
 
         } else {

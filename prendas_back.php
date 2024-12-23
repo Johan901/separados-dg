@@ -25,13 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $prendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if (empty($agotadas)) {
-                echo json_encode(['message' => 'No hay prendas agotadas en el inventario.']);
+            if ($agotadas) {
+                echo json_encode(array('agotadas' => $agotadas));
             } else {
-                $agotadas_data = ['agotadas' => $agotadas];
-                // Agrega esto para depurar
-                var_dump($agotadas_data); // Para ver cómo se ve el array
-                echo json_encode($agotadas_data);
+                echo json_encode(array('agotadas' => []));
             }
 
         } else {

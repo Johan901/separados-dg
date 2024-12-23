@@ -73,43 +73,43 @@
                 url: 'prendas_back.php',
                 type: 'POST',
                 success: function (response) {
-                    try {
-                        const data = JSON.parse(response); // Intentar parsear la respuesta
-                        console.log(data); // Depuración para ver cómo está llegando la respuesta
+    try {
+        const data = typeof response === "string" ? JSON.parse(response) : response; // Solo parsear si es una cadena
+        console.log(data); // Depuración para ver cómo está llegando la respuesta
 
-                        if (data.agotadas && data.agotadas.length > 0) {
-                            let tableRows = '';
-                            data.agotadas.forEach(item => {
-                                tableRows += `
-                                    <tr>
-                                        <td>${item.ref}</td>
-                                        <td>${item.color}</td>
-                                    </tr>
-                                `;
-                            });
+        if (data.agotadas && data.agotadas.length > 0) {
+            let tableRows = '';
+            data.agotadas.forEach(item => {
+                tableRows += `
+                    <tr>
+                        <td>${item.ref}</td>
+                        <td>${item.color}</td>
+                    </tr>
+                `;
+            });
 
-                            // Mostrar la tabla con las prendas agotadas
-                            $('#tabla-agotadas').show(); // Asegurarse de que la tabla se muestre
-                            $('#tabla-prendas-agotadas tbody').html(tableRows); // Llenar la tabla con los datos
-                        } else {
-                            Swal.fire({
-                                title: 'No hay prendas agotadas',
-                                text: 'No se han encontrado prendas agotadas en el inventario.',
-                                icon: 'info',
-                                confirmButtonText: 'Cerrar'
-                            });
-                            $('#tabla-agotadas').hide(); // Asegurarse de ocultar la tabla si no hay datos
-                        }
-                    } catch (e) {
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Ocurrió un error al procesar los datos de la respuesta.',
-                            icon: 'error',
-                            confirmButtonText: 'Cerrar'
-                        });
-                        console.error("Error al parsear JSON:", e);
-                    }
-                },
+            // Mostrar la tabla con las prendas agotadas
+            $('#tabla-agotadas').show(); // Asegurarse de que la tabla se muestre
+            $('#tabla-prendas-agotadas tbody').html(tableRows); // Llenar la tabla con los datos
+        } else {
+            Swal.fire({
+                title: 'No hay prendas agotadas',
+                text: 'No se han encontrado prendas agotadas en el inventario.',
+                icon: 'info',
+                confirmButtonText: 'Cerrar'
+            });
+            $('#tabla-agotadas').hide(); // Asegurarse de ocultar la tabla si no hay datos
+        }
+    } catch (e) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error al procesar los datos de la respuesta.',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+        });
+        console.error("Error al parsear JSON:", e);
+    }
+},
                 error: function () {
                     Swal.fire({
                         title: 'Error',

@@ -67,7 +67,7 @@
     </div>
 
     <script>
-        $(document).ready(function () {
+      $(document).ready(function () {
     // Llamada Ajax al servidor para verificar prendas agotadas
     $('#filtro-asesor').on('submit', function (e) {
         e.preventDefault();

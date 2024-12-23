@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $prendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (empty($prendas)) {
-                echo json_encode(['message' => 'No se encontraron prendas para la referencia indicada.']);
+                echo json_encode(['prendas' => []]);
             } else {
                 echo json_encode(['prendas' => $prendas]);
             }

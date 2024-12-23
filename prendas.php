@@ -76,6 +76,7 @@ $(document).ready(function () {
             url: 'prendas_back.php',
             type: 'POST',
             success: function (response) {
+                console.log(response); // Esto te ayudará a ver la respuesta que recibes
                 const data = JSON.parse(response); // Parsear la respuesta JSON
 
                 // Verificar si hay prendas agotadas

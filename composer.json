@@ -1,0 +1,7 @@
+{
+    "name": "separados_dg",
+    "description": "Sistemas de separado e inventario",
+    "require": {
+      "php": ">=7.4"
+    }
+  }

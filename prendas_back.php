@@ -1,14 +1,14 @@
 <?php
-include('config.php'); // Asegúrate de incluir tu archivo de configuración para la conexión a la base de datos
+include('config.php'); 
 
-// Verificar si la solicitud es POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verificar si estamos buscando una referencia
+    header('Content-Type: application/json'); // Indicar que se devolverá JSON
+
+    ob_start(); // Iniciar un buffer de salida
+
     if (isset($_POST['search_ref'])) {
         $ref = $_POST['search_ref'];
-
         try {
-            // Consultar la cantidad por referencia y color
             $query = "
                 SELECT color, cantidad
                 FROM inventario
@@ -20,17 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $prendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Retornar los resultados en formato JSON
+            ob_clean();
             echo json_encode(['prendas' => $prendas]);
 
         } catch (PDOException $e) {
+            ob_clean();
             echo json_encode(['error' => 'Error al obtener los datos: ' . $e->getMessage()]);
         }
-    }
-    // Verificar si estamos consultando prendas agotadas
-    else {
+    } else {
         try {
-            // Consultar todas las prendas con cantidad igual a 0 (agotadas)
             $query = "
                 SELECT ref, color
                 FROM inventario
@@ -41,10 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $agotadas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Retornar los resultados en formato JSON
+            ob_clean();
             echo json_encode(['agotadas' => $agotadas]);
 
         } catch (PDOException $e) {
+            ob_clean();
             echo json_encode(['error' => 'Error al obtener los datos: ' . $e->getMessage()]);
         }
     }

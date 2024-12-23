@@ -73,55 +73,65 @@
                 e.preventDefault();
 
                 $.ajax({
-                    url: 'prendas_back.php',
-                    type: 'POST',
-                    success: function (response) {
-                        const data = JSON.parse(response);
-                        if (data.agotadas.length > 0) {
-                            let message = 'Las siguientes prendas están agotadas:\n';
-                            let tableRows = '';
-                            data.agotadas.forEach(item => {
-                                message += `Referencia: ${item.ref}, Color: ${item.color}\n`;
-                                tableRows += `
-                                    <tr>
-                                        <td>${item.ref}</td>
-                                        <td>${item.color}</td>
-                                    </tr>
-                                `;
-                            });
+    url: 'prendas_back.php',
+    type: 'POST',
+    success: function (response) {
+        try {
+            // Asegúrate de que la respuesta es JSON antes de procesarla
+            const data = JSON.parse(response);
+            
+            if (data.agotadas && data.agotadas.length > 0) {
+                let message = 'Las siguientes prendas están agotadas:\n';
+                let tableRows = '';
+                data.agotadas.forEach(item => {
+                    message += `Referencia: ${item.ref}, Color: ${item.color}\n`;
+                    tableRows += `
+                        <tr>
+                            <td>${item.ref}</td>
+                            <td>${item.color}</td>
+                        </tr>
+                    `;
+                });
 
-                            // Mostrar SweetAlert con lista de prendas agotadas
-                            Swal.fire({
-                                title: 'Prendas Agotadas',
-                                text: message,
-                                icon: 'warning',
-                                confirmButtonText: 'Cerrar'
-                            }).then((result) => {
-                                // Cuando el usuario cierre la alerta, mostrar la tabla
-                                if (result.isConfirmed) {
-                                    $('#tabla-agotadas').show();
-                                    $('#tabla-prendas-agotadas tbody').html(tableRows);
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: 'Todo en stock',
-                                text: 'No hay prendas agotadas en el inventario.',
-                                icon: 'success',
-                                confirmButtonText: 'Cerrar'
-                            });
-                        }
-                    },
-                    error: function () {
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Ocurrió un error al verificar el inventario.',
-                            icon: 'error',
-                            confirmButtonText: 'Cerrar'
-                        });
+                // Mostrar SweetAlert con lista de prendas agotadas
+                Swal.fire({
+                    title: 'Prendas Agotadas',
+                    text: message,
+                    icon: 'warning',
+                    confirmButtonText: 'Cerrar'
+                }).then((result) => {
+                    // Cuando el usuario cierre la alerta, mostrar la tabla
+                    if (result.isConfirmed) {
+                        $('#tabla-agotadas').show();
+                        $('#tabla-prendas-agotadas tbody').html(tableRows);
                     }
                 });
+            } else {
+                Swal.fire({
+                    title: 'Todo en stock',
+                    text: 'No hay prendas agotadas en el inventario.',
+                    icon: 'success',
+                    confirmButtonText: 'Cerrar'
+                });
+            }
+        } catch (e) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Ocurrió un error al procesar la respuesta JSON.',
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
             });
+        }
+    },
+    error: function () {
+        Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error al verificar el inventario.',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+        });
+    }
+});
 
             // Llamada Ajax para buscar la cantidad por referencia
             $('#search-form').on('submit', function (e) {

@@ -9,16 +9,12 @@ $username = $uri['user'];
 $password = $uri['pass'];
 $port = 5432;  // Puerto, generalmente 5432 para PostgreSQL
 
-header('Content-Type: application/json'); // Asegúrate de que la salida sea JSON
-
 try {
     // Conexión a la base de datos usando PDO
     $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Devuelve una respuesta en formato JSON
-    echo json_encode(["status" => "success", "message" => "Conexión exitosa"]);
+    // Los echo han sido eliminados
 } catch (PDOException $e) {
-    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    // Silenciar la salida de errores, pero puedes registrar errores si es necesario
 }
 ?>

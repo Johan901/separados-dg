@@ -31,9 +31,9 @@
         <h1>Reporte de Prendas Agotadas</h1>
         
         <!-- Formulario para obtener prendas agotadas -->
-        <form id="filtro-asesor" method="POST" action="prendas_back.php">
-            <button type="submit">Buscar si hay alguna prenda agotada</button>
-        </form>
+        <form id="filtro-asesor">
+    <button type="submit">Buscar si hay alguna prenda agotada</button>
+</form>
 
         <!-- Sección de reporte de prendas agotadas -->
         <div id="reporte" class="reporte-container"></div>
@@ -67,16 +67,16 @@
     </div>
 
     <script>
-      $(document).ready(function () {
+   $(document).ready(function () {
     // Llamada Ajax al servidor para verificar prendas agotadas
     $('#filtro-asesor').on('submit', function (e) {
-        e.preventDefault();
+        e.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
 
         $.ajax({
             url: 'prendas_back.php',
             type: 'POST',
             success: function (response) {
-                const data = JSON.parse(response);
+                const data = JSON.parse(response); // Parsear la respuesta JSON
 
                 // Verificar si hay prendas agotadas
                 if (data.agotadas && data.agotadas.length > 0) {
@@ -91,8 +91,8 @@
                     });
 
                     // Mostrar la tabla con las prendas agotadas
-                    $('#tabla-agotadas').show();
-                    $('#tabla-prendas-agotadas tbody').html(tableRows);
+                    $('#tabla-agotadas').show(); // Asegurarse de que la tabla se muestre
+                    $('#tabla-prendas-agotadas tbody').html(tableRows); // Llenar la tabla con los datos
                 } else {
                     // Si no hay prendas agotadas, mostrar SweetAlert
                     Swal.fire({

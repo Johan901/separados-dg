@@ -1,14 +1,19 @@
 <?php
-include('config.php'); 
+include('config.php');
+
+header('Content-Type: application/json'); // Asegúrate de que la respuesta es JSON
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    header('Content-Type: application/json'); // Indicar que se devolverá JSON
+    try {
+        // Verificar si es una búsqueda por referencia
+        if (isset($_POST['search_ref'])) {
+            $ref = trim($_POST['search_ref']); // Eliminar espacios en blanco innecesarios
 
-    ob_start(); // Iniciar un buffer de salida
+            if (empty($ref)) {
+                echo json_encode(['error' => 'La referencia no puede estar vacía.']);
+                exit;
+            }
 
-    if (isset($_POST['search_ref'])) {
-        $ref = $_POST['search_ref'];
-        try {
             $query = "
                 SELECT color, cantidad
                 FROM inventario
@@ -20,15 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $prendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            ob_clean();
-            echo json_encode(['prendas' => $prendas]);
+            if (empty($prendas)) {
+                echo json_encode(['message' => 'No se encontraron prendas para la referencia indicada.']);
+            } else {
+                echo json_encode(['prendas' => $prendas]);
+            }
 
-        } catch (PDOException $e) {
-            ob_clean();
-            echo json_encode(['error' => 'Error al obtener los datos: ' . $e->getMessage()]);
-        }
-    } else {
-        try {
+        } else {
+            // Si no se proporciona 'search_ref', buscamos las prendas agotadas
             $query = "
                 SELECT ref, color
                 FROM inventario
@@ -39,13 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $agotadas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            ob_clean();
-            echo json_encode(['agotadas' => $agotadas]);
-
-        } catch (PDOException $e) {
-            ob_clean();
-            echo json_encode(['error' => 'Error al obtener los datos: ' . $e->getMessage()]);
+            if (empty($agotadas)) {
+                echo json_encode(['message' => 'No hay prendas agotadas en el inventario.']);
+            } else {
+                echo json_encode(['agotadas' => $agotadas]);
+            }
         }
+    } catch (PDOException $e) {
+        // En caso de error con la base de datos
+        echo json_encode(['error' => 'Error al obtener los datos: ' . $e->getMessage()]);
     }
 }
 ?>

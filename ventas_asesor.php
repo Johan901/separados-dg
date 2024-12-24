@@ -77,6 +77,11 @@
 
     <script>
     $(document).ready(function () {
+        // Mostrar el menú al hacer clic en el icono de la hamburguesa
+    $('.hamburger-menu').on('click', function () {
+        $('.dropdown-menu').toggleClass('show-dropdown');
+    });
+
         // Reporte por Asesor
         $('#filtro-asesor').on('submit', function (e) {
             e.preventDefault();

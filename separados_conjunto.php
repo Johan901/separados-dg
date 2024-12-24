@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Preparar datos para el gráfico
                 $chartDataConjunto = [["Asesor", "Número de Pedidos", ["role" => "style"]]];
-                $colors = ['#00796b', '#a31010', '#00332b', '#a31010', '#e91d29'];
+                $colors = ['#e91d29', '#a31010', '#00332b', '#a31010', '#e91d29'];
                 $colorIndex = 0;
 
                 foreach ($ventasConjunto as $venta) {

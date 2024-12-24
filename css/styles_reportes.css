@@ -183,50 +183,56 @@ body {
 }
 
 
+
 .hamburger-menu {
     position: relative;
     cursor: pointer;
     display: flex;
     align-items: center;
+
 }
 
 .hamburger-menu i.fas.fa-bars {
-    font-size: 30px;
+    font-size: 30px; /* Aumento del tamaño del ícono */
     color: #e91d29;
+    margin-right: 0px; /* Espacio entre el ícono y el logo */
 }
 
-.hamburger-menu.active i.fas.fa-bars {
-    color: #123d4e; /* Cambia el color o estilo cuando el menú esté activo */
-}
-
-
-/* Estilos del menú lateral oculto fuera de la pantalla */
 .dropdown-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100%;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; /* Alineamos el menú al lado izquierdo */
     background-color: #fff;
-    border-right: 1px solid #ccc;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    transform: translateX(-100%); /* Ocultar fuera de pantalla */
-    transition: transform 0.3s ease; /* Suave transición al aparecer */
+    transform-origin: top left; /* Esto ayuda a que la animación comience desde la esquina superior izquierda */
 }
 
+/* Usamos una transición más suave para el menú */
 .dropdown-menu.show-dropdown {
-    transform: translateX(0); /* Mostrar menú al deslizar desde la izquierda */
+    display: block;
+    animation: slideDown 0.5s forwards;
 }
 
-/* Animación para las opciones dentro del menú */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .dropdown-menu a {
     display: block;
     padding: 10px 20px;
     color: #e91d29;
     text-decoration: none;
-    opacity: 0;
-    animation: fadeInMenu 0.5s forwards;
 }
 
 .dropdown-menu a:hover {
@@ -234,10 +240,15 @@ body {
     color: #fff;
 }
 
+.show-dropdown {
+    display: block;
+    animation: fadeInMenu 0.3s forwards;
+}
+
 @keyframes fadeInMenu {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(-20px);
     }
     to {
         opacity: 1;

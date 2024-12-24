@@ -30,25 +30,25 @@
     <div class="container">
         <h1>Reporte de Prendas Agotadas</h1>
         
-      
+        <!-- Botón para buscar prendas agotadas -->
+        <button id="btn-buscar-agotadas" type="button">Mostrar prendas agotadas</button>
 
         <!-- Sección de reporte de prendas agotadas -->
         <div id="reporte" class="reporte-container"></div>
 
-       <!-- Botón para buscar prendas agotadas -->
-<button id="btn-buscar-agotadas">Mostrar prendas agotadas</button>
+        <table id="tabla-prendas-agotadas" border="1" style="width: 100%; border-collapse: collapse; display: none;">
+            <thead>
+                <tr>
+                    <th>Referencia</th>
+                    <th>Color</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas se llenan dinámicamente -->
+            </tbody>
+        </table>
 
-<table id="tabla-prendas-agotadas" border="1" style="width: 100%; border-collapse: collapse; display: none;">
-    <thead>
-        <tr>
-            <th>Referencia</th>
-            <th>Color</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Las filas se llenan dinámicamente -->
-    </tbody>
-    <div id="search-container" style="margin-top: 40px;">
+        <div id="search-container" style="margin-top: 40px;">
             <h2>Buscar Cantidad por Prenda</h2>
             <form id="search-form" method="POST">
                 <label for="search-ref">Referencia:</label>
@@ -58,9 +58,6 @@
 
             <!-- Resultados de la búsqueda de prendas por referencia -->
             <div id="search-results" style="margin-top: 20px;"></div>
-        </div>
-</table>
-
         </div>
     </div>
 

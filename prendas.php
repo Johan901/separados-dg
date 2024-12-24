@@ -48,11 +48,7 @@
     <tbody>
         <!-- Las filas se llenan dinámicamente -->
     </tbody>
-</table>
-        </div>
-
-        <!-- Sección para buscar cantidad por referencia -->
-        <div id="search-container" style="margin-top: 40px;">
+    <div id="search-container" style="margin-top: 40px;">
             <h2>Buscar Cantidad por Prenda</h2>
             <form id="search-form" method="POST">
                 <label for="search-ref">Referencia:</label>
@@ -62,6 +58,9 @@
 
             <!-- Resultados de la búsqueda de prendas por referencia -->
             <div id="search-results" style="margin-top: 20px;"></div>
+        </div>
+</table>
+
         </div>
     </div>
 

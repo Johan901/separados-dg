@@ -31,7 +31,7 @@
         <h1>Reporte de Prendas Agotadas</h1>
         
         <!-- Botón para buscar prendas agotadas -->
-        <button id="btn-buscar-agotadas" type="button">Mostrar prendas agotadas</button>
+        <button class="button" id="btn-buscar-agotadas" type="button">Mostrar prendas agotadas</button>
 
         <!-- Sección de reporte de prendas agotadas -->
         <div id="reporte" class="reporte-container"></div>

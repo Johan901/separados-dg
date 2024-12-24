@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     google.charts.setOnLoadCallback(drawChartConjunto);
                     
                     function drawChartConjunto() {
-                        var data = google.visualization.arrayToDataTable($chartDataConjuntoJ
+                        var data = google.visualization.arrayToDataTable($chartDataConjuntoJson);
                         var options = {
                             title: 'Número de Pedidos por Asesor',
                             chartArea: {width: '70%', height: '70%'},

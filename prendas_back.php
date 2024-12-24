@@ -5,27 +5,7 @@ header('Content-Type: application/json; charset=UTF-8'); // Respuestas en format
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Verificar si se solicita listar las prendas agotadas
-        if (isset($_POST['action']) && $_POST['action'] === 'fetch_agotadas') {
-            $query = "
-                SELECT ref, color
-                FROM inventario
-                WHERE cantidad = 0
-            ";
-
-            $stmt = $conn->prepare($query);
-            $stmt->execute();
-            $agotadas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (count($agotadas) > 0) {
-                echo json_encode(['agotadas' => $agotadas]);
-            } else {
-                echo json_encode(['agotadas' => []]);
-            }
-            exit;
-        }
-
-        // Mantener la búsqueda por cantidad de prenda tal como estaba
+        // Buscar cantidad por referencia
         if (isset($_POST['search_ref'])) {
             $ref = trim($_POST['search_ref']); // Limpiar el input
 
@@ -49,7 +29,18 @@ try {
             exit;
         }
 
-        echo json_encode(['error' => 'Solicitud no válida.']);
+        // Obtener prendas agotadas si no se proporciona 'search_ref'
+        $query = "
+            SELECT ref, color
+            FROM inventario
+            WHERE cantidad = 0
+        ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $agotadas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode(['agotadas' => $agotadas]);
         exit;
     } else {
         echo json_encode(['error' => 'Método no permitido.']);

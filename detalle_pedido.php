@@ -40,11 +40,11 @@
 
     <h2>Detalle de Pedido</h2>
     
-<?php
-include('config.php');
+    <?php
+include 'config.php';
 
 // Verifica si el usuario ha iniciado sesión
-session_start(); // Asegúrate de iniciar la sesión
+session_start(); 
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.html');
     exit();
@@ -54,28 +54,25 @@ if (!isset($_SESSION['user_id'])) {
 if (isset($_GET['id'])) {
     $id_pedido = $_GET['id'];
 
-    // Inicializar la consulta SQL, asegurándote de incluir id_detalle
-    $query = "SELECT dp.id_detalle, dp.id_pedido, 
-                     dp.ref, 
-                     dp.color, 
-                     dp.cantidad, 
-                     dp.precio_unitario, 
-                     dp.subtotal,
-                     dp.actualizado
-              FROM detalle_pedido dp 
-              WHERE dp.id_pedido = :id_pedido"; // Añadir condición aquí
+    // Actualizar la consulta SQL para incluir las nuevas columnas
+    $query = "SELECT dp.id_detalle, dp.id_pedido, dp.ref, dp.color, dp.cantidad, dp.precio_unitario, 
+                 dp.subtotal, dp.actualizado, 
+                 c.cedula, c.nombre, 
+                 p.asesor, p.envio
+          FROM detalle_pedido dp
+          INNER JOIN pedidos p ON dp.id_pedido = p.id_pedido
+          INNER JOIN clientes c ON p.cliente_cedula = c.cedula
+          WHERE dp.id_pedido = :id_pedido";
+
 
     // Preparar la consulta
     $stmt = $conn->prepare($query);
-    
-    // Vincular el parámetro de búsqueda
     $stmt->bindParam(':id_pedido', $id_pedido, PDO::PARAM_INT);
 
     try {
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Mostrar los resultados en una tabla
         if (count($result) > 0) {
             echo "<table>
                 <tr>
@@ -85,45 +82,47 @@ if (isset($_GET['id'])) {
                     <th>Cantidad</th>
                     <th>Precio Unitario (COP)</th>
                     <th>Subtotal (COP)</th>
-                    <th>Separar</th> <!-- Aquí agregamos el encabezado -->
+                    <th>Cédula</th>
+                    <th>Nombre</th>
+                    <th>Asesor</th>
+                    <th>Envío</th>
+                    <th>Separar</th>
                 </tr>";
 
-                foreach ($result as $row) {
-                    $id_detalle = $row['id_detalle'];
-                
-                    // Comprobar si el artículo ya está marcado como separado
-                    $estado_separado = $row['actualizado'] == 1 ? "Ya separado" : "Pendiente de separar";
-                
-                    echo "<tr>
-                            <td>{$row['id_pedido']}</td>
-                            <td>{$row['ref']}</td>
-                            <td>{$row['color']}</td>
-                            <td>{$row['cantidad']}</td>
-                            <td>" . '$' . number_format($row['precio_unitario'], 0, '', '.') . "</td>
-                            <td>" . '$' . number_format($row['subtotal'], 0, '', '.') . "</td>
-                            <td>
-                                <!-- Formulario para marcar como separado -->
-                                <form method='POST' action='detalle_pedido.php'>
-                                    <input type='hidden' name='id_detalle' value='{$id_detalle}'>
-                                    <input type='hidden' name='id_pedido' value='{$row['id_pedido']}'>
-                                    <button class='button' type='submit' name='marcar_separado' " . ($row['actualizado'] == 1 ? 'disabled' : '') . ">Marcar como separado</button>
-                                </form>
-                                <!-- Mostrar el estado del artículo -->
-                                <span class='estado-separado'>{$estado_separado}</span>
-                            </td>
-                        </tr>";
-                }
-            
+            foreach ($result as $row) {
+                $id_detalle = $row['id_detalle'];
+                $estado_separado = $row['actualizado'] == 1 ? "Ya separado" : "Pendiente de separar";
+
+                echo "<tr>
+                        <td>{$row['id_pedido']}</td>
+                        <td>{$row['ref']}</td>
+                        <td>{$row['color']}</td>
+                        <td>{$row['cantidad']}</td>
+                        <td>" . '$' . number_format($row['precio_unitario'], 0, '', '.') . "</td>
+                        <td>" . '$' . number_format($row['subtotal'], 0, '', '.') . "</td>
+                        <td>{$row['cedula']}</td>
+                        <td>{$row['nombre']}</td>
+                        <td>{$row['asesor']}</td>
+                        <td>{$row['envio']}</td>
+                        <td>
+                            <form method='POST' action='detalle_pedido_bodeguero.php'>
+                                <input type='hidden' name='id_detalle' value='{$id_detalle}'>
+                                <input type='hidden' name='id_pedido' value='{$row['id_pedido']}'>
+                                <button class='button' type='submit' name='marcar_separado' " . ($row['actualizado'] == 1 ? 'disabled' : '') . ">Marcar como separado</button>
+                            </form>
+                            <span class='estado-separado'>{$estado_separado}</span>
+                        </td>
+                    </tr>";
+            }
             echo "</table>";
 
-            // Obtener el total del pedido
+            // Obtener y mostrar el total del pedido
             $query_total = "SELECT total_pedido FROM pedidos WHERE id_pedido = :id_pedido";
             $stmt_total = $conn->prepare($query_total);
             $stmt_total->bindParam(':id_pedido', $id_pedido, PDO::PARAM_INT);
             $stmt_total->execute();
             $total_result = $stmt_total->fetch(PDO::FETCH_ASSOC);
 
-            // Mostrar el total debajo de la tabla
             if ($total_result) {
                 $total_pedido = $total_result['total_pedido'];
                 echo "<div style='text-align:center; margin-top: 20px; font-size: 18px;'>
@@ -132,32 +131,28 @@ if (isset($_GET['id'])) {
             }
         } else {
             echo "<p>No se encontraron detalles para el ID de pedido proporcionado.</p>";
-        }
+        }  
     } catch (PDOException $e) {
-        // Captura el error y muestra una alerta
+        // Mostrar error en la consola del navegador
+        $error_message = json_encode($e->getMessage(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
         echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error al buscar el ID de pedido. Asegúrese de que el ID sea un número válido.'
-                });
+                console.error('Error en la consulta: ' + $error_message);
               </script>";
+        echo "<p>Ocurrió un error al procesar la solicitud. Por favor, revisa la consola para más detalles.</p>";
     }
 } else {
     echo "<p>Por favor, proporciona un ID de pedido para buscar.</p>";
 }
 
-// Actualizar artículo como separado
 if (isset($_POST['marcar_separado'])) {
-    $id_pedido = $_POST['id_pedido'];  // Ahora se obtiene desde el formulario
-    $id_detalle = $_POST['id_detalle']; // ID del detalle de pedido
+    $id_pedido = $_POST['id_pedido'];  
+    $id_detalle = $_POST['id_detalle']; 
 
     $query_update = "UPDATE detalle_pedido SET actualizado = TRUE WHERE id_detalle = :id_detalle";
     $stmt_update = $conn->prepare($query_update);
     $stmt_update->bindValue(':id_detalle', $id_detalle, PDO::PARAM_INT);
     $stmt_update->execute();
 
-    // Verificar si todos los artículos están separados
     $query_separado_check = "SELECT COUNT(*) AS total, 
                                     SUM(CASE WHEN actualizado = FALSE THEN 1 ELSE 0 END) AS pendientes
                              FROM detalle_pedido
@@ -167,18 +162,19 @@ if (isset($_POST['marcar_separado'])) {
     $stmt_separado_check->execute();
     $result_separado_check = $stmt_separado_check->fetch(PDO::FETCH_ASSOC);
 
-    if ($result_separado_check['pendientes'] == 0) {
-        // Actualizar estado de pedido como "separado"
+ 
+    if ($result_separado_check['pendientes'] == 0) { 
         $query_update_pedido = "UPDATE pedidos SET pedido_separado = TRUE WHERE id_pedido = :id_pedido";
         $stmt_update_pedido = $conn->prepare($query_update_pedido);
         $stmt_update_pedido->bindValue(':id_pedido', $id_pedido, PDO::PARAM_INT);
-        $stmt_update_pedido->execute();
+        $stmt_update_pedido->execute(); 
     }
 
-    // Redirigir a historial_pedidos.php
-    header("Location: historial_pedidos.php");
-    exit();
+    ob_clean(); // Limpia cualquier salida previa
+    header('Location: historial_bodeguero.php');
+    exit();  
 }
+
 
 ?>
 

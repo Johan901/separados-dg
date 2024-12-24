@@ -182,6 +182,39 @@ $(document).ready(function () {
 </body>
 
 <style>
+        /* Estilos para el campo de búsqueda */
+        #search-ref {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        #search-ref:focus {
+            border-color: #4CAF50; /* Cambia el color del borde al enfocar */
+            outline: none; /* Elimina el borde de enfoque predeterminado */
+        }
+
+        /* Estilos para el botón de búsqueda */
+        #search-form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #search-form button:hover {
+            background-color: #45a049; /* Cambia el color de fondo al pasar el mouse */
+        }
+
     .container {
         width: 80%;
         margin: 0 auto;

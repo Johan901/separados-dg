@@ -35,15 +35,14 @@
         <!-- Sección de reporte de prendas agotadas -->
         <div id="reporte" class="reporte-container"></div>
 
-        <!-- Tabla para mostrar las prendas agotadas -->
-        <div id="tabla-agotadas" style="display:none; margin-top: 20px;">
-            <h2>Prendas Agotadas</h2>
-            <table id="tabla-prendas-agotadas" border="1" style="width: 100%; border-collapse: collapse; display: none;">
+       <!-- Botón para buscar prendas agotadas -->
+<button id="btn-buscar-agotadas">Mostrar prendas agotadas</button>
+
+<table id="tabla-prendas-agotadas" border="1" style="width: 100%; border-collapse: collapse; display: none;">
     <thead>
         <tr>
             <th>Referencia</th>
             <th>Color</th>
-            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -68,11 +67,12 @@
 
     <script>
     $(document).ready(function () {
-        // Obtener prendas agotadas
-        function fetchAgotadas() {
+        // Manejar clic en el botón para buscar prendas agotadas
+        $('#btn-buscar-agotadas').on('click', function () {
             $.ajax({
                 url: 'prendas_back.php',
                 type: 'POST',
+                data: { action: 'fetch_agotadas' },
                 success: function (response) {
                     try {
                         const data = typeof response === 'string' ? JSON.parse(response) : response;
@@ -84,15 +84,11 @@
                                     <tr>
                                         <td>${item.ref}</td>
                                         <td>${item.color}</td>
-                                        <td>
-                                            <input type="number" min="1" id="recover-${item.ref}" placeholder="Cantidad" style="width: 70px;">
-                                            <button class="btn-recover" data-ref="${item.ref}" data-color="${item.color}">Recuperar</button>
-                                        </td>
                                     </tr>
                                 `;
                             });
-                            $('#tabla-agotadas').show();
                             $('#tabla-prendas-agotadas tbody').html(tableRows);
+                            $('#tabla-prendas-agotadas').show();
                         } else {
                             Swal.fire({
                                 title: 'Todo en stock',
@@ -100,69 +96,7 @@
                                 icon: 'success',
                                 confirmButtonText: 'Cerrar'
                             });
-                            $('#tabla-agotadas').hide();
-                        }
-                    } catch (error) {
-                        console.error('Error al procesar los datos:', error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Ocurrió un error al procesar la respuesta del servidor.',
-                            icon: 'error',
-                            confirmButtonText: 'Cerrar'
-                        });
-                    }
-                },
-                error: function () {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'No se pudo establecer conexión con el servidor.',
-                        icon: 'error',
-                        confirmButtonText: 'Cerrar'
-                    });
-                }
-            });
-        }
-
-        fetchAgotadas(); // Llamar al cargar la página
-
-        // Manejar la recuperación de prendas
-        $(document).on('click', '.btn-recover', function () {
-            const ref = $(this).data('ref');
-            const cantidad = $(`#recover-${ref}`).val();
-
-            if (!cantidad || parseInt(cantidad) <= 0) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Por favor, ingrese una cantidad válida para recuperar.',
-                    icon: 'error',
-                    confirmButtonText: 'Cerrar'
-                });
-                return;
-            }
-
-            $.ajax({
-                url: 'prendas_back.php',
-                type: 'POST',
-                data: { recover_ref: ref, recover_qty: cantidad },
-                success: function (response) {
-                    try {
-                        const data = typeof response === 'string' ? JSON.parse(response) : response;
-
-                        if (data.success) {
-                            Swal.fire({
-                                title: 'Éxito',
-                                text: data.success,
-                                icon: 'success',
-                                confirmButtonText: 'Cerrar'
-                            });
-                            fetchAgotadas(); // Actualizar la tabla
-                        } else if (data.error) {
-                            Swal.fire({
-                                title: 'Error',
-                                text: data.error,
-                                icon: 'error',
-                                confirmButtonText: 'Cerrar'
-                            });
+                            $('#tabla-prendas-agotadas').hide();
                         }
                     } catch (error) {
                         console.error('Error al procesar los datos:', error);

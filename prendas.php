@@ -195,13 +195,13 @@ $(document).ready(function () {
         }
 
         #search-ref:focus {
-            border-color: #4CAF50; /* Cambia el color del borde al enfocar */
+            border-color: #e91d29; /* Cambia el color del borde al enfocar */
             outline: none; /* Elimina el borde de enfoque predeterminado */
         }
 
         /* Estilos para el botón de búsqueda */
         #search-form button {
-            background-color: #4CAF50;
+            background-color: #e91d29;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -212,7 +212,7 @@ $(document).ready(function () {
         }
 
         #search-form button:hover {
-            background-color: #45a049; /* Cambia el color de fondo al pasar el mouse */
+            background-color:rgb(159, 39, 39); /* Cambia el color de fondo al pasar el mouse */
         }
 
     .container {

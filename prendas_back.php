@@ -1,13 +1,13 @@
 <?php
 include('config.php');
 
-header('Content-Type: application/json'); // Asegúrate de que la respuesta es JSON
+header('Content-Type: application/json; charset=UTF-8'); // Respuestas en formato JSON
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verificar si es una búsqueda por referencia
         if (isset($_POST['search_ref'])) {
-            $ref = trim($_POST['search_ref']); // Eliminar espacios en blanco innecesarios
+            $ref = trim($_POST['search_ref']); // Limpiar el input
 
             if (empty($ref)) {
                 echo json_encode(['error' => 'La referencia no puede estar vacía.']);
@@ -25,33 +25,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $prendas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if (!empty($prendas)) {
-                echo json_encode(['prendas' => $prendas]);
-            } else {
-                echo json_encode(['prendas' => []]);
-            }
-
-        } else {
-            // Si no se proporciona 'search_ref', buscamos las prendas agotadas
-            $query = "
-                SELECT ref, color
-                FROM inventario
-                WHERE cantidad = 0
-            ";
-
-            $stmt = $conn->prepare($query);
-            $stmt->execute();
-            $agotadas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (empty($agotadas)) {
-                echo json_encode(['message' => 'No hay prendas agotadas en el inventario.']);
-            } else {
-                echo json_encode(['agotadas' => $agotadas]);
-            }
+            echo json_encode(['prendas' => $prendas]);
+            exit;
         }
-    } catch (PDOException $e) {
-        // En caso de error con la base de datos
-        echo json_encode(['error' => 'Error al obtener los datos: ' . $e->getMessage()]);
+
+        // Si no se proporciona 'search_ref', buscamos las prendas agotadas
+        $query = "
+            SELECT ref, color
+            FROM inventario
+            WHERE cantidad = 0
+        ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $agotadas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode(['agotadas' => $agotadas]);
+        exit;
+    } else {
+        echo json_encode(['error' => 'Método no permitido.']);
+        exit;
     }
+} catch (PDOException $e) {
+    echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
+    exit;
 }
 ?>

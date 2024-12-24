@@ -38,15 +38,18 @@
         <!-- Tabla para mostrar las prendas agotadas -->
         <div id="tabla-agotadas" style="display:none; margin-top: 20px;">
             <h2>Prendas Agotadas</h2>
-            <table id="tabla-prendas-agotadas" border="1" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr>
-                        <th>Referencia</th>
-                        <th>Color</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <table id="tabla-prendas-agotadas" border="1" style="width: 100%; border-collapse: collapse; display: none;">
+    <thead>
+        <tr>
+            <th>Referencia</th>
+            <th>Color</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Las filas se llenan dinámicamente -->
+    </tbody>
+</table>
         </div>
 
         <!-- Sección para buscar cantidad por referencia -->
@@ -66,64 +69,71 @@
     <script>
     $(document).ready(function () {
         // Obtener prendas agotadas
-        $.ajax({
-            url: 'prendas_back.php',
-            type: 'POST',
-            success: function (response) {
-                try {
-                    const data = typeof response === 'string' ? JSON.parse(response) : response;
+        function fetchAgotadas() {
+            $.ajax({
+                url: 'prendas_back.php',
+                type: 'POST',
+                success: function (response) {
+                    try {
+                        const data = typeof response === 'string' ? JSON.parse(response) : response;
 
-                    if (data.agotadas && data.agotadas.length > 0) {
-                        let tableRows = '';
-                        data.agotadas.forEach(item => {
-                            tableRows += `
-                                <tr>
-                                    <td>${item.ref}</td>
-                                    <td>${item.color}</td>
-                                </tr>
-                            `;
-                        });
-                        $('#tabla-agotadas').show();
-                        $('#tabla-prendas-agotadas tbody').html(tableRows);
-                    } else {
+                        if (data.agotadas && data.agotadas.length > 0) {
+                            let tableRows = '';
+                            data.agotadas.forEach(item => {
+                                tableRows += `
+                                    <tr>
+                                        <td>${item.ref}</td>
+                                        <td>${item.color}</td>
+                                        <td>
+                                            <input type="number" min="1" id="recover-${item.ref}" placeholder="Cantidad" style="width: 70px;">
+                                            <button class="btn-recover" data-ref="${item.ref}" data-color="${item.color}">Recuperar</button>
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+                            $('#tabla-agotadas').show();
+                            $('#tabla-prendas-agotadas tbody').html(tableRows);
+                        } else {
+                            Swal.fire({
+                                title: 'Todo en stock',
+                                text: 'No hay prendas agotadas en el inventario.',
+                                icon: 'success',
+                                confirmButtonText: 'Cerrar'
+                            });
+                            $('#tabla-agotadas').hide();
+                        }
+                    } catch (error) {
+                        console.error('Error al procesar los datos:', error);
                         Swal.fire({
-                            title: 'No hay prendas agotadas',
-                            text: 'No se han encontrado prendas agotadas en el inventario.',
-                            icon: 'info',
+                            title: 'Error',
+                            text: 'Ocurrió un error al procesar la respuesta del servidor.',
+                            icon: 'error',
                             confirmButtonText: 'Cerrar'
                         });
-                        $('#tabla-agotadas').hide();
                     }
-                } catch (error) {
-                    console.error('Error al procesar los datos:', error);
+                },
+                error: function () {
                     Swal.fire({
                         title: 'Error',
-                        text: 'Ocurrió un error al procesar la respuesta del servidor.',
+                        text: 'No se pudo establecer conexión con el servidor.',
                         icon: 'error',
                         confirmButtonText: 'Cerrar'
                     });
                 }
-            },
-            error: function () {
+            });
+        }
+
+        fetchAgotadas(); // Llamar al cargar la página
+
+        // Manejar la recuperación de prendas
+        $(document).on('click', '.btn-recover', function () {
+            const ref = $(this).data('ref');
+            const cantidad = $(`#recover-${ref}`).val();
+
+            if (!cantidad || parseInt(cantidad) <= 0) {
                 Swal.fire({
                     title: 'Error',
-                    text: 'No se pudo establecer conexión con el servidor.',
-                    icon: 'error',
-                    confirmButtonText: 'Cerrar'
-                });
-            }
-        });
-
-        // Buscar cantidad por referencia
-        $('#search-form').on('submit', function (e) {
-            e.preventDefault();
-
-            const ref = $('#search-ref').val();
-
-            if (ref === '') {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Por favor, ingrese una referencia.',
+                    text: 'Por favor, ingrese una cantidad válida para recuperar.',
                     icon: 'error',
                     confirmButtonText: 'Cerrar'
                 });
@@ -133,25 +143,26 @@
             $.ajax({
                 url: 'prendas_back.php',
                 type: 'POST',
-                data: { search_ref: ref },
+                data: { recover_ref: ref, recover_qty: cantidad },
                 success: function (response) {
                     try {
                         const data = typeof response === 'string' ? JSON.parse(response) : response;
 
-                        if (data.prendas && data.prendas.length > 0) {
-                            let tableRows = '<table border="1" style="width: 100%; border-collapse: collapse;"><thead><tr><th>Color</th><th>Cantidad</th></tr></thead><tbody>';
-                            data.prendas.forEach(item => {
-                                tableRows += `
-                                    <tr>
-                                        <td>${item.color}</td>
-                                        <td>${item.cantidad}</td>
-                                    </tr>
-                                `;
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Éxito',
+                                text: data.success,
+                                icon: 'success',
+                                confirmButtonText: 'Cerrar'
                             });
-                            tableRows += '</tbody></table>';
-                            $('#search-results').html(tableRows);
-                        } else {
-                            $('#search-results').html('<p>No se encontraron resultados para la referencia buscada.</p>');
+                            fetchAgotadas(); // Actualizar la tabla
+                        } else if (data.error) {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.error,
+                                icon: 'error',
+                                confirmButtonText: 'Cerrar'
+                            });
                         }
                     } catch (error) {
                         console.error('Error al procesar los datos:', error);
@@ -175,6 +186,7 @@
         });
     });
 </script>
+
 
 </body>
 

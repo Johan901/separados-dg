@@ -5,6 +5,31 @@ header('Content-Type: application/json; charset=UTF-8'); // Respuestas en format
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Verificar si es una recuperación de prendas
+        if (isset($_POST['recover_ref'])) {
+            $ref = trim($_POST['recover_ref']); // Limpiar el input
+            $cantidad = intval($_POST['recover_qty']); // Convertir a número entero
+
+            if (empty($ref) || $cantidad <= 0) {
+                echo json_encode(['error' => 'Referencia o cantidad inválida.']);
+                exit;
+            }
+
+            $query = "
+                UPDATE inventario
+                SET cantidad = :cantidad
+                WHERE ref = :ref
+            ";
+
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':cantidad', $cantidad, PDO::PARAM_INT);
+            $stmt->bindParam(':ref', $ref, PDO::PARAM_STR);
+            $stmt->execute();
+
+            echo json_encode(['success' => 'Prenda recuperada exitosamente.']);
+            exit;
+        }
+
         // Verificar si es una búsqueda por referencia
         if (isset($_POST['search_ref'])) {
             $ref = trim($_POST['search_ref']); // Limpiar el input

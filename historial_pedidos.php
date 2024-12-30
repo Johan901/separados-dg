@@ -179,103 +179,102 @@ if (isset($result) && count($result) > 0) {
             <th>Actualizaciones</th>
         </tr>";
 
-    foreach ($result as $row) {
-        // Formatear el total del pedido
-        $total_formateado = "$" . number_format($row['total_pedido'], 0, ',', '.');
-
-        // Alerta para el estado de pedidos
-        $cliente_cedula = $row['cliente_cedula']; // Obtén la cédula del cliente del $row
-
-        // Mostrar las observaciones
-        $observacion = isset($row['observacion']) ? $row['observacion'] : "No hay observaciones";
+        foreach ($result as $row) {
+            // Formatear el total del pedido
+            $total_formateado = "$" . number_format($row['total_pedido'], 0, ',', '.');
         
-        // Botón para agregar observación
-        $agregar_observacion_button = "<a href='agregar_observacion.php?id_pedido=" . $row['id_pedido'] . "'><button class='button'>Agregar Observación</button></a>";
-
-        // Consulta para contar los pedidos del cliente
-        $query_count = "SELECT COUNT(*) AS total_pedidos FROM pedidos WHERE cliente_cedula = :cliente_cedula";
-        $stmt = $conn->prepare($query_count);
-        $stmt->bindParam(':cliente_cedula', $cliente_cedula);
-        $stmt->execute();
-        $result_count = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Alerta según el número de pedidos
-        $alerta_nuevo_cliente = '';
-        $total_pedidos = (int)$result_count['total_pedidos']; // Asegúrate de convertirlo a entero
-
-        switch ($total_pedidos) {
-            case 0:
-                $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>No hay pedidos registrados para este cliente.</div>";
-                break;
-            case 1:
-                if ($row['estado'] == 'cerrado') {
-                    $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este es el primer pedido de este cliente, cree una nueva bolsa para sus productos. Estado: CERRADO.</div>";
-                } else {
-                    $alerta_nuevo_cliente = "<div style='color: blue; font-weight: bold;'>Este es el primer pedido de este cliente, cree una nueva bolsa para sus productos. Estado: ABIERTO.</div>";
-                }
-                break;
-            default:
-                // Verifica el estado del pedido y ajusta el mensaje
-                if ($row['estado'] == 'cerrado') {
-                    $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ya quedó CERRADO, favor crear uno nuevo si es necesario.</div>";
-                } else {
-                    $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>Este pedido está ABIERTO. Ya hay una bolsa asignada para este cliente.</div>";
-                }
-                break;
+            // Alerta para el estado de pedidos
+            $cliente_cedula = $row['cliente_cedula']; // Obtén la cédula del cliente del $row
+        
+            // Mostrar las observaciones
+            $observacion = isset($row['observacion']) ? $row['observacion'] : "No hay observaciones";
+            
+            // Botón para agregar observación
+            $agregar_observacion_button = "<a href='agregar_observacion.php?id_pedido=" . $row['id_pedido'] . "'><button class='button'>Agregar Observación</button></a>";
+        
+            // Consulta para contar los pedidos del cliente
+            $query_count = "SELECT COUNT(*) AS total_pedidos FROM pedidos WHERE cliente_cedula = :cliente_cedula";
+            $stmt = $conn->prepare($query_count);
+            $stmt->bindParam(':cliente_cedula', $cliente_cedula);
+            $stmt->execute();
+            $result_count = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            // Alerta según el número de pedidos
+            $alerta_nuevo_cliente = '';
+            $total_pedidos = (int)$result_count['total_pedidos']; // Asegúrate de convertirlo a entero
+        
+            switch ($total_pedidos) {
+                case 0:
+                    $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>No hay pedidos registrados para este cliente.</div>";
+                    break;
+                case 1:
+                    if ($row['estado'] == 'cerrado') {
+                        $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este es el primer pedido de este cliente, cree una nueva bolsa para sus productos. Estado: CERRADO.</div>";
+                    } else {
+                        $alerta_nuevo_cliente = "<div style='color: blue; font-weight: bold;'>Este es el primer pedido de este cliente, cree una nueva bolsa para sus productos. Estado: ABIERTO.</div>";
+                    }
+                    break;
+                default:
+                    // Verifica el estado del pedido y ajusta el mensaje
+                    if ($row['estado'] == 'cerrado') {
+                        $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ya quedó CERRADO, favor crear uno nuevo si es necesario.</div>";
+                    } else {
+                        $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>Este pedido está ABIERTO. Ya hay una bolsa asignada para este cliente.</div>";
+                    }
+                    break;
+            }
+        
+            // Consulta para verificar si todos los artículos están separados
+            $query_separado = "SELECT COUNT(*) AS total, 
+                                SUM(CASE WHEN CAST(actualizado AS INTEGER) = 0 THEN 1 ELSE 0 END) AS total_no_actualizado
+                                FROM detalle_pedido 
+                                WHERE id_pedido = :id_pedido";
+            
+            $stmt_separado = $conn->prepare($query_separado);
+            $stmt_separado->bindValue(':id_pedido', $row['id_pedido'], PDO::PARAM_INT);
+            $stmt_separado->execute();
+            $result_separado = $stmt_separado->fetch(PDO::FETCH_ASSOC);
+        
+            // Verificar si hay artículos pendientes por separar
+            $pendientes = $result_separado['total_no_actualizado'];  // Usar la clave correcta
+            $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha sido separado.";
+        
+            // Calcular la cuenta regresiva
+            $fecha_limite = new DateTime($row['fecha_limite'], new DateTimeZone('America/Bogota'));
+            $fecha_actual = new DateTime("now", new DateTimeZone('America/Bogota'));
+            $tiempo_restante = $fecha_actual->diff($fecha_limite);
+        
+            // Comprobar si ha expirado
+            $ha_expirado = $tiempo_restante->invert === 1;
+            $cuenta_regresiva = $ha_expirado ? "<span style='color: red;'><strong>El tiempo de este separado ha sido EXPIRADO.</strong></span>" : $tiempo_restante->format('%d días %h horas %i minutos %s segundos');
+        
+            // Establecer el estado color
+            $estado_color = $ha_expirado ? "style='color: red;'" : "";
+            
+            // Mostrar la fila de la tabla
+            echo "<tr data-id-pedido='{$row['id_pedido']}'>
+                    <td>{$row['id_pedido']}</td>
+                    <td>{$row['cliente_cedula']}</td>
+                    <td>{$row['nombre_cliente']}</td>
+                    <td>{$row['fecha_pedido']}</td>
+                    <td>{$row['fecha_limite']}</td>
+                    <td>{$total_formateado}</td>
+                    <td>{$row['asesor']}</td>
+                    <td>{$row['envio']}</td>
+                    <td>{$row['estado']} $alerta_nuevo_cliente</td>
+                    <td $estado_color>$cuenta_regresiva</td>
+                    <td class='action-buttons'>
+                        <a href='detalle_pedido.php?id={$row['id_pedido']}' class='button'>Ver Detalles</a>
+                        <a href='editar_pedido.php?id_pedido={$row['id_pedido']}' class='button'>Editar Separado</a>
+                        <div class='checkbox-container'>
+                            <input type='checkbox' class='pedido-checkbox' id='pedido_{$row['id_pedido']}'>
+                            <label for='pedido_{$row['id_pedido']}'>SEPARADO</label>
+                        </div>
+                    </td>
+                    <td>{$mensaje_separado}</td>
+                </tr>";
         }
-
-        // Consulta para verificar si todos los artículos están separados
-        // Consulta para verificar si todos los artículos están separados
-$query_separado = "SELECT COUNT(*) AS total, 
-                        SUM(CASE WHEN CAST(actualizado AS INTEGER) = 0 THEN 1 ELSE 0 END) AS total_no_actualizado
-                        FROM detalle_pedido 
-                        WHERE id_pedido = :id_pedido";
-
-$stmt_separado = $conn->prepare($query_separado);
-$stmt_separado->bindValue(':id_pedido', $row['id_pedido'], PDO::PARAM_INT);
-$stmt_separado->execute();
-$result_separado = $stmt_separado->fetch(PDO::FETCH_ASSOC);
-
-// Verificar si hay artículos pendientes por separar
-$pendientes = $result_separado['total_no_actualizado'];  // Usar la clave correcta
-$mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha sido separado.";
-
-
-        // Calcular la cuenta regresiva
-        $fecha_limite = new DateTime($row['fecha_limite'], new DateTimeZone('America/Bogota'));
-        $fecha_actual = new DateTime("now", new DateTimeZone('America/Bogota'));
-        $tiempo_restante = $fecha_actual->diff($fecha_limite);
-
-        // Comprobar si ha expirado
-        $ha_expirado = $tiempo_restante->invert === 1;
-        $cuenta_regresiva = $ha_expirado ? "<span style='color: red;'><strong>El tiempo de este separado ha sido EXPIRADO.</strong></span>" : $tiempo_restante->format('%d días %h horas %i minutos %s segundos');
-
-        // Establecer el estado color
-        $estado_color = $ha_expirado ? "style='color: red;'" : "";
-        echo "<tr data-id-pedido='{$row['id_pedido']}'>
-                <td>{$row['id_pedido']}</td>
-                <td>{$row['cliente_cedula']}</td>
-                <td>{$row['nombre_cliente']}</td>
-                <td>{$row['fecha_pedido']}</td>
-                <td>{$row['fecha_limite']}</td>
-                <td>{$total_formateado}</td>
-                <td>{$row['asesor']}</td>
-                <td>{$row['envio']}</td>
-                <td>{$row['estado']} $alerta_nuevo_cliente</td>
-                <td $estado_color>$cuenta_regresiva</td>
-                <td class='action-buttons'>
-                    <a href='detalle_pedido.php?id={$row['id_pedido']}' class='button'>Ver Detalles</a>
-                    <a href='editar_pedido.php?id_pedido={$row['id_pedido']}' class='button'>Editar Separado</a>
-                    <div class='checkbox-container'>
-                        <input type='checkbox' class='pedido-checkbox' id='pedido_{$row['id_pedido']}'>
-                        <label for='pedido_{$row['id_pedido']}'>SEPARADO</label>
-                    </div>
-                <td>' . $mensaje_separado . '</td>
-
-                
-                
-            </tr>";
-    }
+        
     echo "</table>";
 } else {
     $message = "No se encontraron resultados.";
@@ -290,22 +289,6 @@ echo "
         <button type='submit'>Agregar</button>
     </form>
 </div>";
-
-
-if ($row['estado'] === 'eliminado') {
-    echo "<span style='color: red;'>Eliminado</span>";
-} else {
-    // Calcular la cuenta regresiva si no está eliminado
-    $fecha_limite = new DateTime($row['fecha_limite']);
-    $fecha_actual = new DateTime();
-    $interval = $fecha_actual->diff($fecha_limite);
-    echo $interval->format('%d días, %h horas restantes');
-}
-
-echo "</td>
-        <td>-</td> <!-- Acciones deshabilitadas para pedidos eliminados -->
-        <td>{$mensaje_separado}</td>
-        </tr>";
 
 ?>
 

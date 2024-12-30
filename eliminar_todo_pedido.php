@@ -30,4 +30,18 @@ if ($stmt->rowCount() > 0) {
 } else {
     echo json_encode(['success' => false, 'message' => 'Error al eliminar el pedido']);
 }
+
+// Cambiar estado del pedido a 'eliminado'
+$query_update_pedido = "UPDATE pedidos SET estado = 'eliminado' WHERE id_pedido = ?";
+$stmt_update_pedido = $conn->prepare($query_update_pedido);
+$stmt_update_pedido->execute([$id_pedido]);
+
+// Responder al frontend
+if ($stmt->rowCount() > 0 && $stmt_update_pedido->rowCount() > 0) {
+    echo json_encode(['success' => true, 'message' => 'Pedido eliminado correctamente.']);
+} else {
+    echo json_encode(['success' => false, 'message' => 'Error al eliminar el pedido.']);
+}
+
+
 ?>

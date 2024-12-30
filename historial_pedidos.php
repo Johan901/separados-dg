@@ -271,6 +271,9 @@ $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha si
                         <label for='pedido_{$row['id_pedido']}'>SEPARADO</label>
                     </div>
                 <td>' . $mensaje_separado . '</td>
+
+                
+                
             </tr>";
     }
     echo "</table>";
@@ -287,6 +290,22 @@ echo "
         <button type='submit'>Agregar</button>
     </form>
 </div>";
+
+
+if ($row['estado'] === 'eliminado') {
+    echo "<span style='color: red;'>Eliminado</span>";
+} else {
+    // Calcular la cuenta regresiva si no está eliminado
+    $fecha_limite = new DateTime($row['fecha_limite']);
+    $fecha_actual = new DateTime();
+    $interval = $fecha_actual->diff($fecha_limite);
+    echo $interval->format('%d días, %h horas restantes');
+}
+
+echo "</td>
+        <td>-</td> <!-- Acciones deshabilitadas para pedidos eliminados -->
+        <td>{$mensaje_separado}</td>
+        </tr>";
 
 ?>
 

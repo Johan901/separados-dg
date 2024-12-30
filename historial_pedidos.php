@@ -210,6 +210,8 @@ if ($total_pedidos == 0) {
 } elseif ($total_pedidos == 1) {
     if ($estado == 'cerrado') {
         $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este es el primer pedido de este cliente, pero el estado es CERRADO. Crea una nueva bolsa si es necesario.</div>";
+    } elseif ($estado == 'eliminado') {
+        $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ha sido ELIMINADO. Favor desarmar los productos.</div>";
     } else {
         $alerta_nuevo_cliente = "<div style='color: blue; font-weight: bold;'>Este es el primer pedido de este cliente, está ABIERTO. Crea una nueva bolsa si es necesario.</div>";
     }

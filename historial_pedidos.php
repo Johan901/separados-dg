@@ -218,6 +218,8 @@ if (isset($result) && count($result) > 0) {
                 // Verifica el estado del pedido y ajusta el mensaje
                 if ($row['estado'] == 'cerrado') {
                     $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ya quedó CERRADO, favor crear uno nuevo si es necesario.</div>";
+                } elseif ($row['estado'] == 'eliminado') {
+                    $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>ESTE PEDIDO HA SIDO ELIMINADO EN SU TOTALIDAD FAVOR DESARMAR.</div>";
                 } else {
                     $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>Este pedido está ABIERTO. Ya hay una bolsa asignada para este cliente.</div>";
                 }
@@ -240,6 +242,8 @@ $result_separado = $stmt_separado->fetch(PDO::FETCH_ASSOC);
 $pendientes = $result_separado['total_no_actualizado'];  // Usar la clave correcta
 $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha sido separado.";
 
+        // Cambiar el estado del checklist a "DESARMADO" si el pedido está eliminado
+        $estado_checklist = ($row['estado'] == 'eliminado') ? 'DESARMADO' : 'SEPARADO';
 
         // Calcular la cuenta regresiva
         $fecha_limite = new DateTime($row['fecha_limite'], new DateTimeZone('America/Bogota'));

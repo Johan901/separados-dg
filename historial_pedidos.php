@@ -218,7 +218,7 @@ if (isset($result) && count($result) > 0) {
                 // Verifica el estado del pedido y ajusta el mensaje
                 if ($row['estado'] == 'cerrado') {
                     $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ya quedó CERRADO, favor crear uno nuevo si es necesario.</div>";
-                } elseif ($row['estado'] == 'eliminado') {
+                } elseif ($row['estado'] = 'eliminado') {
                     $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>ESTE PEDIDO HA SIDO ELIMINADO EN SU TOTALIDAD FAVOR DESARMAR.</div>";
                 } else {
                     $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>Este pedido está ABIERTO. Ya hay una bolsa asignada para este cliente.</div>";

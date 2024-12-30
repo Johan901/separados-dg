@@ -67,6 +67,7 @@
     <script src="js/main_user.js?v=1.1"></script>
 
     <h2>Historial de Pedidos</h2>
+
     <?php
 session_start();
 include('config.php');
@@ -217,8 +218,6 @@ if (isset($result) && count($result) > 0) {
                 // Verifica el estado del pedido y ajusta el mensaje
                 if ($row['estado'] == 'cerrado') {
                     $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ya quedó CERRADO, favor crear uno nuevo si es necesario.</div>";
-                } elseif ($row['estado'] == 'eliminado') {
-                    $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>ESTE PEDIDO HA SIDO ELIMINADO EN SU TOTALIDAD FAVOR DESARMAR.</div>";
                 } else {
                     $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>Este pedido está ABIERTO. Ya hay una bolsa asignada para este cliente.</div>";
                 }
@@ -226,28 +225,26 @@ if (isset($result) && count($result) > 0) {
         }
 
         // Consulta para verificar si todos los artículos están separados
-        $query_separado = "SELECT COUNT(*) AS total, 
+        // Consulta para verificar si todos los artículos están separados
+$query_separado = "SELECT COUNT(*) AS total, 
                         SUM(CASE WHEN CAST(actualizado AS INTEGER) = 0 THEN 1 ELSE 0 END) AS total_no_actualizado
                         FROM detalle_pedido 
                         WHERE id_pedido = :id_pedido";
 
-        $stmt_separado = $conn->prepare($query_separado);
-        $stmt_separado->bindValue(':id_pedido', $row['id_pedido'], PDO::PARAM_INT);
-        $stmt_separado->execute();
-        $result_separado = $stmt_separado->fetch(PDO::FETCH_ASSOC);
+$stmt_separado = $conn->prepare($query_separado);
+$stmt_separado->bindValue(':id_pedido', $row['id_pedido'], PDO::PARAM_INT);
+$stmt_separado->execute();
+$result_separado = $stmt_separado->fetch(PDO::FETCH_ASSOC);
 
-        // Verificar si hay artículos pendientes por separar
-        $pendientes = $result_separado['total_no_actualizado'];  // Usar la clave correcta
-        $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha sido separado.";
+// Verificar si hay artículos pendientes por separar
+$pendientes = $result_separado['total_no_actualizado'];  // Usar la clave correcta
+$mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha sido separado.";
 
-        // Cambiar el estado del checklist a "DESARMADO" si el pedido está eliminado
-        $estado_checklist = ($row['estado'] == 'eliminado') ? 'DESARMADO' : 'SEPARADO';
 
         // Calcular la cuenta regresiva
         $fecha_limite = new DateTime($row['fecha_limite'], new DateTimeZone('America/Bogota'));
         $fecha_actual = new DateTime("now", new DateTimeZone('America/Bogota'));
-        $intervalo = $fecha_actual->diff($fecha_limite);
-        $dias_restantes = $intervalo->format('%r%a');
+        $tiempo_restante = $fecha_actual->diff($fecha_limite);
 
         // Comprobar si ha expirado
         $ha_expirado = $tiempo_restante->invert === 1;

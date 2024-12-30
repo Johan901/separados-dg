@@ -150,7 +150,7 @@ try {
                     confirmButtonText: 'Aceptar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = 'historial_bodeguero.php';
+                        window.location.href = 'bodeguero_panel.php';
                     }
                 });
               </script>";

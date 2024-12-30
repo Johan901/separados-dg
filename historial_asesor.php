@@ -150,7 +150,7 @@ try {
                     confirmButtonText: 'Aceptar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = 'historial_pedidos.php';
+                        window.location.href = 'asesor_panel.php';
                     }
                 });
               </script>";

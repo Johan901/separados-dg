@@ -21,27 +21,19 @@ foreach ($detalles as $detalle) {
 }
 
 // Eliminar todos los detalles del pedido
-$query = "DELETE FROM detalle_pedido WHERE id_pedido = ?";
-$stmt = $conn->prepare($query);
-$stmt->execute([$id_pedido]);
-
-if ($stmt->rowCount() > 0) {
-    echo json_encode(['success' => true, 'message' => 'Pedido eliminado y stock ajustado']);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Error al eliminar el pedido']);
-}
+$query_delete = "DELETE FROM detalle_pedido WHERE id_pedido = ?";
+$stmt_delete = $conn->prepare($query_delete);
+$stmt_delete->execute([$id_pedido]);
 
 // Cambiar estado del pedido a 'eliminado'
 $query_update_pedido = "UPDATE pedidos SET estado = 'eliminado' WHERE id_pedido = ?";
 $stmt_update_pedido = $conn->prepare($query_update_pedido);
 $stmt_update_pedido->execute([$id_pedido]);
 
-// Responder al frontend
-if ($stmt->rowCount() > 0 && $stmt_update_pedido->rowCount() > 0) {
-    echo json_encode(['success' => true, 'message' => 'Pedido eliminado correctamente.']);
+// Verificar si el DELETE y el UPDATE fueron exitosos
+if ($stmt_delete->rowCount() > 0 && $stmt_update_pedido->rowCount() > 0) {
+    echo json_encode(['success' => true, 'message' => 'Pedido eliminado correctamente y stock ajustado']);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Error al eliminar el pedido.']);
+    echo json_encode(['success' => false, 'message' => 'Error al eliminar el pedido o ajustar el inventario']);
 }
-
-
 ?>

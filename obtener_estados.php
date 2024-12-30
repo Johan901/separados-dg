@@ -10,10 +10,11 @@ try {
     // Actualizar los estados de los pedidos
     $updateQuery = "
         UPDATE pedidos
-        SET estado = CASE
-            WHEN fecha_limite > CURRENT_TIMESTAMP THEN 'abierto'
-            ELSE 'cerrado'
-        END";
+    SET estado = CASE
+        WHEN fecha_limite > CURRENT_TIMESTAMP AND estado != 'eliminado' THEN 'abierto'
+        WHEN fecha_limite <= CURRENT_TIMESTAMP AND estado != 'eliminado' THEN 'cerrado'
+        ELSE estado
+    END";
 
     $stmt = $conn->prepare($updateQuery);
     $stmt->execute();

@@ -227,20 +227,19 @@ if (isset($result) && count($result) > 0) {
         }
 
         // Consulta para verificar si todos los artículos están separados
-        // Consulta para verificar si todos los artículos están separados
-$query_separado = "SELECT COUNT(*) AS total, 
+        $query_separado = "SELECT COUNT(*) AS total, 
                         SUM(CASE WHEN CAST(actualizado AS INTEGER) = 0 THEN 1 ELSE 0 END) AS total_no_actualizado
                         FROM detalle_pedido 
                         WHERE id_pedido = :id_pedido";
 
-$stmt_separado = $conn->prepare($query_separado);
-$stmt_separado->bindValue(':id_pedido', $row['id_pedido'], PDO::PARAM_INT);
-$stmt_separado->execute();
-$result_separado = $stmt_separado->fetch(PDO::FETCH_ASSOC);
+        $stmt_separado = $conn->prepare($query_separado);
+        $stmt_separado->bindValue(':id_pedido', $row['id_pedido'], PDO::PARAM_INT);
+        $stmt_separado->execute();
+        $result_separado = $stmt_separado->fetch(PDO::FETCH_ASSOC);
 
-// Verificar si hay artículos pendientes por separar
-$pendientes = $result_separado['total_no_actualizado'];  // Usar la clave correcta
-$mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha sido separado.";
+        // Verificar si hay artículos pendientes por separar
+        $pendientes = $result_separado['total_no_actualizado'];  // Usar la clave correcta
+        $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha sido separado.";
 
         // Cambiar el estado del checklist a "DESARMADO" si el pedido está eliminado
         $estado_checklist = ($row['estado'] == 'eliminado') ? 'DESARMADO' : 'SEPARADO';
@@ -274,6 +273,7 @@ $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha si
                         <input type='checkbox' class='pedido-checkbox' id='pedido_{$row['id_pedido']}'>
                         <label for='pedido_{$row['id_pedido']}'>SEPARADO</label>
                     </div>
+                </td>
                 <td>' . $mensaje_separado . '</td>
             </tr>";
     }
@@ -293,6 +293,7 @@ echo "
 </div>";
 
 ?>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>

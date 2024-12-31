@@ -28,7 +28,7 @@ function buscarCliente() {
                     cancelButtonText: 'Cancelar',
                 }).then(result => {
                     if (result.isConfirmed) {
-                        window.location.href = 'agregar_usuario.php';
+                        window.location.href = 'agregar_usuario_asesor.php';
                     }
                 });
             } else {

@@ -10,12 +10,12 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Asegurarse de recibir el id_pedido desde la URL
-if (isset($_GET['id_pedido'])) {
-    $id_pedido = $_GET['id_pedido'];
+// Asegúrate de que el id_pedido esté en la URL correctamente
+if (isset($_GET['id_pedido']) && is_numeric($_GET['id_pedido'])) {
+    $id_pedido = $_GET['id_pedido']; // Obtener el id_pedido de la URL
 } else {
-    // Redirigir si no se encuentra el id_pedido en la URL
-    header("Location: alguna_pagina.php");
+    // Si no se encuentra el id_pedido en la URL o no es un número válido, redirige a una página de error
+    echo "Error: El id del pedido no es válido o no está presente en la URL.";
     exit();
 }
 
@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 

@@ -10,21 +10,19 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Verifica si se ha enviado un pedido para agregar o actualizar la observación
+// Si se envía el formulario, procesa e inserta la observación en la base de datos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
     $observacion = $_POST['observacion']; // Observación
-    $pedido_id = $_POST['pedido_id']; // ID del pedido a actualizar
-
+    
     try {
-        // Consulta para actualizar la observación en el pedido específico
-        $query = "UPDATE pedidos SET observaciones = :observacion WHERE id = :pedido_id";
+        // Cambiar la tabla 'pedidos' por la tabla que contiene las observaciones (puede ser una tabla separada para observaciones)
+        $query = "INSERT INTO observaciones (observacion) VALUES (:observacion)"; // Asegúrate de que la tabla y la columna sean correctas
         
         $stmt = $conn->prepare($query);
         
-        // Vincular los parámetros
+        // Vincular el parámetro
         $stmt->bindParam(':observacion', $observacion);
-        $stmt->bindParam(':pedido_id', $pedido_id);
 
         // Ejecutar la consulta
         if ($stmt->execute()) {
@@ -43,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Observación</title>
+    <title>Agregar Observación</title>
     <link rel="stylesheet" href="css/styles_editar_user.css?v=5.1">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap">
@@ -70,17 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>
 
-    <h2>Actualizar Observación del Pedido</h2>
+    <h2>Agregar Observación</h2>
 
-    <!-- Formulario para actualizar la observación -->
     <form action="agregar_observacion.php" method="post" class="user-edit-form">
         <label for="observacion">Observación:</label>
         <textarea name="observacion" rows="4" required></textarea>
-        
-        <!-- Campo oculto para el ID del pedido -->
-        <input type="hidden" name="pedido_id" value="<?= $_GET['pedido_id'] ?>">
 
-        <input type="submit" value="Actualizar">
+        <input type="submit" value="Agregar">
     </form>
 
     <!-- Footer -->
@@ -89,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Manejar la respuesta después de que se haya enviado el formulario
     window.onload = function() {
         <?php if ($response == "success") : ?>
-            swal("Éxito!", "Observación actualizada con éxito.", "success").then(() => {
+            swal("Éxito!", "Observación agregada con éxito.", "success").then(() => {
                 window.location.href = 'admin_panel.php';
             });
         <?php elseif (strpos($response, "error") !== false) : ?>
@@ -98,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         <?php endif; ?>
     }
-    </script>
+</script>
 
     <script src="js/main_user.js?v=1.1"></script>
 </body>

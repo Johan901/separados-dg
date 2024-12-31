@@ -32,7 +32,7 @@
     <!-- Sección de filtros -->
 <div class="filtro-contenedor">
     <div class="filtro-formulario">
-        <form id="filter-form" action="historial_pedidos_asesor.php" method="GET">
+        <form id="filter-form" action="historial_asesor.php" method="GET">
             <h2>Filtros</h2>
             <div class="filters-container">
                 <label><input type="checkbox" name="estado[]" value="abierto"> Pedidos Abiertos</label>
@@ -41,21 +41,21 @@
                 <label><input type="checkbox" name="sin_separar" value="sin_separar"> Pedidos sin separar</label>
             </div>
             <button type="submit" class="button">Aplicar</button>
-            <button type="reset" class="button" onclick="window.location.href='historial_pedidos_asesor.php';">Limpiar</button>
+            <button type="reset" class="button" onclick="window.location.href='historial_asesor.php';">Limpiar</button>
         </form>
     </div>
 
     <!-- Sección de búsquedas -->
     <div class="search-container">
         <!-- Buscar por número de ID pedido -->
-        <form action="historial_pedidos_asesor.php" method="GET" class="search-form">
+        <form action="historial_asesor.php" method="GET" class="search-form">
             <label for="id_pedido">Buscar por número de ID pedido:</label>
             <input type="text" name="id_pedido" required>
             <input class="button" type="submit" value="Buscar pedido">
         </form>
 
         <!-- Buscar por Cédula Cliente -->
-        <form action="historial_pedidos_asesor.php" method="GET" class="search-form">
+        <form action="historial_asesor.php" method="GET" class="search-form">
             <label for="cliente_cedula">Buscar pedidos por Cédula Cliente:</label>
             <input type="text" name="cliente_cedula" required>
             <input class="button" type="submit" value="Buscar pedidos de clientes">

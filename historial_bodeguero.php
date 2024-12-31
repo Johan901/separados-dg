@@ -32,7 +32,7 @@
     <!-- Sección de filtros -->
 <div class="filtro-contenedor">
     <div class="filtro-formulario">
-        <form id="filter-form" action="historial_pedidos.php" method="GET">
+        <form id="filter-form" action="historial_bodeguero.php" method="GET">
             <h2>Filtros</h2>
             <div class="filters-container">
                 <label><input type="checkbox" name="estado[]" value="abierto"> Pedidos Abiertos</label>

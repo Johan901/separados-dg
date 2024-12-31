@@ -262,7 +262,7 @@ $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha si
                 <td $estado_color>$cuenta_regresiva</td>
                 <td class='action-buttons'>
                     <a href='detalle_pedido_asesor.php?id={$row['id_pedido']}' class='button'>Ver Detalles</a>
-                    <a href='editar_pedido.php?id_pedido={$row['id_pedido']}' class='button'>Editar Separado</a>
+                    <a href='agregar_observacion.php?id_pedido={$row['id_pedido']}' class='button'>Editar Separado</a>
             </tr>";
     }
     echo "</table>";

@@ -92,7 +92,7 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
 
     <h2>Editar Pedido</h2>
 
-    <form action="editar_pedido.php?id_pedido=<?php echo $id_pedido; ?>" method="post" class="pedido-edit-form">
+    <form action="editar_pedido_bodeguero.php?id_pedido=<?php echo $id_pedido; ?>" method="post" class="pedido-edit-form">
         <label for="envio" class="form-label">Envío:</label>
         <input type="text" name="envio" value="<?php echo htmlspecialchars($pedido['envio']); ?>" required class="form-input button">
 
@@ -304,7 +304,7 @@ function actualizarTotalPedido() {
                     .then(data => {
                         if (data.success) {
                             Swal.fire('Eliminado!', data.message, 'success').then(() => {
-                                window.location.href = "bodeguero_panel.php"; // Redirigir a admin_panel.php después de eliminar
+                                window.location.href = "bodeguero_panel.php";
                             });
                         } else {
                             Swal.fire('Error!', data.message, 'error');

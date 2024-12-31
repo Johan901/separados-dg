@@ -10,25 +10,41 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Si se envía el formulario, procesa e inserta la observación en la base de datos
+// Verifica si se pasó un ID de pedido
+if (isset($_GET['pedido_id'])) {
+    $pedido_id = $_GET['pedido_id']; // Obtener el ID del pedido
+} else {
+    $response = "error: No se proporcionó un ID de pedido.";
+    exit();
+}
+
+// Si se envía el formulario, procesa e inserta o actualiza la observación en la base de datos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
     $observacion = $_POST['observacion']; // Observación
     
     try {
-        // Aquí se cambia la tabla 'observaciones' por 'pedidos' y la columna por 'observaciones'
-        $query = "INSERT INTO pedidos (observaciones) VALUES (:observacion)";
+        // Verificar si ya existe una observación para este pedido
+        $checkQuery = "SELECT * FROM pedidos WHERE pedido_id = :pedido_id";
+        $stmt = $conn->prepare($checkQuery);
+        $stmt->bindParam(':pedido_id', $pedido_id);
+        $stmt->execute();
         
-        $stmt = $conn->prepare($query);
-        
-        // Vincular el parámetro
-        $stmt->bindParam(':observacion', $observacion);
-
-        // Ejecutar la consulta
-        if ($stmt->execute()) {
-            $response = "success";
+        if ($stmt->rowCount() > 0) {
+            // Si existe, actualizamos la observación
+            $updateQuery = "UPDATE pedidos SET observaciones = :observacion WHERE pedido_id = :pedido_id";
+            $stmt = $conn->prepare($updateQuery);
+            $stmt->bindParam(':observacion', $observacion);
+            $stmt->bindParam(':pedido_id', $pedido_id);
+            
+            // Ejecutar la consulta
+            if ($stmt->execute()) {
+                $response = "success";
+            } else {
+                $response = "error";
+            }
         } else {
-            $response = "error";
+            $response = "error: El pedido no existe.";
         }
     } catch (PDOException $e) {
         $response = "error: " . addslashes($e->getMessage());
@@ -70,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <h2>Agregar Observación</h2>
 
-    <form action="agregar_observacion.php" method="post" class="user-edit-form">
+    <form action="agregar_observacion.php?pedido_id=<?= $pedido_id ?>" method="post" class="user-edit-form">
         <label for="observacion">Observación:</label>
         <textarea name="observacion" rows="4" required></textarea>
 

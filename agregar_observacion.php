@@ -16,8 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $observacion = $_POST['observacion']; // Observación
     
     try {
-        // Cambiar la tabla 'pedidos' por la tabla que contiene las observaciones (puede ser una tabla separada para observaciones)
-        $query = "INSERT INTO observaciones (observacion) VALUES (:observacion)"; // Asegúrate de que la tabla y la columna sean correctas
+        // Aquí se cambia la tabla 'observaciones' por 'pedidos' y la columna por 'observaciones'
+        $query = "INSERT INTO pedidos (observaciones) VALUES (:observacion)";
         
         $stmt = $conn->prepare($query);
         

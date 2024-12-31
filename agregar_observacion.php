@@ -73,11 +73,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2>Agregar Observación</h2>
 
     <form action="agregar_observacion.php" method="post" class="user-edit-form">
-        <label for="observacion">Observación:</label>
-        <textarea name="observacion" rows="4" required></textarea>
-
-        <input type="submit" value="Agregar">
-    </form>
+    <input type="hidden" name="id_pedido" value="<?= $id_pedido ?>">
+    <label for="observacion">Observación:</label>
+    <textarea name="observacion" rows="4" required></textarea>
+    <input type="submit" value="Agregar">
+</form>
 
     <!-- Footer -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>

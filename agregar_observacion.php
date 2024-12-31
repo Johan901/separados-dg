@@ -10,20 +10,14 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Recupera el ID del pedido desde la URL (por ejemplo, "agregar_observacion.php?id=123")
-if (isset($_GET['id'])) {
-    $pedido_id = $_GET['id'];
-} else {
-    $response = "error: ID de pedido no encontrado";
-}
-
-// Si se envía el formulario, procesa y actualiza la observación en la base de datos
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($pedido_id)) {
+// Verifica si se ha enviado un pedido para agregar o actualizar la observación
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
     $observacion = $_POST['observacion']; // Observación
-    
+    $pedido_id = $_POST['pedido_id']; // ID del pedido a actualizar
+
     try {
-        // Aquí se actualiza solo la observación del pedido con el ID correspondiente
+        // Consulta para actualizar la observación en el pedido específico
         $query = "UPDATE pedidos SET observaciones = :observacion WHERE id = :pedido_id";
         
         $stmt = $conn->prepare($query);
@@ -36,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($pedido_id)) {
         if ($stmt->execute()) {
             $response = "success";
         } else {
-            $response = "error: No se pudo actualizar la observación";
+            $response = "error";
         }
     } catch (PDOException $e) {
         $response = "error: " . addslashes($e->getMessage());
@@ -76,11 +70,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($pedido_id)) {
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>
 
-    <h2>Actualizar Observación</h2>
+    <h2>Actualizar Observación del Pedido</h2>
 
-    <form action="agregar_observacion.php?id=<?= $pedido_id ?>" method="post" class="user-edit-form">
+    <!-- Formulario para actualizar la observación -->
+    <form action="agregar_observacion.php" method="post" class="user-edit-form">
         <label for="observacion">Observación:</label>
         <textarea name="observacion" rows="4" required></textarea>
+        
+        <!-- Campo oculto para el ID del pedido -->
+        <input type="hidden" name="pedido_id" value="<?= $_GET['pedido_id'] ?>">
 
         <input type="submit" value="Actualizar">
     </form>
@@ -100,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($pedido_id)) {
             });
         <?php endif; ?>
     }
-</script>
+    </script>
 
     <script src="js/main_user.js?v=1.1"></script>
 </body>

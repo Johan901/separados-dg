@@ -10,25 +10,33 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Si se envía el formulario, procesa e inserta la observación en la base de datos
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Recupera el ID del pedido desde la URL (por ejemplo, "agregar_observacion.php?id=123")
+if (isset($_GET['id'])) {
+    $pedido_id = $_GET['id'];
+} else {
+    $response = "error: ID de pedido no encontrado";
+}
+
+// Si se envía el formulario, procesa y actualiza la observación en la base de datos
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($pedido_id)) {
     // Recoger los datos del formulario
     $observacion = $_POST['observacion']; // Observación
     
     try {
-        // Aquí se cambia la tabla 'observaciones' por 'pedidos' y la columna por 'observaciones'
-        $query = "INSERT INTO pedidos (observaciones) VALUES (:observacion)";
+        // Aquí se actualiza solo la observación del pedido con el ID correspondiente
+        $query = "UPDATE pedidos SET observaciones = :observacion WHERE id = :pedido_id";
         
         $stmt = $conn->prepare($query);
         
-        // Vincular el parámetro
+        // Vincular los parámetros
         $stmt->bindParam(':observacion', $observacion);
+        $stmt->bindParam(':pedido_id', $pedido_id);
 
         // Ejecutar la consulta
         if ($stmt->execute()) {
             $response = "success";
         } else {
-            $response = "error";
+            $response = "error: No se pudo actualizar la observación";
         }
     } catch (PDOException $e) {
         $response = "error: " . addslashes($e->getMessage());
@@ -41,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Observación</title>
+    <title>Actualizar Observación</title>
     <link rel="stylesheet" href="css/styles_editar_user.css?v=5.1">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap">
@@ -64,17 +72,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <a href="historial_pedidos.php">Historial de pedidos</a>
             </div>
         </div>
-        <a href="asesor_panel.php" class="logo">Dulce Guadalupe</a>
+        <a href="admin_panel.php" class="logo">Dulce Guadalupe</a>
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>
 
-    <h2>Agregar Observación</h2>
+    <h2>Actualizar Observación</h2>
 
-    <form action="agregar_observacion.php" method="post" class="user-edit-form">
+    <form action="agregar_observacion.php?id=<?= $pedido_id ?>" method="post" class="user-edit-form">
         <label for="observacion">Observación:</label>
         <textarea name="observacion" rows="4" required></textarea>
 
-        <input type="submit" value="Agregar">
+        <input type="submit" value="Actualizar">
     </form>
 
     <!-- Footer -->
@@ -83,12 +91,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Manejar la respuesta después de que se haya enviado el formulario
     window.onload = function() {
         <?php if ($response == "success") : ?>
-            swal("Éxito!", "Observación agregada con éxito.", "success").then(() => {
-                window.location.href = 'asesor_panel.php';
+            swal("Éxito!", "Observación actualizada con éxito.", "success").then(() => {
+                window.location.href = 'admin_panel.php';
             });
         <?php elseif (strpos($response, "error") !== false) : ?>
             swal("Error!", "<?= $response ?>", "error").then(() => {
-                window.location.href = 'asesor_panel.php';
+                window.location.href = 'admin_panel.php';
             });
         <?php endif; ?>
     }

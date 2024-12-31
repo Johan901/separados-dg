@@ -55,15 +55,14 @@ if (!$pedido) {
 }
 
 // Definir observaciones y botón de agregar observación
-// Si no hay observaciones, deja el valor vacío
 $observaciones = isset($pedido['observaciones']) && trim($pedido['observaciones']) !== "No hay observaciones" 
     ? $pedido['observaciones'] 
     : "";
 
-
 // Asegúrate de que las fechas están en el formato correcto (incluyendo hora)
 $fecha_pedido = isset($pedido['fecha_pedido']) ? date('Y-m-d\TH:i', strtotime($pedido['fecha_pedido'])) : '';
 $fecha_limite = isset($pedido['fecha_limite']) ? date('Y-m-d\TH:i', strtotime($pedido['fecha_limite'])) : '';
+
 // Obtener los detalles del pedido
 $query_detalle = "SELECT * FROM detalle_pedido WHERE id_pedido=?";
 $stmt_detalle = $conn->prepare($query_detalle);
@@ -77,34 +76,23 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Pedido - Dulce Guadalupe</title>
-    <link rel="stylesheet" href="css/styles_pedidos.css?v=2.0">
+    <link rel="stylesheet" href="css/styles_pedidos.css?v=2.1">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <div class="hamburger-menu">
-            <i class="fas fa-bars"></i>
-            <div class="dropdown-menu">
-                <a href="bodeguero_panel.php">Inicio</a>
-                <a href="agregar_inventario_bodeguero.php">Agregar Inventario</a>
-                <a href="inventario_bodeguero.php">Inventario de productos</a>
-                <a href="historial_bodeguero.php">Historial de pedidos</a>
-            </div>
-        </div>
         <a href="bodeguero_panel.php" class="logo">Dulce Guadalupe</a>
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>
 
     <h2>Editar Pedido</h2>
 
-    <form action="editar_pedido_bodeguero.php?id_pedido=<?php echo $id_pedido; ?>" method="post" class="pedido-edit-form">
+    <form action="editar_pedido.php?id_pedido=<?php echo $id_pedido; ?>" method="post" class="pedido-edit-form">
         <label for="envio" class="form-label">Envío:</label>
         <input type="text" name="envio" value="<?php echo htmlspecialchars($pedido['envio']); ?>" required class="form-input button">
 
@@ -114,10 +102,9 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
         <label for="fecha_limite" class="form-label">Fecha Límite:</label>
         <input type="datetime-local" name="fecha_limite" value="<?php echo $fecha_limite; ?>" required class="form-input button">
 
-            <!-- Observación general -->
-            <label for="observacion" class="form-label">Ingrese una observación:</label>
-            <textarea name="observaciones" class="form-input button" rows="4" placeholder="Ingrese una observación" required><?php echo htmlspecialchars($observaciones); ?></textarea>
-
+         <!-- Observación general -->
+        <label for="observacion" class="form-label">Ingrese una observación:</label>
+        <textarea name="observaciones" class="form-input button" rows="4" placeholder="Ingrese una observación" required><?php echo htmlspecialchars($observaciones); ?></textarea>
 
         <!-- Botón centrado al final del formulario -->
         <div style="text-align: center; margin-top: 20px;">
@@ -171,30 +158,13 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
                 confirmButtonText: 'Aceptar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "bodeguero_panel.php"; // Redirigir a admin_panel.php después de aceptar
+                    window.location.href = "admin_panel.php"; // Redirigir a admin_panel.php después de aceptar
                 }
             });
         </script>
     <?php endif; ?>
 
-<script src="js/main_user.js?v=1.1"></script>
-<script>
-
-// Validacion
-document.querySelector('.pedido-edit-form').addEventListener('submit', function (event) {
-    const observacion = document.querySelector('[name="observaciones"]').value.trim();
-    console.log(observacion); // Verifica el valor del campo
-    if (observacion === "") {
-        event.preventDefault(); // Previene el envío del formulario
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Debe ingresar una nueva observación para actualizar el pedido.'
-        });
-    }
-});
-
-
+    <script>
 
         // Función para cargar el estado del checklist al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
@@ -300,11 +270,11 @@ function actualizarTotalPedido() {
     let total = 0;
     document.querySelectorAll('[id^="subtotal_"]').forEach(subtotalCell => {
         const subtotalValue = parseFloat(subtotalCell.textContent.replace(/\./g, '').replace(',', '.'));
-        console.log(Subtotal: ${subtotalValue}); // Debugging
+        console.log(`Subtotal: ${subtotalValue}`); // Debugging
         total += subtotalValue;
     });
 
-    console.log(Total antes de formatear: ${total}); // Debugging
+    console.log(`Total antes de formatear: ${total}`); // Debugging
     document.getElementById('total_pedido').textContent = new Intl.NumberFormat("es-CO", {
         style: "currency",
         currency: "COP",
@@ -345,29 +315,4 @@ function actualizarTotalPedido() {
         }
     </script>
 </body>
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-section about">
-            <h2 class="footer-title">Sobre Nosotros</h2>
-            <p>Somos una empresa comprometida en brindar el mejor servicio a nuestros clientes. Contáctanos para más información.</p>
-        </div>
-        <div class="footer-section links">
-            <h2 class="footer-title">Enlaces Rápidos</h2>
-            <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Servicios</a></li>
-                <li><a href="#">Sobre Nosotros</a></li>
-                <li><a href="#">Contacto</a></li>
-            </ul>
-        </div>
-        <div class="footer-section contact-form">
-            <h2 class="footer-title">Contáctanos</h2>
-            <p>Email: info@dulceguadalupe.com</p>
-            <p>Teléfono: +57 3153925613</p>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        &copy; 2024 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de separodos e Inventario.
-    </div>
-</footer>
 </html>

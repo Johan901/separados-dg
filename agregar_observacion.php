@@ -10,44 +10,31 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Asegúrate de que el id_pedido esté en la URL correctamente
-if (isset($_GET['id_pedido']) && is_numeric($_GET['id_pedido'])) {
-    $id_pedido = $_GET['id_pedido']; // Obtener el id_pedido de la URL
-} else {
-    // Si no se encuentra el id_pedido en la URL o no es un número válido, redirige a una página de error
-    echo "Error: El id del pedido no es válido o no está presente en la URL.";
-    exit();
-}
-
 // Si se envía el formulario, procesa e inserta la observación en la base de datos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
     $observacion = $_POST['observacion']; // Observación
-    $id_pedido = $_POST['id_pedido']; // ID del pedido (recibido por POST)
     
     try {
-        // Actualizar la observación en la tabla pedidos
-        $query = "UPDATE pedidos SET observaciones = :observacion WHERE id_pedido = :id_pedido";
+        // Aquí se cambia la tabla 'observaciones' por 'pedidos' y la columna por 'observaciones'
+        $query = "INSERT INTO pedidos (observaciones) VALUES (:observacion)";
+        
         $stmt = $conn->prepare($query);
         
-        // Vincular los parámetros
+        // Vincular el parámetro
         $stmt->bindParam(':observacion', $observacion);
-        $stmt->bindParam(':id_pedido', $id_pedido);
 
         // Ejecutar la consulta
         if ($stmt->execute()) {
             $response = "success";
         } else {
-            $response = "error: No se pudo ejecutar la consulta";
+            $response = "error";
         }
     } catch (PDOException $e) {
         $response = "error: " . addslashes($e->getMessage());
     }
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -84,9 +71,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2>Agregar Observación</h2>
 
     <form action="agregar_observacion.php" method="post" class="user-edit-form">
-        <input type="hidden" name="id_pedido" value="<?= $id_pedido ?>"> <!-- Este valor debe estar asignado correctamente -->
         <label for="observacion">Observación:</label>
         <textarea name="observacion" rows="4" required></textarea>
+
         <input type="submit" value="Agregar">
     </form>
 
@@ -97,15 +84,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     window.onload = function() {
         <?php if ($response == "success") : ?>
             swal("Éxito!", "Observación agregada con éxito.", "success").then(() => {
-                window.location.href = 'asesor_panel.php'; // Redirige a la página del panel del asesor
+                window.location.href = 'admin_panel.php';
             });
         <?php elseif (strpos($response, "error") !== false) : ?>
             swal("Error!", "<?= $response ?>", "error").then(() => {
-                window.location.href = 'asesor_panel.php'; // Redirige a la página del panel del asesor
+                window.location.href = 'admin_panel.php';
             });
         <?php endif; ?>
     }
-    </script>
+</script>
 
     <script src="js/main_user.js?v=1.1"></script>
 </body>

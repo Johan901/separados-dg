@@ -39,7 +39,7 @@ $stmt_total->execute([$id_detalle]);
 $total = $stmt_total->fetchColumn();
 
 // Actualizar el total en la tabla pedidos
-$query_update_total = "UPDATE pedidos SET total = ? WHERE id_pedido = (SELECT id_pedido FROM detalle_pedido WHERE id_detalle = ?)";
+$query_update_total = "UPDATE pedidos SET total_pedido = ? WHERE id_pedido = (SELECT id_pedido FROM detalle_pedido WHERE id_detalle = ?)";
 $stmt_update_total = $conn->prepare($query_update_total);
 $stmt_update_total->execute([$total, $id_detalle]);
 

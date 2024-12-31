@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <a href="historial_pedidos.php">Historial de pedidos</a>
             </div>
         </div>
-        <a href="admin_panel.php" class="logo">Dulce Guadalupe</a>
+        <a href="asesor_panel.php" class="logo">Dulce Guadalupe</a>
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>
 
@@ -84,11 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     window.onload = function() {
         <?php if ($response == "success") : ?>
             swal("Éxito!", "Observación agregada con éxito.", "success").then(() => {
-                window.location.href = 'admin_panel.php';
+                window.location.href = 'asesor_panel.php';
             });
         <?php elseif (strpos($response, "error") !== false) : ?>
             swal("Error!", "<?= $response ?>", "error").then(() => {
-                window.location.href = 'admin_panel.php';
+                window.location.href = 'asesor_panel.php';
             });
         <?php endif; ?>
     }

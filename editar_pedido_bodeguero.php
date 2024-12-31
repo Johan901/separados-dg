@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
 if (isset($_GET['id_pedido'])) {
     $id_pedido = $_GET['id_pedido'];
 } else {
-    header("Location: admin_panel.php?msg=ID de pedido no proporcionado");
+    header("Location: bodeguro_panel.php?msg=ID de pedido no proporcionado");
     exit();
 }
 
@@ -50,7 +50,7 @@ $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Verificar si el pedido fue encontrado
 if (!$pedido) {
-    header("Location: admin_panel.php?msg=Pedido no encontrado");
+    header("Location: bodeguero_panel.php?msg=Pedido no encontrado");
     exit();
 }
 
@@ -158,7 +158,7 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
                 confirmButtonText: 'Aceptar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "admin_panel.php"; // Redirigir a admin_panel.php después de aceptar
+                    window.location.href = "bodeguero_panel.php"; // Redirigir a admin_panel.php después de aceptar
                 }
             });
         </script>
@@ -304,7 +304,7 @@ function actualizarTotalPedido() {
                     .then(data => {
                         if (data.success) {
                             Swal.fire('Eliminado!', data.message, 'success').then(() => {
-                                window.location.href = "admin_panel.php"; // Redirigir a admin_panel.php después de eliminar
+                                window.location.href = "bodeguero_panel.php"; // Redirigir a admin_panel.php después de eliminar
                             });
                         } else {
                             Swal.fire('Error!', data.message, 'error');

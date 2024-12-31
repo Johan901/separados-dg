@@ -14,15 +14,16 @@ if (!isset($_SESSION['user_id'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
     $observacion = $_POST['observacion']; // Observación
+    $id_pedido = $_POST['id_pedido']; // ID del pedido
     
     try {
-        // Insertar la observación
-        $query = "INSERT INTO observaciones (Observacion) VALUES (:observacion)";
-        
+        // Actualizar la observación en la tabla pedidos
+        $query = "UPDATE pedidos SET observaciones = :observacion WHERE id_pedido = :id_pedido";
         $stmt = $conn->prepare($query);
         
-        // Vincular el parámetro
+        // Vincular los parámetros
         $stmt->bindParam(':observacion', $observacion);
+        $stmt->bindParam(':id_pedido', $id_pedido);
 
         // Ejecutar la consulta
         if ($stmt->execute()) {
@@ -35,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -84,11 +86,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     window.onload = function() {
         <?php if ($response == "success") : ?>
             swal("Éxito!", "Observación agregada con éxito.", "success").then(() => {
-                window.location.href = 'admin_panel.php';
+                window.location.href = 'asesor_panel.php';
             });
         <?php elseif (strpos($response, "error") !== false) : ?>
             swal("Error!", "<?= $response ?>", "error").then(() => {
-                window.location.href = 'admin_panel.php';
+                window.location.href = 'asesor_panel.php';
             });
         <?php endif; ?>
     }

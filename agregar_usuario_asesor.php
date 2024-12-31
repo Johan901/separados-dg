@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <h2>Agregar Clientes</h2>
 
-    <form action="agregar_usuario.php" method="post" class="user-edit-form">
+    <form action="agregar_usuario_asesor.php" method="post" class="user-edit-form">
         <label for="cedula">Cédula:</label>
         <input type="text" name="cedula" required>
         

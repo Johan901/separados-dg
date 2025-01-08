@@ -292,7 +292,7 @@ $(document).ready(function () {
         </div>
     </div>
     <div class="footer-bottom">
-        &copy; 2024 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de Inventarios.
+        &copy; 2025 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de Inventarios.
     </div>
 </footer>
 </html>

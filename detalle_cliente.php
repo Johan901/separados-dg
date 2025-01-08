@@ -151,7 +151,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
     <div class="footer-bottom">
-         &copy; 2024 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de separodos e Inventario.
+         &copy; 2025 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de separodos e Inventario.
     </div>
 </footer>
 

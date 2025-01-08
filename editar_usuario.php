@@ -155,7 +155,7 @@ $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
         </div>
         <div class="footer-bottom">
-            &copy; 2024 Dulce Guadalupe | Todos los derechos reservados
+            &copy; 2025 Dulce Guadalupe | Todos los derechos reservados
         </div>
     </footer>
 

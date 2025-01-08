@@ -121,9 +121,9 @@ if (!isset($_SESSION['user_id'])) {
             </tbody>
         </table>
 
-        <label for="asesor">Asesor:</label>
+        <label for="asesor">Línea:</label>
         <select id="asesor" name="asesor">
-            <option>Seleccione un asesor</option>
+            <option>Seleccione una Línea</option>
             <option value="3153925613">3153925613</option>
             <option value="3183925613">3183925613</option>
             <option value="3103925613">3103925613</option>

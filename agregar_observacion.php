@@ -4,27 +4,26 @@ include 'config.php'; // Incluir la conexión
 $response = ""; // Variable para manejar la respuesta
 
 // Verifica si el usuario ha iniciado sesión
-session_start(); // Asegúrate de iniciar la sesión
+session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.html');
     exit();
 }
 
-// Si se envía el formulario, procesa e inserta la observación en la base de datos
+// Verificar el método de solicitud
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recoger los datos del formulario
-    $observacion = $_POST['observacion']; // Observación
-    
-    try {
-        // Aquí se cambia la tabla 'observaciones' por 'pedidos' y la columna por 'observaciones'
-        $query = "INSERT INTO pedidos (observaciones) VALUES (:observacion)";
-        
-        $stmt = $conn->prepare($query);
-        
-        // Vincular el parámetro
-        $stmt->bindParam(':observacion', $observacion);
+    $id_pedido = $_POST['id_pedido']; // ID del pedido
+    $observacion = $_POST['observacion']; // Nueva observación
 
-        // Ejecutar la consulta
+    try {
+        // Actualizar el pedido existente con la nueva observación
+        $query = "UPDATE pedidos SET observaciones = :observacion WHERE id_pedido = :id_pedido";
+        $stmt = $conn->prepare($query);
+
+        // Vincular parámetros
+        $stmt->bindParam(':observacion', $observacion);
+        $stmt->bindParam(':id_pedido', $id_pedido);
+
         if ($stmt->execute()) {
             $response = "success";
         } else {
@@ -33,8 +32,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (PDOException $e) {
         $response = "error: " . addslashes($e->getMessage());
     }
+} elseif ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_pedido'])) {
+    $id_pedido = $_GET['id_pedido'];
+
+    try {
+        // Obtener la observación existente para precargar el formulario
+        $query = "SELECT observaciones FROM pedidos WHERE id_pedido = :id_pedido";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':id_pedido', $id_pedido);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $observacion_existente = $result['observaciones'] ?? '';
+    } catch (PDOException $e) {
+        $observacion_existente = "Error al cargar la observación.";
+    }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -68,14 +83,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>
 
-    <h2>Agregar Observación</h2>
+    <h2>Agregar o Editar Observación</h2>
 
-    <form action="agregar_observacion.php" method="post" class="user-edit-form">
-        <label for="observacion">Observación:</label>
-        <textarea name="observacion" rows="4" required></textarea>
+<form action="agregar_observacion.php" method="post" class="user-edit-form">
+    <input type="hidden" name="id_pedido" value="<?= htmlspecialchars($_GET['id_pedido'] ?? '') ?>">
+    <label for="observacion">Observación:</label>
+    <textarea name="observacion" rows="4" required><?= htmlspecialchars($observacion_existente ?? '') ?></textarea>
 
-        <input type="submit" value="Agregar">
-    </form>
+    <input type="submit" value="Guardar">
+</form>
 
     <!-- Footer -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>

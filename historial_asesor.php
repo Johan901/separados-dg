@@ -289,6 +289,7 @@ echo "
 
 // Función para mostrar el formulario de observación y asignar el ID del pedido
 function agregarObservacion(id_pedido) {
+    window.location.href = `agregar_observacion.php?id_pedido=${id_pedido}`;
     // Mostrar el formulario
     document.getElementById('form-observacion').style.display = 'block';
     document.getElementById('pedido-id').value = id_pedido;

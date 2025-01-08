@@ -262,7 +262,7 @@ if ($total_pedidos == 0) {
                 <td>{$row['fecha_pedido']}</td>
                 <td>{$row['fecha_limite']}</td>
                 <td>{$total_formateado}</td>
-                <td>{$row['linea']}</td>
+                <td>{$row['asesor']}</td>
                 <td>{$row['envio']}</td>
                 <td>{$row['estado']} $alerta_nuevo_cliente</td>
                 <td $estado_color>$cuenta_regresiva</td>

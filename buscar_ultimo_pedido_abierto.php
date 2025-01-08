@@ -1,23 +1,36 @@
 <?php
-// Aquí se realiza la conexión a la base de datos
-include('config.php');  // Asegúrate de tener tu conexión a la base de datos
+// Incluimos la conexión PDO
+include('config.php');  // Asegúrate de que tienes el archivo de conexión configurado correctamente
 
 $cedula = $_GET['cedula'];
 
-// Consulta para obtener el último pedido abierto
-$query = "SELECT asesor, medio_conocimiento, envio FROM pedidos WHERE cedula_cliente = '$cedula' AND estado = 'abierto' ORDER BY fecha_pedido DESC LIMIT 1";
-$result = mysqli_query($conexion, $query);
+try {
+    // Consulta para obtener el último pedido abierto
+    $query = "SELECT asesor, medio_conocimiento, envio 
+              FROM pedidos 
+              WHERE cedula_cliente = :cedula AND estado = 'abierto' 
+              ORDER BY fecha_pedido DESC LIMIT 1";
 
-if ($result) {
-    $pedido = mysqli_fetch_assoc($result);
+    // Preparar la consulta
+    $stmt = $conexion->prepare($query);
+
+    // Enlazar los parámetros
+    $stmt->bindParam(':cedula', $cedula, PDO::PARAM_STR);
+
+    // Ejecutar la consulta
+    $stmt->execute();
+
+    // Obtener el resultado
+    $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
+
     if ($pedido) {
-        echo json_encode($pedido);  // Retorna los datos del último pedido abierto
+        // Retornar los datos del último pedido abierto en formato JSON
+        echo json_encode($pedido);
     } else {
         echo json_encode(['error' => 'No se encontraron pedidos abiertos para este cliente']);
     }
-} else {
-    echo json_encode(['error' => 'Error al realizar la consulta']);
+} catch (PDOException $e) {
+    // Capturar errores y mostrar el mensaje
+    echo json_encode(['error' => 'Error al realizar la consulta: ' . $e->getMessage()]);
 }
-
-mysqli_close($conexion);
 ?>

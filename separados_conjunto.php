@@ -22,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ventasConjunto = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if ($ventasConjunto) {
-                echo "<h3>Reporte conjunto de pedidos abiertos desde $fecha_inicio hasta $fecha_fin</h3>";
-                echo "<table><thead><tr><th>Asesor</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
+                echo "<h3>Reporte conjunto de separados abiertos desde $fecha_inicio hasta $fecha_fin</h3>";
+                echo "<table><thead><tr><th>Línea</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
 
                 // Preparar datos para el gráfico
-                $chartDataConjunto = [["Asesor", "Número de Pedidos", ["role" => "style"]]];
+                $chartDataConjunto = [["Línea", "Número de Pedidos", ["role" => "style"]]];
                 $colors = ['#e91d29', '#a31010', '#00332b', '#a31010', '#e91d29'];
                 $colorIndex = 0;
 
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         var data = google.visualization.arrayToDataTable($chartDataConjuntoJson);
             
                         var options = {
-                            title: 'Número de Pedidos Abiertos por Asesor',
+                            title: 'Número de Separados Abiertos por Asesor',
                             chartArea: {width: '70%', height: '70%'},
                             hAxis: {title: 'Número de Pedidos'},
                             vAxis: {title: 'Asesor'},
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id='ventasChartConjunto' style='width: 900px; height: 500px;'></div>
                 ";
             } else {
-                echo "<p>No se encontraron pedidos abiertos en el rango de fechas seleccionado.</p>";
+                echo "<p>No se encontraron separados abiertos en el rango de fechas seleccionado.</p>";
             }
         } catch (PDOException $e) {
             echo "<p>Error al obtener los datos: " . htmlspecialchars($e->getMessage()) . "</p>";

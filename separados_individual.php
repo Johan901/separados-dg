@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $numPedidos = $countResult['num_pedidos'];
 
             if ($ventas) {
-                echo "<h3>Reporte de ventas abiertas para el asesor $asesor desde $fecha_inicio hasta $fecha_fin</h3>";
-                echo "<p>El asesor $asesor ha realizado un total de $numPedidos pedidos abiertos en las fechas seleccionadas.</p>";
+                echo "<h3>Reporte de separados abiertos para la línea $asesor desde $fecha_inicio hasta $fecha_fin</h3>";
+                echo "<p>La línea $asesor ha realizado un total de $numPedidos pedidos abiertos en las fechas seleccionadas.</p>";
                 echo "<table><thead><tr><th>ID Pedido</th><th>Fecha Pedido</th><th>Total Pedido</th></tr></thead><tbody>";
 
                 $dataArray = [];
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ]);
             
                         var options = {
-                            title: 'Ventas Totales Abiertas por Fecha',
+                            title: 'Separados Abiertos por Fecha',
                             chartArea: {width: '50%'},
                             hAxis: {title: 'Fecha', minValue: 0},
                             vAxis: {title: 'Total Pedido'},
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id='ventasChart' style='width: 900px; height: 500px;'></div>
                 ";
             } else {
-                echo "<p>No se encontraron ventas abiertas para este asesor y rango de fechas.</p>";
+                echo "<p>No se encontraron separados abiertas para este asesor y rango de fechas.</p>";
             }
         } catch (PDOException $e) {
             echo "<p>Error al obtener los datos: " . $e->getMessage() . "</p>";

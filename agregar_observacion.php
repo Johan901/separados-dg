@@ -4,60 +4,50 @@ include 'config.php'; // Incluir la conexión
 $response = ""; // Variable para manejar la respuesta
 
 // Verifica si el usuario ha iniciado sesión
-session_start(); // Asegúrate de iniciar la sesión
+session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.html');
     exit();
 }
 
-// Si se envía el formulario, procesa e inserta o actualiza la observación en la base de datos
+// Verificar el método de solicitud
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recoger los datos del formulario
-    $observacion = $_POST['observacion']; // Observación
     $id_pedido = $_POST['id_pedido']; // ID del pedido
+    $observacion = $_POST['observacion']; // Nueva observación
 
     try {
-        // Verificar si ya existe una observación para el pedido
-        $query_check = "SELECT COUNT(*) FROM pedidos WHERE id_pedido = :id_pedido";
-        $stmt_check = $conn->prepare($query_check);
-        $stmt_check->bindParam(':id_pedido', $id_pedido, PDO::PARAM_INT);
-        $stmt_check->execute();
-        $exists = $stmt_check->fetchColumn();
+        // Actualizar el pedido existente con la nueva observación
+        $query = "UPDATE pedidos SET observaciones = :observacion WHERE id_pedido = :id_pedido";
+        $stmt = $conn->prepare($query);
 
-        if ($exists) {
-            // Si ya existe, actualiza la observación
-            $query_update = "UPDATE pedidos SET observaciones = :observacion WHERE id_pedido = :id_pedido";
-            $stmt_update = $conn->prepare($query_update);
-            $stmt_update->bindParam(':observacion', $observacion, PDO::PARAM_STR);
-            $stmt_update->bindParam(':id_pedido', $id_pedido, PDO::PARAM_INT);
+        // Vincular parámetros
+        $stmt->bindParam(':observacion', $observacion);
+        $stmt->bindParam(':id_pedido', $id_pedido);
 
-            if ($stmt_update->execute()) {
-                $response = "success";
-            } else {
-                $response = "error";
-            }
-        } else {
-            // Si no existe, inserta la nueva observación
-            $query_insert = "INSERT INTO pedidos (id_pedido, observaciones) VALUES (:id_pedido, :observacion)";
-            $stmt_insert = $conn->prepare($query_insert);
-            $stmt_insert->bindParam(':id_pedido', $id_pedido, PDO::PARAM_INT);
-            $stmt_insert->bindParam(':observacion', $observacion, PDO::PARAM_STR);
-
-            if ($stmt_insert->execute()) {
-                $response = "success";
-            } else {
-                $response = "error";
-            }
-        }
-
-        // Redirigir a asesor_panel después de una operación exitosa
-        if ($response === "success") {
+        if ($stmt->execute()) {
+            // Redirigir a asesor_panel.php después de actualizar con éxito
             header('Location: asesor_panel.php');
             exit();
+        } else {
+            $response = "error";
         }
-
     } catch (PDOException $e) {
         $response = "error: " . addslashes($e->getMessage());
+    }
+} elseif ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_pedido'])) {
+    $id_pedido = $_GET['id_pedido'];
+
+    try {
+        // Obtener la observación existente para precargar el formulario
+        $query = "SELECT observaciones FROM pedidos WHERE id_pedido = :id_pedido";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':id_pedido', $id_pedido);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $observacion_existente = $result['observaciones'] ?? '';
+    } catch (PDOException $e) {
+        $observacion_existente = "Error al cargar la observación.";
     }
 }
 ?>

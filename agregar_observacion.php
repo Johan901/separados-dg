@@ -4,48 +4,60 @@ include 'config.php'; // Incluir la conexión
 $response = ""; // Variable para manejar la respuesta
 
 // Verifica si el usuario ha iniciado sesión
-session_start();
+session_start(); // Asegúrate de iniciar la sesión
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.html');
     exit();
 }
 
-// Verificar el método de solicitud
+// Si se envía el formulario, procesa e inserta o actualiza la observación en la base de datos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Recoger los datos del formulario
+    $observacion = $_POST['observacion']; // Observación
     $id_pedido = $_POST['id_pedido']; // ID del pedido
-    $observacion = $_POST['observacion']; // Nueva observación
 
     try {
-        // Actualizar el pedido existente con la nueva observación
-        $query = "UPDATE pedidos SET observaciones = :observacion WHERE id_pedido = :id_pedido";
-        $stmt = $conn->prepare($query);
+        // Verificar si ya existe una observación para el pedido
+        $query_check = "SELECT COUNT(*) FROM pedidos WHERE id_pedido = :id_pedido";
+        $stmt_check = $conn->prepare($query_check);
+        $stmt_check->bindParam(':id_pedido', $id_pedido, PDO::PARAM_INT);
+        $stmt_check->execute();
+        $exists = $stmt_check->fetchColumn();
 
-        // Vincular parámetros
-        $stmt->bindParam(':observacion', $observacion);
-        $stmt->bindParam(':id_pedido', $id_pedido);
+        if ($exists) {
+            // Si ya existe, actualiza la observación
+            $query_update = "UPDATE pedidos SET observaciones = :observacion WHERE id_pedido = :id_pedido";
+            $stmt_update = $conn->prepare($query_update);
+            $stmt_update->bindParam(':observacion', $observacion, PDO::PARAM_STR);
+            $stmt_update->bindParam(':id_pedido', $id_pedido, PDO::PARAM_INT);
 
-        if ($stmt->execute()) {
-            $response = "success";
+            if ($stmt_update->execute()) {
+                $response = "success";
+            } else {
+                $response = "error";
+            }
         } else {
-            $response = "error";
+            // Si no existe, inserta la nueva observación
+            $query_insert = "INSERT INTO pedidos (id_pedido, observaciones) VALUES (:id_pedido, :observacion)";
+            $stmt_insert = $conn->prepare($query_insert);
+            $stmt_insert->bindParam(':id_pedido', $id_pedido, PDO::PARAM_INT);
+            $stmt_insert->bindParam(':observacion', $observacion, PDO::PARAM_STR);
+
+            if ($stmt_insert->execute()) {
+                $response = "success";
+            } else {
+                $response = "error";
+            }
         }
+
+        // Redirigir a asesor_panel después de una operación exitosa
+        if ($response === "success") {
+            header('Location: asesor_panel.php');
+            exit();
+        }
+
     } catch (PDOException $e) {
         $response = "error: " . addslashes($e->getMessage());
-    }
-} elseif ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_pedido'])) {
-    $id_pedido = $_GET['id_pedido'];
-
-    try {
-        // Obtener la observación existente para precargar el formulario
-        $query = "SELECT observaciones FROM pedidos WHERE id_pedido = :id_pedido";
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':id_pedido', $id_pedido);
-        $stmt->execute();
-
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $observacion_existente = $result['observaciones'] ?? '';
-    } catch (PDOException $e) {
-        $observacion_existente = "Error al cargar la observación.";
     }
 }
 ?>
@@ -71,15 +83,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="hamburger-menu">
             <i class="fas fa-bars"></i>
             <div class="dropdown-menu">
-                <a href="admin_panel.php">Inicio</a>
-                <a href="agregar_observacion.php">Agregar Observación</a>
-                <a href="info_cliente.php">Ver clientes</a>
-                <a href="inventario.php">Inventario de productos</a>
-                <a href="nuevo_pedido.php">Agregar nuevo pedido</a>
-                <a href="historial_pedidos.php">Historial de pedidos</a>
+            <a href="asesor_panel.php">Inicio</a>
+            <a href="agregar_usuario_asesor.php">Agregar nuevo cliente</a>
+            <a href="nuevo_pedido_asesor.php">Agregar nuevo pedido</a>
+            <a href="historial_asesor.php">Historial de pedidos</a>
             </div>
         </div>
-        <a href="admin_panel.php" class="logo">Dulce Guadalupe</a>
+        <a href="asesor_panel.php" class="logo">Dulce Guadalupe</a>
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>
 

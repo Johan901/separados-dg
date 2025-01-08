@@ -171,7 +171,7 @@ if (isset($result) && count($result) > 0) {
             <th>Fecha Pedido</th>
             <th>Fecha Límite</th>
             <th>Total Pedido (COP)</th>
-            <th>Asesor</th>
+            <th>Linea</th>
             <th>Envío</th>
             <th>Estado</th>
             <th>Cuenta Regresiva</th>
@@ -262,7 +262,7 @@ if ($total_pedidos == 0) {
                 <td>{$row['fecha_pedido']}</td>
                 <td>{$row['fecha_limite']}</td>
                 <td>{$total_formateado}</td>
-                <td>{$row['asesor']}</td>
+                <td>{$row['linea']}</td>
                 <td>{$row['envio']}</td>
                 <td>{$row['estado']} $alerta_nuevo_cliente</td>
                 <td $estado_color>$cuenta_regresiva</td>

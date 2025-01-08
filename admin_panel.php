@@ -133,8 +133,8 @@ if (isset($_SESSION['nombre_usuario'])) {
         <div class="section" style="background-color:rgb(165, 212, 157);">
             <h3>REPORTES</h3>
             <div class="dropdown">
-                <a href="ventas_asesor.php">Ventas Por Asesor</a>
-                <a href="separados_asesor.php">Separados Por Asesor</a>
+                <a href="ventas_asesor.php">Ventas Por Línea</a>
+                <a href="separados_asesor.php">Separados Por Línea</a>
                 <a href="prendas.php">Prendas Agotadas</a>
                 <a href="vencimiento.php">Separados Por Vencer</a>
             </div>

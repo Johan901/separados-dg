@@ -31,15 +31,14 @@
     </header>
 
     <div class="container">
-        <h1>Reporte de Ventas por Asesor</h1>
+        <h1>Reporte de Ventas por Línea</h1>
         
         <form id="filtro-asesor" method="POST" action="">
-            <label for="asesor">Asesor:</label>
+            <label for="asesor">Línea:</label>
             <select id="asesor" name="asesor">
-                <option value="">Seleccione un asesor</option>
-                <option value="3153925613">3153925613</option>
-                <option value="3183925613">3183925613</option>
-                <option value="3103925613">3103925613</option>
+                <option value="">Seleccione una línea</option>
+                <option value="3104238002">3104238002</option>
+                <option value="3147363095">3147363095</option>
             </select>
             <label for="fecha_inicio">Fecha Inicio:</label>
             <input type="date" name="fecha_inicio" id="fecha_inicio">
@@ -54,7 +53,7 @@
 
         <!-- Nuevo Div con estilos -->
         <div class="report-box">
-            <h1>Reporte de Ventas de Asesores en Conjunto</h1>
+            <h1>Reporte de Ventas de Líneas en Conjunto</h1>
 
             <form id="filtro-asesor-conjunto" method="POST" action="">
                 <label for="fecha_inicio_conjunto">Fecha Inicio:</label>

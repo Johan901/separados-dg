@@ -105,7 +105,7 @@ if (isset($_GET['id'])) {
                         <td>{$row['asesor']}</td>
                         <td>{$row['envio']}</td>
                         <td>
-                            <form method='POST' action='detalle_pedido_bodeguero.php'>
+                            <form method='POST' action='detalle_pedido.php'>
                                 <input type='hidden' name='id_detalle' value='{$id_detalle}'>
                                 <input type='hidden' name='id_pedido' value='{$row['id_pedido']}'>
                                 <button class='button' type='submit' name='marcar_separado' " . ($row['actualizado'] == 1 ? 'disabled' : '') . ">Marcar como separado</button>
@@ -171,7 +171,7 @@ if (isset($_POST['marcar_separado'])) {
     }
 
     ob_clean(); // Limpia cualquier salida previa
-    header('Location: historial_bodeguero.php');
+    header('Location: detalle_pedido.php');
     exit();  
 }
 

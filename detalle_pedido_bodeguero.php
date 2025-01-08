@@ -169,7 +169,7 @@ if (isset($_POST['marcar_separado'])) {
     }
 
     ob_clean(); // Limpia cualquier salida previa
-    header('Location: historial_bodeguero.php');
+    header('Location: detalle_pedido_bodeguero.php');
     exit();  
 }
 

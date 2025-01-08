@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($ventas) {
                 echo "<h3>Reporte de separados abiertos para la línea $asesor desde $fecha_inicio hasta $fecha_fin</h3>";
-                echo "<p>La línea $asesor ha realizado un total de $numPedidos pedidos abiertos en las fechas seleccionadas.</p>";
+                echo "<p>La línea $asesor ha realizado un total de $numPedidos separados abiertos en las fechas seleccionadas.</p>";
                 echo "<table><thead><tr><th>ID Pedido</th><th>Fecha Pedido</th><th>Total Pedido</th></tr></thead><tbody>";
 
                 $dataArray = [];

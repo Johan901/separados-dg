@@ -38,6 +38,9 @@ function buscarCliente() {
                     confirmButtonText: 'Aceptar',
                 });
                 document.getElementById('nombre').value = data.nombre;
+
+                // Llamamos a la función para buscar pedidos y autocompletar los campos si hay un pedido abierto
+                buscarPedidos(cedula);
             }
         },
         error: function(xhr, status, error) {
@@ -50,6 +53,55 @@ function buscarCliente() {
         }
     });
 }
+
+function buscarPedidos(cedula) {
+    $.ajax({
+        url: 'buscar_pedidos.php',
+        type: 'GET',
+        data: { cedula: cedula },
+        success: function(data) {
+            try {
+                const pedidos = JSON.parse(data);
+                if (pedidos.length > 0) {
+                    // Filtramos el pedido abierto
+                    const pedidoAbierto = pedidos.find(pedido => pedido.estado === "abierto");
+
+                    if (pedidoAbierto) {
+                        // Si hay un pedido abierto, autocompletamos los campos
+                        document.getElementById('asesor').value = pedidoAbierto.asesor || '';
+                        document.getElementById('medio_conocimiento').value = pedidoAbierto.medio_conocimiento || '';
+                        document.getElementById('envio').value = pedidoAbierto.envio || '';
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Sin pedidos abiertos',
+                        text: 'Este cliente no tiene pedidos abiertos. El campo se mantendrá vacío.',
+                        confirmButtonText: 'Aceptar',
+                    });
+                }
+            } catch (e) {
+                console.error("Error al procesar los pedidos:", e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al procesar los pedidos',
+                    text: 'Hubo un problema al procesar los pedidos. Por favor intenta nuevamente.',
+                    confirmButtonText: 'Aceptar',
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en la solicitud',
+                text: 'Ocurrió un error al intentar buscar los pedidos. Por favor intenta nuevamente.',
+                confirmButtonText: 'Aceptar',
+            });
+        }
+    });
+}
+
+
 
 // Variables globales para almacenar el precio según el tipo de compra
 let precioMayor;

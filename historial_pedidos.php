@@ -189,7 +189,7 @@ if (isset($result) && count($result) > 0) {
         $cliente_cedula = $row['cliente_cedula']; // Obtén la cédula del cliente del $row
 
         // Mostrar las observaciones
-        $observacion = isset($row['observacion']) ? $row['observacion'] : "No hay observaciones";
+        $observacion = isset($row['observaciones']) ? $row['observaciones'] : "No hay observaciones";
         
         // Botón para agregar observación
         $agregar_observacion_button = "<a href='agregar_observacion.php?id_pedido=" . $row['id_pedido'] . "'><button class='button'>Agregar Observación</button></a>";

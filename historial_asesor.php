@@ -82,7 +82,7 @@ $message = '';
 // Consulta básica
 $query = "SELECT p.id_pedido, p.cliente_cedula, p.fecha_pedido, p.fecha_limite,
                  SUM(dp.subtotal) AS total_pedido, p.asesor, p.envio,
-                 c.nombre AS nombre_cliente, p.estado
+                 c.nombre AS nombre_cliente, p.estado, p.observaciones
           FROM pedidos p 
           LEFT JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido 
           LEFT JOIN clientes c ON p.cliente_cedula = c.cedula";
@@ -173,6 +173,7 @@ if (isset($result) && count($result) > 0) {
             <th>Envío</th>
             <th>Estado</th>
             <th>Cuenta Regresiva</th>
+            <th>Observaciones</th>
             <th>Acciones</th>
         </tr>";
 
@@ -182,7 +183,7 @@ if (isset($result) && count($result) > 0) {
 
         // Alerta para el estado de pedidos
         $cliente_cedula = $row['cliente_cedula']; // Obtén la cédula del cliente del $row
-
+        
         // Mostrar las observaciones
         $observacion = isset($row['observacion']) ? $row['observacion'] : "No hay observaciones";
         
@@ -260,6 +261,7 @@ $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha si
                 <td>{$row['envio']}</td>
                 <td>{$row['estado']} $alerta_nuevo_cliente</td>
                 <td $estado_color>$cuenta_regresiva</td>
+                <td>{$observacion}</td> <!-- Mostrar observación -->
                 <td class='action-buttons'>
                     <a href='detalle_pedido_asesor.php?id={$row['id_pedido']}' class='button'>Ver Detalles</a>
                     <a href='agregar_observacion.php?id_pedido={$row['id_pedido']}' class='button'>Agregar Observacion</a>

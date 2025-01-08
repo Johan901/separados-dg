@@ -171,7 +171,7 @@ if (isset($_POST['marcar_separado'])) {
     }
 
     ob_clean(); // Limpia cualquier salida previa
-    header('Location: detalle_pedido.php');
+    header('Location: historial_pedidos.php');
     exit();  
 }
 

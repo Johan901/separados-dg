@@ -37,10 +37,11 @@ function buscarCliente() {
                     title: 'Cliente encontrado satisfactoriamente',
                     confirmButtonText: 'Aceptar',
                 });
+
                 document.getElementById('nombre').value = data.nombre;
 
-                // Llamamos a la función para buscar pedidos y autocompletar los campos si hay un pedido abierto
-                buscarPedidos(cedula);
+                // Ahora buscaremos el último pedido abierto
+                buscarUltimoPedidoAbierto(cedula);
             }
         },
         error: function(xhr, status, error) {
@@ -54,52 +55,34 @@ function buscarCliente() {
     });
 }
 
-function buscarPedidos(cedula) {
+function buscarUltimoPedidoAbierto(cedula) {
     $.ajax({
-        url: 'buscar_pedidos.php',
+        url: 'buscar_ultimo_pedido_abierto.php',
         type: 'GET',
         data: { cedula: cedula },
         success: function(data) {
-            try {
-                const pedidos = JSON.parse(data);
-                if (pedidos.length > 0) {
-                    // Filtramos el pedido abierto
-                    const pedidoAbierto = pedidos.find(pedido => pedido.estado === "abierto");
+            data = typeof data === 'string' ? JSON.parse(data) : data;
 
-                    if (pedidoAbierto) {
-                        // Si hay un pedido abierto, autocompletamos los campos
-                        document.getElementById('asesor').value = pedidoAbierto.asesor || '';
-                        document.getElementById('medio_conocimiento').value = pedidoAbierto.medio_conocimiento || '';
-                        document.getElementById('envio').value = pedidoAbierto.envio || '';
-                    }
-                } else {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Sin pedidos abiertos',
-                        text: 'Este cliente no tiene pedidos abiertos. El campo se mantendrá vacío.',
-                        confirmButtonText: 'Aceptar',
-                    });
-                }
-            } catch (e) {
-                console.error("Error al procesar los pedidos:", e);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al procesar los pedidos',
-                    text: 'Hubo un problema al procesar los pedidos. Por favor intenta nuevamente.',
-                    confirmButtonText: 'Aceptar',
-                });
+            if (data.error) {
+                console.log("No se encontraron pedidos abiertos.");
+            } else {
+                // Autocompletar los campos
+                document.getElementById('asesor').value = data.asesor;
+                document.getElementById('medio_conocimiento').value = data.medio_conocimiento;
+                document.getElementById('envio').value = data.envio;
             }
         },
         error: function(xhr, status, error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error en la solicitud',
-                text: 'Ocurrió un error al intentar buscar los pedidos. Por favor intenta nuevamente.',
+                text: 'Ocurrió un error al intentar buscar el último pedido abierto. Por favor intenta nuevamente.',
                 confirmButtonText: 'Aceptar',
             });
         }
     });
 }
+
 
 
 

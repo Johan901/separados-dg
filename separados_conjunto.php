@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         var data = google.visualization.arrayToDataTable($chartDataConjuntoJson);
             
                         var options = {
-                            title: 'Número de Separados Abiertos por Asesor',
+                            title: 'Número de Separados Abiertos por Línea',
                             chartArea: {width: '70%', height: '70%'},
                             hAxis: {title: 'Número de Pedidos'},
-                            vAxis: {title: 'Asesor'},
+                            vAxis: {title: 'Línea'},
                             legend: {position: 'none'}
                         };
             

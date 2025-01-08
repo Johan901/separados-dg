@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id='ventasChart' style='width: 900px; height: 500px;'></div>
                 ";
             } else {
-                echo "<p>No se encontraron separados abiertas para este asesor y rango de fechas.</p>";
+                echo "<p>No se encontraron separados abiertos para este asesor y rango de fechas.</p>";
             }
         } catch (PDOException $e) {
             echo "<p>Error al obtener los datos: " . $e->getMessage() . "</p>";

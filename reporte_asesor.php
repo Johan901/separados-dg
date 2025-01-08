@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $numPedidos = $countResult['num_pedidos'];
 
             if ($ventas) {
-                echo "<h3>Reporte de ventas para el asesor $asesor desde $fecha_inicio hasta $fecha_fin</h3>";
-                echo "<p>El asesor $asesor ha realizado un total de $numPedidos pedidos cerrados en las fechas seleccionadas.</p>";
+                echo "<h3>Reporte de ventas para la línea $asesor desde $fecha_inicio hasta $fecha_fin</h3>";
+                echo "<p>La línea $asesor ha realizado un total de $numPedidos pedidos cerrados en las fechas seleccionadas.</p>";
                 echo "<table><thead><tr><th>ID Pedido</th><th>Fecha Pedido</th><th>Total Pedido</th></tr></thead><tbody>";
 
                 $dataArray = [];
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id='ventasChart' style='width: 900px; height: 500px;'></div>
                 ";
             } else {
-                echo "<p>No se encontraron ventas cerradas para este asesor y rango de fechas.</p>";
+                echo "<p>No se encontraron ventas cerradas para esta línea y rango de fechas.</p>";
             }
         } catch (PDOException $e) {
             echo "<p>Error al obtener los datos: " . $e->getMessage() . "</p>";
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($ventasConjunto) {
                 echo "<h3>Reporte conjunto de ventas desde $fecha_inicio hasta $fecha_fin</h3>";
-                echo "<table><thead><tr><th>Asesor</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
+                echo "<table><thead><tr><th>Línea</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
 
                 $chartDataConjunto = [["Asesor", "Total Ventas"]];
                 foreach ($ventasConjunto as $venta) {
@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         var data = google.visualization.arrayToDataTable($chartDataConjuntoJson);
             
                         var options = {
-                            title: 'Ventas Totales por Asesor',
+                            title: 'Ventas Totales por Línea',
                             pieHole: 0.4,
                             chartArea: {width: '80%', height: '80%'}
                         };

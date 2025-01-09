@@ -25,8 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':id_pedido', $id_pedido);
 
         if ($stmt->execute()) {
-            // Redirigir a asesor_panel.php después de actualizar con éxito
-            header('Location: asesor_panel.php');
+            $response = "success"; // Asegúrate de asignar esto.
             exit();
         } else {
             $response = "error";
@@ -98,16 +97,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
     // Manejar la respuesta después de que se haya enviado el formulario
     window.onload = function() {
-        <?php if ($response == "success") : ?>
-            swal("Éxito!", "Observación agregada con éxito.", "success").then(() => {
-                window.location.href = 'admin_panel.php';
-            });
-        <?php elseif (strpos($response, "error") !== false) : ?>
-            swal("Error!", "<?= $response ?>", "error").then(() => {
-                window.location.href = 'admin_panel.php';
-            });
-        <?php endif; ?>
-    }
+    <?php if ($response == "success") : ?>
+        swal({
+            title: "Éxito!",
+            text: "Observación agregada con éxito.",
+            icon: "success",
+        }).then(() => {
+            window.location.href = 'asesor_panel.php'; // Redirigir después de la alerta
+        });
+    <?php elseif (strpos($response, "error") !== false) : ?>
+        swal({
+            title: "Error!",
+            text: "<?= addslashes($response) ?>",
+            icon: "error",
+        }).then(() => {
+            window.location.href = 'asesor_panel.php'; // Redirigir después de la alerta
+        });
+    <?php endif; ?>
+}
+
 </script>
 
     <script src="js/main_user.js?v=1.1"></script>

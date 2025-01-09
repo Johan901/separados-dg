@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </select>
 
         <label for="edad">Edad:</label>
-        <input type="number" name="edad" required min="0">
+        <input type="number" name="edad">
 
         <input type="submit" value="Agregar">
     </form>

@@ -69,7 +69,7 @@ if (!isset($_SESSION['user_id'])) {
         <input type="text" id="tipo-prenda" name="tipo-prenda" readonly>
 
         <label for="">Cantidad:</label>
-        <input type="text" id="cantidad" name="cantidad" placeholder="Ingrese cantidad" onchange="calcularSubtotal()" required>
+        <input type="text" id="cantidad" name="cantidad" placeholder="Ingrese cantidad"required>
 
         <!-- Campo de Observaciones -->
         <label for="observacion">Observación:</label>

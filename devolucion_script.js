@@ -90,7 +90,7 @@ function agregarDevolucion() {
             color: color,
             tipo_prenda: tipoPrenda,
             cantidad: cantidad,
-            observacion: observacion,
+            observacion: observacion,   
         },
         success: function(response) {
             response = typeof response === 'string' ? JSON.parse(response) : response;

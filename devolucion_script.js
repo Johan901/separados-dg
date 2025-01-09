@@ -60,17 +60,14 @@ function buscarReferencia() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Aquí puedes agregar otras funciones que necesiten ejecutarse al cargar el DOM
-});
-
-
+// Función para agregar una devolución
 function agregarDevolucion() {
     const referencia = document.getElementById('referencia-busqueda').value.trim();
     const color = document.getElementById('color').value.trim();
     const cantidad = parseInt(document.getElementById('cantidad').value.trim());
     const observacion = document.getElementById('observacion').value.trim();
 
+    // Validación de los campos antes de enviar
     if (!referencia || !color || isNaN(cantidad) || cantidad <= 0 || !observacion) {
         Swal.fire({
             icon: 'error',
@@ -81,6 +78,15 @@ function agregarDevolucion() {
         return;
     }
 
+    // Mostrar los datos para depurar si es necesario
+    console.log("Datos enviados: ", {
+        referencia: referencia,
+        color: color,
+        cantidad: cantidad,
+        observacion: observacion
+    });
+
+    // Enviar los datos a través de AJAX
     $.ajax({
         url: 'agregar_devolucion.php', // Archivo PHP que procesa las devoluciones
         type: 'POST',
@@ -100,7 +106,7 @@ function agregarDevolucion() {
                         title: 'Devolución registrada con éxito',
                         confirmButtonText: 'Aceptar',
                     });
-                    // Limpia los campos después de agregar la devolución
+                    // Limpiar los campos después de agregar la devolución
                     document.getElementById('referencia-busqueda').value = '';
                     document.getElementById('color').value = '';
                     document.getElementById('cantidad').value = '';
@@ -133,43 +139,3 @@ function agregarDevolucion() {
         },
     });
 }
-
-
-if (!referencia || !color || isNaN(cantidad) || cantidad <= 0 || !observacion) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Faltan datos o la cantidad no es válida',
-        text: 'Por favor complete todos los campos correctamente.',
-        confirmButtonText: 'Aceptar',
-    });
-    return;
-}
-
-console.log("Datos enviados: ", {
-    referencia: referencia,
-    color: color,
-    cantidad: cantidad,
-    observacion: observacion
-});  // Para verificar los datos antes de enviarlos
-
-$.ajax({
-    url: 'agregar_devolucion.php', 
-    type: 'POST',
-    data: {
-        referencia: referencia,
-        color: color,
-        cantidad: cantidad,
-        observacion: observacion,
-    },
-    success: function(response) {
-        // El resto de la lógica
-    },
-    error: function(xhr, status, error) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error en la solicitud',
-            text: 'No se pudo procesar la devolución. Intente más tarde.',
-            confirmButtonText: 'Aceptar',
-        });
-    },
-});

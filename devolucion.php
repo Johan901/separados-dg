@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Devolución de Productos - Dulce Guadalupe</title>
-    <link rel="stylesheet" href="css/styles_devoluciones.css">
+    <link rel="stylesheet" href="css/styles_admin_panel.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </head>

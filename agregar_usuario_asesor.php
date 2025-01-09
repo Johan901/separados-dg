@@ -14,16 +14,16 @@ if (!isset($_SESSION['user_id'])) {
 // Si se envía el formulario, procesa e inserta a la base de datos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
-    $cedula = $_POST['cedula']; // Cédula
-    $nombre_cliente = $_POST['nombre']; // Nombre
-    $telefono = $_POST['telefono']; // Teléfono
-    $email = $_POST['email']; // Correo Electrónico
-    $pais = $_POST['pais']; // País
-    $departamento = $_POST['departamento']; // Departamento
-    $ciudad = $_POST['ciudad']; // Ciudad
-    $direccion = $_POST['direccion']; // Dirección
-    $sexo = $_POST['sexo']; // Sexo
-    $edad = $_POST['edad']; // Edad
+    $cedula = $_POST['cedula']; 
+    $nombre_cliente = $_POST['nombre']; 
+    $telefono = $_POST['telefono']; 
+    $email = empty($_POST['email']) ? NULL : $_POST['email']; // Correo Electrónico
+    $pais = empty($_POST['pais']) ? NULL : $_POST['pais']; // País
+    $departamento = empty($_POST['departamento']) ? NULL : $_POST['departamento']; // Departamento
+    $ciudad = empty($_POST['ciudad']) ? NULL : $_POST['ciudad']; // Ciudad
+    $direccion = $_POST['direccion']; 
+    $sexo = $_POST['sexo']; 
+    $edad = empty($_POST['edad']) ? NULL : $_POST['edad']; // Edad
     
     try {
         // Verificar si la cédula ya existe

@@ -36,6 +36,11 @@ main h2 {
     align-items: center;
 }
 
+.custom-button {
+    margin-bottom: 30px; /* Espacio específico para este botón */
+}
+
+
 .button {
     display: inline-block;
     padding: 8px 16px;
@@ -90,6 +95,7 @@ footer {
     background-color: #e91d29;
     color: white;
     text-align: center;
+    margin-top: 30px; /* Espacio entre el footer y lo que está encima */
 }
 
 

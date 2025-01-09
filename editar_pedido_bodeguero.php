@@ -82,6 +82,8 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="js/main_user.js?v=2.0"></script>
+
 </head>
 <body>
     <!-- Header -->

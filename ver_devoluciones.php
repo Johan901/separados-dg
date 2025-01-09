@@ -38,7 +38,7 @@ if (!isset($_SESSION['user_id'])) {
                 <a href="inventario.php">Inventario de productos</a>
                 <a href="nuevo_pedido.php">Agregar nuevo pedido</a>
                 <a href="historial_pedidos.php">Historial de pedidos</a>
-                <a href="devoluciones.php">Devoluciones</a>
+                <a href="devolucion.php">Devoluciones</a>
             </div>
         </div>
         <a href="admin_panel.php" class="logo">Dulce Guadalupe</a>
@@ -93,7 +93,6 @@ if (!isset($_SESSION['user_id'])) {
             <th>Color</th>
             <th>Cantidad</th>
             <th>Observaciones</th>
-            <th>Acciones</th>
         </tr>";
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -102,33 +101,12 @@ if (!isset($_SESSION['user_id'])) {
         echo "<td>" . htmlspecialchars($row['color']) . "</td>";
         echo "<td>" . htmlspecialchars($row['cantidad']) . "</td>";
         echo "<td>" . htmlspecialchars($row['obvs']) . "</td>";
-        echo "<td>
-                <a href='editar_devolucion.php?ref=" . urlencode($row['ref']) . "' class='button'>Editar</a>
-                <a href='javascript:void(0)' class='button' onclick='confirmarEliminacion(\"" . urlencode($row['ref']) . "\")'>Eliminar</a>
-              </td>";
         echo "</tr>";
     }
     echo "</table>";
     ?>
 
-    <script>
-        function confirmarEliminacion(ref) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¿Deseas eliminar esta devolución?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "eliminar_devolucion.php?ref=" + encodeURIComponent(ref);
-                }
-            });
-        }
-    </script>
+   
 <script src="js/main_user.js?v=1.1"></script>
 </body>
 

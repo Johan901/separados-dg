@@ -69,7 +69,7 @@ if (!isset($_SESSION['user_id'])) {
             const referencia = document.getElementById('referencia').value;
             // Llamar a la API para buscar los detalles de la referencia
             $.ajax({
-                url: 'buscar_referencia.php',
+                url: 'buscar_referencias.php',
                 type: 'POST',
                 data: { referencia },
                 success: function(response) {

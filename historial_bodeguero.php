@@ -201,27 +201,27 @@ if (isset($result) && count($result) > 0) {
 
         // Alerta según el número de pedidos
         $alerta_nuevo_cliente = '';
+        $estado = $row['estado'];  // Asegúrate de que esto obtenga el estado correcto
         $total_pedidos = (int)$result_count['total_pedidos']; // Asegúrate de convertirlo a entero
 
-        switch ($total_pedidos) {
-            case 0:
-                $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>No hay pedidos registrados para este cliente.</div>";
-                break;
-            case 1:
-                if ($row['estado'] == 'cerrado') {
-                    $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este es el primer pedido de este cliente, cree una nueva bolsa para sus productos. Estado: CERRADO.</div>";
-                } else {
-                    $alerta_nuevo_cliente = "<div style='color: blue; font-weight: bold;'>Este es el primer pedido de este cliente, cree una nueva bolsa para sus productos. Estado: ABIERTO.</div>";
-                }
-                break;
-            default:
-                // Verifica el estado del pedido y ajusta el mensaje
-                if ($row['estado'] == 'cerrado') {
-                    $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ya quedó CERRADO, favor crear uno nuevo si es necesario.</div>";
-                } else {
-                    $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>Este pedido está ABIERTO. Ya hay una bolsa asignada para este cliente.</div>";
-                }
-                break;
+        if ($total_pedidos == 0) {
+            $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>No hay pedidos registrados para este cliente.</div>";
+        } elseif ($total_pedidos == 1) {
+            if ($estado == 'cerrado') {
+                $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este es el primer pedido de este cliente, pero el estado es CERRADO. Crea una nueva bolsa si es necesario.</div>";
+            } elseif ($estado == 'eliminado') {
+                $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ha sido ELIMINADO. Favor desarmar los productos.</div>";
+            } else {
+                $alerta_nuevo_cliente = "<div style='color: blue; font-weight: bold;'>Este es el primer pedido de este cliente, está ABIERTO. Crea una nueva bolsa si es necesario.</div>";
+            }
+        } else {
+            if ($estado == 'cerrado') {
+                $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido está CERRADO, favor crear uno nuevo si es necesario.</div>";
+            } elseif ($estado == 'eliminado') {
+                $alerta_nuevo_cliente = "<div style='color: red; font-weight: bold;'>Este pedido ha sido ELIMINADO. Favor desarmar los productos.</div>";
+            } else {
+                $alerta_nuevo_cliente = "<div style='color: green; font-weight: bold;'>Este pedido está ABIERTO. Ya hay una bolsa asignada para este cliente.</div>";
+            }
         }
 
         // Consulta para verificar si todos los artículos están separados

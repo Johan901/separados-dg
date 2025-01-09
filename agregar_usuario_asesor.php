@@ -112,16 +112,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="telefono" required>
         
         <label for="email">Correo Electrónico:</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email">
         
         <label for="pais">País:</label>
-        <input type="text" name="pais" required>
+        <input type="text" name="pais">
         
         <label for="departamento">Departamento:</label>
-        <input type="text" name="departamento" required>
+        <input type="text" name="departamento">
         
         <label for="ciudad">Ciudad:</label>
-        <input type="text" name="ciudad" required>
+        <input type="text" name="ciudad">
         
         <label for="direccion">Dirección:</label>
         <input type="text" name="direccion" required>

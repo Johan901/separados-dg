@@ -29,7 +29,7 @@ if (isset($_SESSION['nombre_usuario'])) {
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            background-color:rgb(53, 97, 141);
             margin: 0;
             padding: 0;
         }

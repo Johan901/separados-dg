@@ -465,10 +465,12 @@ button:hover {
 }
 
 textarea {
-    width: 100%; /* Ocupa todo el ancho disponible */
-    max-width: 600px; /* Establece un ancho máximo para evitar que sea demasiado grande */
+    width: 100%; /* Ocupa todo el ancho disponible dentro de su contenedor */
+    max-width: 600px; /* Limita el ancho máximo */
     height: 150px; /* Altura fija */
     padding: 15px; /* Espaciado interno */
+    margin-right: 20px; /* Espaciado adicional a la derecha */
+    margin-bottom: 20px; /* Espaciado adicional debajo */
     border: 2px solid #ccc; /* Borde suave */
     border-radius: 10px; /* Bordes redondeados */
     font-size: 16px; /* Tamaño del texto */
@@ -479,11 +481,12 @@ textarea {
 }
 
 textarea:focus {
-    border-color: #5a9; /* Cambia el color del borde al enfocarse */
+    border-color: rgb(191, 22, 22); /* Cambia el color del borde al enfocarse */
     box-shadow: 0 0 10px rgba(90, 169, 90, 0.3); /* Efecto de sombra al enfocar */
     outline: none; /* Elimina el contorno predeterminado */
     background-color: #fff; /* Fondo más claro al enfocar */
 }
+
 
 label[for="observacion"] {
     font-size: 18px;

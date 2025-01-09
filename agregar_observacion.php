@@ -26,8 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             // Redirigir a asesor_panel.php después de actualizar con éxito
-            header('Location: asesor_panel.php');
-            exit();
+            
         } else {
             $response = "error";
         }

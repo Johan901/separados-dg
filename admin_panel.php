@@ -120,6 +120,7 @@ if (isset($_SESSION['nombre_usuario'])) {
             <div class="dropdown">
                 <a href="inventario.php">Inventario de Productos</a>
                 <a href="agregar_inventario.php">Agregar Inventario</a>
+                <a href="devolucion.php">Devoluciones</a>
             </div>
         </div>
         <div class="section" style="background-color: #ffe0b2;">

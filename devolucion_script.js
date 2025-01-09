@@ -67,12 +67,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function agregarDevolucion() {
     const referencia = document.getElementById('referencia-busqueda').value.trim();
-    const color = document.getElementById('color').value;
-    const tipoPrenda = document.getElementById('tipo-prenda').value.trim();
-    const cantidad = document.getElementById('cantidad').value.trim();
+    const color = document.getElementById('color').value.trim();
+    const cantidad = parseInt(document.getElementById('cantidad').value.trim());
     const observacion = document.getElementById('observacion').value.trim();
 
-    if (!referencia || !color || !tipoPrenda || !cantidad || isNaN(cantidad) || cantidad <= 0 || !observacion) {
+    if (!referencia || !color || isNaN(cantidad) || cantidad <= 0 || !observacion) {
         Swal.fire({
             icon: 'error',
             title: 'Faltan datos o la cantidad no es válida',
@@ -83,14 +82,13 @@ function agregarDevolucion() {
     }
 
     $.ajax({
-        url: 'agregar_devolucion.php',
+        url: 'agregar_devolucion.php', // Archivo PHP que procesa las devoluciones
         type: 'POST',
         data: {
             referencia: referencia,
             color: color,
-            tipo_prenda: tipoPrenda,
             cantidad: cantidad,
-            observacion: observacion,   
+            observacion: observacion,
         },
         success: function(response) {
             response = typeof response === 'string' ? JSON.parse(response) : response;
@@ -98,20 +96,19 @@ function agregarDevolucion() {
             if (response.success) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Devolución agregada con éxito',
+                    title: 'Devolución registrada con éxito',
                     confirmButtonText: 'Aceptar',
                 });
                 // Limpia los campos después de agregar la devolución
                 document.getElementById('referencia-busqueda').value = '';
                 document.getElementById('color').value = '';
-                document.getElementById('tipo-prenda').value = '';
                 document.getElementById('cantidad').value = '';
                 document.getElementById('observacion').value = '';
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al agregar la devolución',
-                    text: response.message || 'Ocurrió un error inesperado.',
+                    title: 'Error al registrar devolución',
+                    text: response.message || 'Intente nuevamente más tarde.',
                     confirmButtonText: 'Aceptar',
                 });
             }
@@ -119,8 +116,8 @@ function agregarDevolucion() {
         error: function() {
             Swal.fire({
                 icon: 'error',
-                title: 'Error en el servidor',
-                text: 'No se pudo agregar la devolución. Intente nuevamente más tarde.',
+                title: 'Error en la solicitud',
+                text: 'No se pudo procesar la devolución. Intente más tarde.',
                 confirmButtonText: 'Aceptar',
             });
         },

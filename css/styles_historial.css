@@ -174,9 +174,10 @@ body {
 
 
 table {
-    width: 90%;
-    margin: 20px auto;
-    border-collapse: collapse;
+    width: 90%; /* La tabla ocupa el 90% del contenedor */
+    margin: 20px auto; /* Centra la tabla en la página */
+    border-collapse: collapse; /* Elimina espacios entre bordes */
+    table-layout: auto; /* Ajusta las columnas dinámicamente */
 }
 
 table, th, td {
@@ -184,8 +185,10 @@ table, th, td {
 }
 
 th, td {
-    padding: 10px 20px;
-    text-align: left;
+    padding: 10px 15px; /* Ajusta el espacio interior de las celdas */
+    text-align: left; /* Alineación a la izquierda */
+    vertical-align: top; /* El contenido se organiza verticalmente dentro de las celdas */
+    word-wrap: break-word; /* Permite que el texto largo se divida en líneas */
 }
 
 th {
@@ -522,9 +525,9 @@ tr:hover {
 }
 
 .table-container {
-    width: 80%; /* Se ajusta al ancho del contenedor padre */
+    width: 100%; /* Se ajusta al ancho del contenedor padre */
     overflow-x: auto; /* Habilita el desplazamiento horizontal */
-    white-space: nowrap; /* Evita que el contenido de la tabla se ajuste a nuevas líneas */
+    white-space: normal; /* El texto puede ajustarse en varias líneas */
     margin: 20px auto; /* Centra el contenedor de la tabla */
     border: 1px solid #ccc; /* (Opcional) Agrega un borde para delimitar la tabla */
 }

@@ -23,13 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Vincular parámetros
         $stmt->bindParam(':observacion', $observacion);
         $stmt->bindParam(':id_pedido', $id_pedido);
-
-        if ($stmt->execute()) {
-            $response = "success"; // Asegúrate de asignar esto.
-            exit();
-        } else {
-            $response = "error";
-        }
+        
     } catch (PDOException $e) {
         $response = "error: " . addslashes($e->getMessage());
     }

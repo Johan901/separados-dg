@@ -3,6 +3,8 @@ require 'config.php'; // Archivo con la conexión a la base de datos
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+header('Content-Type: application/json');
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $referencia = $_POST['referencia'];

@@ -91,29 +91,39 @@ function agregarDevolucion() {
             observacion: observacion,
         },
         success: function(response) {
-            response = typeof response === 'string' ? JSON.parse(response) : response;
+            try {
+                response = typeof response === 'string' ? JSON.parse(response) : response;
 
-            if (response.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Devolución registrada con éxito',
-                    confirmButtonText: 'Aceptar',
-                });
-                // Limpia los campos después de agregar la devolución
-                document.getElementById('referencia-busqueda').value = '';
-                document.getElementById('color').value = '';
-                document.getElementById('cantidad').value = '';
-                document.getElementById('observacion').value = '';
-            } else {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Devolución registrada con éxito',
+                        confirmButtonText: 'Aceptar',
+                    });
+                    // Limpia los campos después de agregar la devolución
+                    document.getElementById('referencia-busqueda').value = '';
+                    document.getElementById('color').value = '';
+                    document.getElementById('cantidad').value = '';
+                    document.getElementById('observacion').value = '';
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al registrar devolución',
+                        text: response.message || 'Intente nuevamente más tarde.',
+                        confirmButtonText: 'Aceptar',
+                    });
+                }
+            } catch (e) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al registrar devolución',
-                    text: response.message || 'Intente nuevamente más tarde.',
+                    title: 'Error en el formato de la respuesta',
+                    text: 'El servidor devolvió una respuesta inválida. Intente nuevamente más tarde.',
                     confirmButtonText: 'Aceptar',
                 });
+                console.error('Error al analizar la respuesta JSON:', e);
             }
         },
-        error: function() {
+        error: function(xhr, status, error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error en la solicitud',

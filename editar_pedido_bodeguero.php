@@ -86,6 +86,15 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <!-- Header -->
     <header>
+        <div class="hamburger-menu">
+            <i class="fas fa-bars"></i>
+            <div class="dropdown-menu">
+                <a href="bodeguero_panel.php">Inicio</a>
+                <a href="agregar_inventario_bodeguero.php">Agregar Inventario</a>
+                <a href="inventario_bodeguero.php">Inventario de productos</a>
+                <a href="historial_bodeguero.php">Historial de pedidos</a>
+            </div>
+        </div>
         <a href="bodeguero_panel.php" class="logo">Dulce Guadalupe</a>
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>
@@ -315,4 +324,29 @@ function actualizarTotalPedido() {
         }
     </script>
 </body>
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h2 class="footer-title">Sobre Nosotros</h2>
+            <p>Somos una empresa comprometida en brindar el mejor servicio a nuestros clientes. Contáctanos para más información.</p>
+        </div>
+        <div class="footer-section links">
+            <h2 class="footer-title">Enlaces Rápidos</h2>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Servicios</a></li>
+                <li><a href="#">Sobre Nosotros</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </div>
+        <div class="footer-section contact-form">
+            <h2 class="footer-title">Contáctanos</h2>
+            <p>Email: info@dulceguadalupe.com</p>
+            <p>Teléfono: +57 3153925613</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2025 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de separodos e Inventario.
+    </div>
+</footer>
 </html>

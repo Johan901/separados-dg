@@ -55,20 +55,11 @@ if (!isset($_SESSION['user_id'])) {
     <div class="container">
 
         <!-- Búsqueda de Referencia -->
-        <div class="section-title">Detalle del Pedido</div>
         <label for="referencia-busqueda">Buscar Referencia:</label>
         <div class="input-group">
             <input type="text" id="referencia-busqueda" name="referencia" placeholder="Ingrese la referencia">
             <button class="boton-buscar" type="button" onclick="buscarReferencia()">Buscar</button>
         </div>
-
-        <!-- Selección de tipo de compra -->
-<label for="tipo-compra">Tipo de Compra:</label>
-<div>
-    <button class="boton-buscar" type="button" id="botonMayor" onclick="seleccionarMayor()">Al por Mayor</button>
-    <button class="boton-buscar" type="button" id="botonDetal" onclick="seleccionarDetal()">Al Detal</button>
-</div>
-
         <label for="color">Color:</label>
         <select id="color" name="color">
             <option>Seleccione un color</option>
@@ -86,84 +77,6 @@ if (!isset($_SESSION['user_id'])) {
         
 
         <button class="boton-buscar" onclick="agregarProducto()">Agregar Producto</button>
-
-        <div class="section-title">Productos en el Pedido</div>
-        
-        <!-- Productos en el Pedido -->
-        <table id="productos">
-            <thead>
-                <tr>
-                    <th>Referencia</th>
-                    <th>Color</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Aquí se agregarán los productos -->
-            </tbody>
-        </table>
-
-        <label for="asesor">Línea:</label>
-        <select id="asesor" name="asesor">
-            <option>Seleccione una Línea</option>
-            <option value="3104238002">3104238002</option>
-            <option value="3147363095">3147363095</option>
-        </select>
-
-
-        <!-- Dropdown para medio de conocimiento -->
-        <label for="medio_conocimiento">¿Cómo conoció a Dulce Guadalupe?:*</label>
-        <select id="medio_conocimiento" name="medio_conocimiento" required>
-            <option>Seleccione un medio</option>
-            <option value="Pauta Publicitaria">Pauta Publicitaria</option>
-            <option value="Redes Sociales">Redes Sociales</option>
-            <option value="Cliente Frecuente">Cliente Frecuente</option>
-            <option value="Punto Físico">Punto Físico</option>
-            <option value="Boca a Boca">Boca a Boca</option>
-            <option value="Email Marketing">Email Marketing</option>
-            <option value="Eventos o Ferias">Eventos o Ferias</option>
-            <option value="Promociones en Línea">Promociones en Línea</option>
-            <option value="Otros">Otros</option>
-        </select>
-
-
-        <!-- Nueva sección para buscar pedidos -->
-        <div class="section-title">Buscar Pedidos</div>
-
-        <div class="input-group">
-            <button class="boton-buscar" type="button" onclick="buscarPedidos()">Buscar Pedidos</button>
-        </div>
-
-        <table id="tabla-pedidos">
-    <thead>
-        <tr>
-            <th>ID Pedido</th>
-            <th>Fecha Pedido</th>
-            <th>Fecha Límite</th>
-            <th>Estado</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Aquí se agregarán los resultados de la búsqueda -->
-    </tbody>
-</table>    
-
-        <label for="envio">Envío:</label>
-        <input type="text" id="envio" name="envio" placeholder="Dirección de envío">
-
-        <label for="fecha">Fecha del Pedido:</label>
-        <input type="datetime-local" id="fecha" name="fecha" required>
-
-        <label for="fechaLimite">Fecha Límite:</label>
-        <input type="datetime-local" id="fechaLimite" name="fechaLimite" required>
-
-        <label for="total-pedido">Total del Pedido:</label>
-        <input type="text" id="total-pedido" name="total-pedido" placeholder="Total del pedido" disabled>
-
-        <button class="boton-buscar" onclick="crearPedido()">Crear Pedido</button>
-    </div>
 
     <script src="js/main_user.js?v=1.1"></script>
     <script src="pedidos_script.js?v=9.0" defer></script>

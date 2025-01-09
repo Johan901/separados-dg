@@ -522,7 +522,7 @@ tr:hover {
 }
 
 .table-container {
-    width: 100%; /* Se ajusta al ancho del contenedor padre */
+    width: 80%; /* Se ajusta al ancho del contenedor padre */
     overflow-x: auto; /* Habilita el desplazamiento horizontal */
     white-space: nowrap; /* Evita que el contenido de la tabla se ajuste a nuevas líneas */
     margin: 20px auto; /* Centra el contenedor de la tabla */

@@ -198,41 +198,34 @@ body {
     margin-right: 0px; /* Espacio entre el ícono y el logo */
 }
 
+
+/* Estilos del menú lateral oculto fuera de la pantalla */
 .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0; /* Alineamos el menú al lado izquierdo */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
     background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-right: 1px solid #ccc;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    transform-origin: top left; /* Esto ayuda a que la animación comience desde la esquina superior izquierda */
+    transform: translateX(-100%); /* Ocultar fuera de pantalla */
+    transition: transform 0.3s ease; /* Suave transición al aparecer */
 }
 
-/* Usamos una transición más suave para el menú */
 .dropdown-menu.show-dropdown {
-    display: block;
-    animation: slideDown 0.5s forwards;
+    transform: translateX(0); /* Mostrar menú al deslizar desde la izquierda */
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* Animación para las opciones dentro del menú */
 .dropdown-menu a {
     display: block;
     padding: 10px 20px;
     color: #e91d29;
     text-decoration: none;
+    opacity: 0;
+    animation: fadeInMenu 0.5s forwards;
 }
 
 .dropdown-menu a:hover {
@@ -240,15 +233,10 @@ body {
     color: #fff;
 }
 
-.show-dropdown {
-    display: block;
-    animation: fadeInMenu 0.3s forwards;
-}
-
 @keyframes fadeInMenu {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;

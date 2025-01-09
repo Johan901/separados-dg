@@ -68,20 +68,19 @@ if (!isset($_SESSION['user_id'])) {
         <label for="tipo-prenda">Tipo de Prenda:</label>
         <input type="text" id="tipo-prenda" name="tipo-prenda" readonly>
 
-        <label for="precio-unitario">Precio Unitario:</label>
-        <input type="text" id="precio-unitario" name="precio-unitario" readonly>
-
         <label for="">Cantidad:</label>
         <input type="text" id="cantidad" name="cantidad" placeholder="Ingrese cantidad" onchange="calcularSubtotal()" required>
 
-        
+        <!-- Campo de Observaciones -->
+        <label for="observacion">Observación:</label>
+        <textarea id="observacion" name="observacion" placeholder="Ingrese la observación" required></textarea>
 
-        <button class="boton-buscar" onclick="agregarProducto()">Agregar Producto</button>
+        <button class="boton-buscar" onclick="agregarDevolucion()">Agregar Devolucion</button>
 
      </div>
 
     <script src="js/main_user.js?v=1.1"></script>
-    <script src="pedidos_script.js?v=9.0" defer></script>
+    <script src="devolucion_script.js?v=9.0" defer></script>
 
 </body>
 

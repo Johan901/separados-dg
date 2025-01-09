@@ -463,3 +463,32 @@ button:hover {
 .add-observation-form .response.error {
     color: red;
 }
+
+textarea {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    max-width: 600px; /* Establece un ancho máximo para evitar que sea demasiado grande */
+    height: 150px; /* Altura fija */
+    padding: 15px; /* Espaciado interno */
+    border: 2px solid #ccc; /* Borde suave */
+    border-radius: 10px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño del texto */
+    font-family: 'Poppins', sans-serif; /* Fuente coherente con el resto del diseño */
+    color: #333; /* Color del texto */
+    background-color: #f9f9f9; /* Fondo claro */
+    transition: all 0.3s ease; /* Transición para un efecto visual agradable */
+}
+
+textarea:focus {
+    border-color: #5a9; /* Cambia el color del borde al enfocarse */
+    box-shadow: 0 0 10px rgba(90, 169, 90, 0.3); /* Efecto de sombra al enfocar */
+    outline: none; /* Elimina el contorno predeterminado */
+    background-color: #fff; /* Fondo más claro al enfocar */
+}
+
+label[for="observacion"] {
+    font-size: 18px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 10px;
+    display: inline-block; /* Asegura que el texto del label se alinee correctamente */
+}

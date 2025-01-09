@@ -527,5 +527,4 @@ tr:hover {
     white-space: nowrap; /* Evita que el contenido de la tabla se ajuste a nuevas líneas */
     margin: 20px auto; /* Centra el contenedor de la tabla */
     border: 1px solid #ccc; /* (Opcional) Agrega un borde para delimitar la tabla */
-    padding: 10px; /* (Opcional) Espaciado interno */
 }

@@ -92,20 +92,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </form>
 
     <!-- Footer -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     // Manejar la respuesta después de que se haya enviado el formulario
     window.onload = function() {
     <?php if ($response == "success") : ?>
-        swal("Éxito!", "Observación agregada con éxito.", "success").then(() => {
-            window.location.href = 'asesor_panel.php'; // Redirección después de la alerta
+        Swal.fire({
+            title: 'Éxito!',
+            text: 'Observación agregada con éxito.',
+            icon: 'success'
+        }).then(() => {
+            setTimeout(function() {
+                window.location.href = 'asesor_panel.php'; // Redirección después de 1 segundo
+            }, 1000);
         });
     <?php elseif (strpos($response, "error") !== false) : ?>
-        swal("Error!", "<?= $response ?>", "error").then(() => {
-            window.location.href = 'asesor_panel.php'; // Redirección después de la alerta
+        Swal.fire({
+            title: 'Error!',
+            text: "<?= $response ?>",
+            icon: 'error'
+        }).then(() => {
+            setTimeout(function() {
+                window.location.href = 'asesor_panel.php'; // Redirección después de 1 segundo
+            }, 1000);
         });
     <?php endif; ?>
 }
+
 </script>
 
     <script src="js/main_user.js?v=1.1"></script>

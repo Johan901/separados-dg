@@ -133,3 +133,43 @@ function agregarDevolucion() {
         },
     });
 }
+
+
+if (!referencia || !color || isNaN(cantidad) || cantidad <= 0 || !observacion) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Faltan datos o la cantidad no es válida',
+        text: 'Por favor complete todos los campos correctamente.',
+        confirmButtonText: 'Aceptar',
+    });
+    return;
+}
+
+console.log("Datos enviados: ", {
+    referencia: referencia,
+    color: color,
+    cantidad: cantidad,
+    observacion: observacion
+});  // Para verificar los datos antes de enviarlos
+
+$.ajax({
+    url: 'agregar_devolucion.php', 
+    type: 'POST',
+    data: {
+        referencia: referencia,
+        color: color,
+        cantidad: cantidad,
+        observacion: observacion,
+    },
+    success: function(response) {
+        // El resto de la lógica
+    },
+    error: function(xhr, status, error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error en la solicitud',
+            text: 'No se pudo procesar la devolución. Intente más tarde.',
+            confirmButtonText: 'Aceptar',
+        });
+    },
+});

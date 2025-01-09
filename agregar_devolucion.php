@@ -1,10 +1,11 @@
 <?php
 require 'config.php'; // Archivo con la conexión a la base de datos
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-header('Content-Type: application/json');
 
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $referencia = $_POST['referencia'];
@@ -13,13 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $observacion = $_POST['observacion'];
 
     try {
-        $conexion->beginTransaction();
+        $conn->beginTransaction(); // Usamos $conn en lugar de $conexion
 
         // 1. Reducir la cantidad en la tabla `inventario`
         $queryInventario = "UPDATE inventario 
                             SET cantidad = cantidad - :cantidad 
                             WHERE ref = :referencia AND color = :color AND cantidad >= :cantidad";
-        $stmtInventario = $conexion->prepare($queryInventario);
+        $stmtInventario = $conn->prepare($queryInventario); // Usamos $conn en lugar de $conexion
         $stmtInventario->execute([
             ':cantidad' => $cantidad,
             ':referencia' => $referencia,
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 2. Insertar en la tabla `devoluciones`
         $queryDevoluciones = "INSERT INTO devoluciones (ref, color, cantidad, obvs) 
                               VALUES (:referencia, :color, :cantidad, :observacion)";
-        $stmtDevoluciones = $conexion->prepare($queryDevoluciones);
+        $stmtDevoluciones = $conn->prepare($queryDevoluciones); // Usamos $conn en lugar de $conexion
         $stmtDevoluciones->execute([
             ':referencia' => $referencia,
             ':color' => $color,
@@ -41,10 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':observacion' => $observacion,
         ]);
 
-        $conexion->commit();
+        $conn->commit(); // Usamos $conn en lugar de $conexion
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
-        $conexion->rollBack();
+        $conn->rollBack(); // Usamos $conn en lugar de $conexion
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
 }
+?>

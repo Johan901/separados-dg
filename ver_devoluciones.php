@@ -43,7 +43,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
         <a href="admin_panel.php" class="logo">Dulce Guadalupe</a>
         <div class="header-right">
-            <form action="devoluciones.php" method="GET" class="search-form">
+            <form action="ver_devoluciones.php" method="GET" class="search-form">
                 <h2><label for="buscar">Buscar devolución por referencia o color:</label></h2>
                 <input type="text" name="buscar" required>
                 <input type="submit" value="Buscar">

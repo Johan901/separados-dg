@@ -162,7 +162,7 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
         </tbody>
     </table>
 
-    <button type="button" class="custom-button" onclick="eliminarTodoPedido()">Eliminar Todo el Pedido</button>
+    <button type="button" class="button" onclick="eliminarTodoPedido()">Eliminar Todo el Pedido</button>
             
 <?php if ($msg): ?>
 <script>

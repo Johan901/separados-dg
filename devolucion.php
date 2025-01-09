@@ -53,22 +53,6 @@ if (!isset($_SESSION['user_id'])) {
 
 <body>
     <div class="container">
-        <h1>Crear Nuevo Pedido</h1>
-        
-        <!-- Información del Cliente -->
-        <label for="cedula">Cédula del Cliente:</label>
-        <div style="padding: 10px 0px 5px 10px;" class="input-group">
-            <input type="text" id="cedula" name="cedula" placeholder="Ingrese la cédula del cliente">
-            <button class="boton-buscar" type="button" onclick="buscarCliente()">Buscar</button>
-        </div>
-
-        <div style="padding: 10px 0px 5px 10px;" class="input-group">
-        </div>
-
-        <label for="nombre">Nombre del Cliente:</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Nombre del cliente" readonly>
-
-        <label for="estado"></label>
 
         <!-- Búsqueda de Referencia -->
         <div class="section-title">Detalle del Pedido</div>

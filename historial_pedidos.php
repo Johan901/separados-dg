@@ -164,6 +164,7 @@ try {
 
 // Mostrar los resultados en una tabla
 if (isset($result) && count($result) > 0) {
+    echo "<div id='tabla-contenedor'>";
     echo "<table>
         <tr>
             <th>ID Pedido</th>
@@ -281,6 +282,7 @@ if ($total_pedidos == 0) {
             </tr>";
     }
     echo "</table>";
+    echo "</div>"; // Cerramos el contenedor de la tabla
 } else {
     $message = "No se encontraron resultados.";
 }

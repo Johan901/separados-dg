@@ -19,11 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefono = $_POST['telefono']; 
     $email = empty($_POST['email']) ? NULL : $_POST['email']; // Correo Electrónico
     $pais = empty($_POST['pais']) ? NULL : $_POST['pais']; // País
-    $departamento = empty($_POST['departamento']) ? NULL : $_POST['departamento']; // Departamento
-    $ciudad = empty($_POST['ciudad']) ? NULL : $_POST['ciudad']; // Ciudad
+    $departamento = empty($_POST['departamento']) ? NULL : $_POST['departamento']; 
+    $ciudad = empty($_POST['ciudad']) ? NULL : $_POST['ciudad']; 
     $direccion = $_POST['direccion']; 
     $sexo = $_POST['sexo']; 
-    $edad = empty($_POST['edad']) ? NULL : $_POST['edad']; // Edad
+    $edad = empty($_POST['edad']) ? NULL : $_POST['edad']; 
     
     try {
         // Verificar si la cédula ya existe
@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="ciudad">
         
         <label for="direccion">Dirección:</label>
-        <input type="text" name="direccion"  required>
+        <input type="text" name="direccion" required>
         
         <label for="sexo">Sexo:</label>
         <select name="sexo" required>
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </select>
 
         <label for="edad">Edad:</label>
-        <input type="number" name="edad">
+        <input type="number" name="edad" required min="0">
 
         <input type="submit" value="Agregar">
     </form>

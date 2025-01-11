@@ -19,18 +19,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefono = $_POST['telefono']; 
     $email = empty($_POST['email']) ? NULL : $_POST['email']; // Correo Electrónico
     $pais = empty($_POST['pais']) ? NULL : $_POST['pais']; // País
-    $departamento = empty($_POST['departamento']) ? NULL : $_POST['departamento']; // Departamento
-    $ciudad = empty($_POST['ciudad']) ? NULL : $_POST['ciudad']; // Ciudad
+    $departamento = empty($_POST['departamento']) ? NULL : $_POST['departamento']; 
+    $ciudad = empty($_POST['ciudad']) ? NULL : $_POST['ciudad']; 
     $direccion = $_POST['direccion']; 
     $sexo = $_POST['sexo']; 
-    $edad = empty($_POST['edad']) ? NULL : $_POST['edad']; // Edad
+    $edad = empty($_POST['edad']) ? NULL : $_POST['edad']; 
     
     try {
         // Verificar si la cédula ya existe
         $checkQuery = "SELECT COUNT(*) FROM clientes WHERE Cedula = :cedula";
         $checkStmt = $conn->prepare($checkQuery);
         $checkStmt->bindParam(':cedula', $cedula);
-        $checkStmt->execute();
+        $checkStmt->execute(  );
         $count = $checkStmt->fetchColumn();
 
         if ($count > 0) {

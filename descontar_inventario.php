@@ -1,7 +1,10 @@
 <?php
-// descontar_inventario.php
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// Suponiendo que ya tienes una conexión a la base de datos
+include('config.php');
+header('Content-Type: application/json');
 include('config.php');
 
 $referencia = $_POST['ref'];

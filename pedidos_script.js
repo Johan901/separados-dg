@@ -232,30 +232,60 @@ function agregarProducto() {
                         confirmButtonText: 'Aceptar',
                     });
                 } else {
-                    const tbody = document.querySelector('#productos tbody');
-                    const row = tbody.insertRow();
-                    row.innerHTML = `
-                        <td>${referencia}</td>
-                        <td>${color}</td>
-                        <td>${cantidad}</td>
-                        <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(precioUnitario)}</td>
-                        <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(subtotal)}</td>
-                    `;
+                    // Descontamos la cantidad del inventario
+                    $.ajax({
+                        url: 'descontar_inventario.php',
+                        type: 'POST',
+                        data: {
+                            ref: referencia,
+                            color: color,
+                            cantidad: cantidad
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Actualizamos la lista de productos
+                                const tbody = document.querySelector('#productos tbody');
+                                const row = tbody.insertRow();
+                                row.innerHTML = `
+                                    <td>${referencia}</td>
+                                    <td>${color}</td>
+                                    <td>${cantidad}</td>
+                                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(precioUnitario)}</td>
+                                    <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(subtotal)}</td>
+                                `;
 
-                    totalPedido += subtotal;  // Actualizar el total del pedido
-                    document.getElementById('total-pedido').value = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(totalPedido);
+                                totalPedido += subtotal;  // Actualizar el total del pedido
+                                document.getElementById('total-pedido').value = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(totalPedido);
 
-                    // Limpiar campos después de agregar el producto
-                    document.getElementById('referencia-busqueda').value = '';
-                    document.getElementById('color').value = 'Seleccione un color';
-                    document.getElementById('cantidad').value = '';
-                    document.getElementById('precio-unitario').value = '';
+                                // Limpiar campos después de agregar el producto
+                                document.getElementById('referencia-busqueda').value = '';
+                                document.getElementById('color').value = 'Seleccione un color';
+                                document.getElementById('cantidad').value = '';
+                                document.getElementById('precio-unitario').value = '';
 
-                    // Mostrar alerta de éxito
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Producto agregado correctamente',
-                        confirmButtonText: 'Aceptar',
+                                // Mostrar alerta de éxito
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Producto agregado correctamente',
+                                    confirmButtonText: 'Aceptar',
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error al descontar inventario',
+                                    text: response.error || 'Hubo un problema al descontar el inventario.',
+                                    confirmButtonText: 'Aceptar',
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al descontar inventario',
+                                text: 'Ocurrió un error al intentar descontar el inventario. Por favor intenta nuevamente.',
+                                confirmButtonText: 'Aceptar',
+                            });
+                        }
                     });
                 }
             }
@@ -270,6 +300,7 @@ function agregarProducto() {
         }
     });
 }
+
 
 function buscarPedidos() {
     console.log('Función buscarPedidos llamada');

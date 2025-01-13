@@ -70,18 +70,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2>Actualizar Cantidad en Inventario</h2>
 
     <!-- Formulario para actualizar cantidad -->
-    <form action="agregar_cantidad_bodeguero.php" method="post" class="user-edit-form">
-        <label for="ref">Referencia:</label>
-        <input type="text" name="ref" value="<?= isset($_GET['ref']) ? $_GET['ref'] : '' ?>" readonly>
+    <form action="agregar_cantidad_bodeguero.php?ref=<?php echo $ref; ?>&color=<?php echo $color; ?>" method="post" class="user-edit-form">
+    <label for="ref">Referencia:</label>
+    <input type="text" name="ref" value="<?php echo htmlspecialchars($producto['ref']); ?>" readonly>
 
-        <label for="color">Color:</label>
-        <input type="text" name="color" value="<?= isset($_GET['color']) ? $_GET['color'] : '' ?>" readonly>
+    <label for="color">Color:</label>
+    <input type="text" name="color" value="<?php echo htmlspecialchars($producto['color']); ?>" readonly>
 
-        <label for="cantidad">Cantidad Actual:</label>
-        <input type="number" name="cantidad" value="<?= isset($_GET['cantidad']) ? $_GET['cantidad'] : '' ?>" required min="0">
+    <label for="cantidad">Cantidad:</label>
+    <input type="number" name="cantidad" value="<?php echo htmlspecialchars($producto['cantidad']); ?>" required min="0">
 
-        <input type="submit" value="Actualizar Cantidad">
-    </form>
+    <input type="submit" value="Actualizar Cantidad">
+</form>
+
 
     <!-- Footer -->
     <footer class="footer">

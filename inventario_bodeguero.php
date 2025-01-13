@@ -14,9 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <!-- Menú Hamburguesa -->
         <div class="hamburger-menu">
              <i class="fas fa-bars"></i>
         </div>
@@ -41,8 +39,6 @@
 
     <?php
     include('config.php');
-
-    // Verifica si el usuario ha iniciado sesión
     session_start();
     if (!isset($_SESSION['user_id'])) {
         header('Location: index.html');
@@ -51,8 +47,6 @@
 
     if (isset($_GET['ref']) && !empty($_GET['ref'])) {
         $ref = $_GET['ref'];
-        
-        // Query para buscar la prenda por referencia
         $query = "SELECT * FROM inventario WHERE ref = :ref";
         $stmt = $conn->prepare($query);
         $stmt->execute(['ref' => $ref]);
@@ -68,7 +62,6 @@
         echo "<h2>Stock de Prendas</h2>";
     }
 
-    // Mostrar los resultados en una tabla
     echo "<table>
         <tr>
             <th>Referencia</th>
@@ -77,10 +70,10 @@
             <th>Cantidad</th>
             <th>Precio al Detal (COP)</th>
             <th>Precio por Mayor (COP)</th>
+            <th>Acciones</th>
         </tr>";
 
     while ($producto = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Formatear los precios en pesos colombianos
         $precio_al_detal_formateado = '$' . number_format($producto['precio_al_detal'], 0, ',', '.');
         $precio_por_mayor_formateado = '$' . number_format($producto['precio_por_mayor'], 0, ',', '.');
 
@@ -91,6 +84,13 @@
             <td>{$producto['cantidad']}</td>
             <td>{$precio_al_detal_formateado}</td>
             <td>{$precio_por_mayor_formateado}</td>
+            <td>
+                <form action='actualizar_cantidad.php' method='POST'>
+                    <input type='hidden' name='ref' value='{$producto['ref']}'>
+                    <input type='number' name='cantidad' min='1' required>
+                    <button type='submit'>Agregar</button>
+                </form>
+            </td>
         </tr>";
     }
     echo "</table>";
@@ -124,5 +124,4 @@
         &copy; 2025 Dulce Guadalupe | Todos los derechos reservados
     </div>
 </footer>
-
 </html>

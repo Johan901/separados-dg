@@ -148,4 +148,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="js/main_user.js?v=1.1"></script>
 </body>
 </html>
-

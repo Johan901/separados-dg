@@ -37,10 +37,6 @@ function buscarCliente() {
                     title: 'Cliente encontrado satisfactoriamente',
                     confirmButtonText: 'Aceptar',
                 });
-
-                document.getElementById('nombre').value = data.nombre;
-
-                // Ahora buscaremos el último pedido abierto
             }
         },
         error: function(xhr, status, error) {

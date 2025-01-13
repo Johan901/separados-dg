@@ -22,11 +22,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     try {
         // Verificar si la referencia ya existe
-        $checkQuery = "SELECT COUNT(*) FROM inventario WHERE ref = :ref";
+        $checkQuery = "SELECT COUNT(*) FROM inventario WHERE ref = :ref AND color = :color";
         $checkStmt = $conn->prepare($checkQuery);
         $checkStmt->bindParam(':ref', $ref);
+        $checkStmt->bindParam(':color', $color);
         $checkStmt->execute();
         $count = $checkStmt->fetchColumn();
+
 
         if ($count > 0) {
             // La referencia ya existe, devolver error

@@ -41,7 +41,7 @@
                 <label><input type="checkbox" name="sin_separar" value="sin_separar"> Pedidos sin separar</label>
             </div>
             <button type="submit" class="button">Aplicar</button>
-            <button type="reset" class="button" onclick="window.location.href='historial_bodguero.php';">Limpiar</button>
+            <button type="reset" class="button" onclick="window.location.href='historial_bodeguero.php';">Limpiar</button>
         </form>
     </div>
 

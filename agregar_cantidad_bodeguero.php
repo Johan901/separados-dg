@@ -10,12 +10,30 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Captura los parámetros de la URL (ref y color)
+$ref = $_GET['ref'];
+$color = $_GET['color'];
+
+// Consultar la base de datos para obtener la cantidad
+$query = "SELECT cantidad FROM inventario WHERE ref = :ref AND color = :color";
+$stmt = $conn->prepare($query);
+$stmt->bindParam(':ref', $ref);
+$stmt->bindParam(':color', $color);
+$stmt->execute();
+$producto = $stmt->fetch();
+
+// Verificar si se encontró el producto
+if ($producto) {
+    $cantidad_actual = $producto['cantidad'];
+} else {
+    // Si no se encuentra el producto, asignar valor nulo o 0
+    $cantidad_actual = 0;
+}
+
 // Si se envía el formulario, procesa e inserta en la base de datos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger los datos del formulario
-    $ref = $_POST['ref']; // Referencia
-    $color = $_POST['color']; // Color
-    $cantidad = $_POST['cantidad']; // Cantidad
+    $cantidad = $_POST['cantidad']; // Nueva cantidad
     
     try {
         // Actualizar la cantidad en la base de datos
@@ -72,17 +90,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Formulario para actualizar cantidad -->
     <form action="agregar_cantidad_bodeguero.php?ref=<?php echo $ref; ?>&color=<?php echo $color; ?>" method="post" class="user-edit-form">
     <label for="ref">Referencia:</label>
-    <input type="text" name="ref" value="<?php echo htmlspecialchars($producto['ref']); ?>" readonly>
+    <input type="text" name="ref" value="<?= htmlspecialchars($ref); ?>" readonly>
 
     <label for="color">Color:</label>
-    <input type="text" name="color" value="<?php echo htmlspecialchars($producto['color']); ?>" readonly>
+    <input type="text" name="color" value="<?= htmlspecialchars($color); ?>" readonly>
 
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" name="cantidad" value="<?php echo htmlspecialchars($producto['cantidad']); ?>" required min="0">
+    <label for="cantidad">Cantidad Actual:</label>
+    <input type="number" name="cantidad" value="<?= htmlspecialchars($cantidad_actual); ?>" required min="0">
 
     <input type="submit" value="Actualizar Cantidad">
 </form>
-
 
     <!-- Footer -->
     <footer class="footer">

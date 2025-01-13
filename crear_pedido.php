@@ -77,8 +77,9 @@ foreach ($productos as $producto) {
     ]);
 
     // Ahora, descontamos la cantidad de productos del inventario
-    $stmt_inventario = $conn->prepare("UPDATE inventario SET cantidad = cantidad - ? WHERE referencia = ? AND color = ?");
+    $stmt_inventario = $conn->prepare("UPDATE inventario SET cantidad = cantidad - ? WHERE ref = ? AND color = ?");
     $stmt_inventario->execute([$producto['cantidad'], $producto['referencia'], $producto['color']]);
+
 }
 
     $conn->commit();

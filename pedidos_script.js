@@ -41,7 +41,6 @@ function buscarCliente() {
                 document.getElementById('nombre').value = data.nombre;
 
                 // Ahora buscaremos el último pedido abierto
-                buscarUltimoPedidoAbierto(cedula);
             }
         },
         error: function(xhr, status, error) {
@@ -54,6 +53,8 @@ function buscarCliente() {
         }
     });
 }
+
+
 
 
 // Variables globales para almacenar el precio según el tipo de compra

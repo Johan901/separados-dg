@@ -27,11 +27,7 @@
         </div>
         <a href="asesor_panel.php" class="logo">Dulce Guadalupe</a>
         <div class="header-right">
-            <form action="detalle_pedido.php" method="GET" class="search-form">
-                <h2><label for="id_pedido">Buscar por número de ID pedido:</label></h2>
-                <input type="text" name="id_pedido" required>
-                <input type="submit" value="Buscar detalle del pedido">
-            </form>
+                <h2><label for="id_pedido">Remitente: ÁNGELA MARCELA TASCÓN</label></h2>
         </div>
         <a href="logout.php" class="logout-button">Cerrar Sesión</a>
     </header>

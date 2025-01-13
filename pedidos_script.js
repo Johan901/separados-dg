@@ -37,6 +37,8 @@ function buscarCliente() {
                     title: 'Cliente encontrado satisfactoriamente',
                     confirmButtonText: 'Aceptar',
                 });
+
+                document.getElementById('nombre').value = data.nombre;
             }
         },
         error: function(xhr, status, error) {
@@ -49,6 +51,7 @@ function buscarCliente() {
         }
     });
 }
+
 
 
 

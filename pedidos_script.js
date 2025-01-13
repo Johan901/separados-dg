@@ -55,36 +55,6 @@ function buscarCliente() {
     });
 }
 
-function buscarUltimoPedidoAbierto(cedula) {
-    $.ajax({
-        url: 'buscar_ultimo_pedido_abierto.php',
-        type: 'GET',
-        data: { cedula: cedula },
-        success: function(data) {
-            data = typeof data === 'string' ? JSON.parse(data) : data;
-
-            if (data.error) {
-                console.log("No se encontraron pedidos abiertos.");
-            } else {
-                // Autocompletar los campos
-                document.getElementById('asesor').value = data.asesor;
-                document.getElementById('medio_conocimiento').value = data.medio_conocimiento;
-                document.getElementById('envio').value = data.envio;
-            }
-        },
-        error: function(xhr, status, error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error en la solicitud',
-                text: 'Ocurrió un error al intentar buscar el último pedido abierto. Por favor intenta nuevamente.',
-                confirmButtonText: 'Aceptar',
-            });
-        }
-    });
-}
-
-
-
 
 // Variables globales para almacenar el precio según el tipo de compra
 let precioMayor;

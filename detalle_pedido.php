@@ -53,7 +53,7 @@ if (isset($_GET['id'])) {
     // Actualizar la consulta SQL para incluir las nuevas columnas
     $query = "SELECT dp.id_detalle, dp.id_pedido, dp.ref, dp.color, dp.cantidad, dp.precio_unitario, 
                  dp.subtotal, dp.actualizado, 
-                 c.cedula, c.nombre, 
+                 c.cedula, c.nombre, c.telefono,
                  p.asesor, p.envio
           FROM detalle_pedido dp
           INNER JOIN pedidos p ON dp.id_pedido = p.id_pedido
@@ -78,6 +78,7 @@ if (isset($_GET['id'])) {
                     <th>Cantidad</th>
                     <th>Precio Unitario (COP)</th>
                     <th>Subtotal (COP)</th>
+                    <th>Celular Cliente</th>
                     <th>Cédula</th>
                     <th>Nombre</th>
                     <th>Asesor</th>
@@ -96,6 +97,7 @@ if (isset($_GET['id'])) {
                         <td>{$row['cantidad']}</td>
                         <td>" . '$' . number_format($row['precio_unitario'], 0, '', '.') . "</td>
                         <td>" . '$' . number_format($row['subtotal'], 0, '', '.') . "</td>
+                        <td>{$row['telefono']}</td>
                         <td>{$row['cedula']}</td>
                         <td>{$row['nombre']}</td>
                         <td>{$row['asesor']}</td>

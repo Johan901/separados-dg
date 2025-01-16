@@ -19,9 +19,9 @@
         <div class="hamburger-menu">
             <i class="fas fa-bars"></i>
             <div class="dropdown-menu">
-                <a href="admin_panel.php">Inicio</a>
-                <a href="agregar_usuario.php">Agregar nuevo cliente</a>
-                <a href="nuevo_pedido.php">Agregar nuevo pedido</a>
+                <a href="asesor_panel.php">Inicio</a>
+                <a href="agregar_usuario_asesor.php">Agregar nuevo cliente</a>
+                <a href="nuevo_pedido_asesor.php">Agregar nuevo pedido</a>
                 <a href="historial_asesor.php">Historial de pedidos</a>
             </div>
         </div>

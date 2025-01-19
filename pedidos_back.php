@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $query = "SELECT asesor, cliente_cedula, envio, estado, fecha_limite, fecha_pedido, id_pedido, medio_conocimiento, 
                          observaciones, pedido_separado, total_pedido 
                   FROM pedidos 
-                  WHERE estado = 'Desarmado'";
+                  WHERE estado = 'eliminado'";
 
         $stmt = $conn->prepare($query);
         $stmt->execute();

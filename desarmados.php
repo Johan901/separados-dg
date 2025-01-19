@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('config.php');
+header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.html');
@@ -121,24 +122,24 @@ $(document).ready(function () {
     });
 });
 
-function showReferences(id_pedido) {
-    $.ajax({
-        url: 'detalle_pedido_back.php',
-        type: 'POST',
-        data: { action: 'fetch_references', id_pedido: id_pedido },
-        success: function (response) {
-            const references = JSON.parse(response);
-            const select = $(`select[data-id="${id_pedido}"]`);
-            select.empty();
-            references.forEach(reference => {
-                select.append(new Option(reference.ref, reference.id_detalle));
-            });
-        },
-        error: function () {
-            alert('Error al cargar las referencias.');
+$.ajax({
+    url: 'pedidos_back.php',
+    type: 'POST',
+    data: { action: 'fetch_deactivated' },
+    dataType: 'json',  // Asegura que la respuesta se trate como JSON
+    success: function (response) {
+        console.log('Respuesta recibida:', response);
+        if (response.pedidos && response.pedidos.length > 0) {
+            // Procesar datos
+        } else {
+            alert('No hay pedidos desarmados.');
         }
-    });
-}
+    },
+    error: function (xhr, status, error) {
+        console.error('Error:', xhr.responseText);
+        alert('Error al cargar los datos.');
+    }
+});
 </script>
 </body>
 </html>

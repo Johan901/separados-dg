@@ -2,9 +2,10 @@
 include('config.php');
 
 if (isset($_POST['action']) && $_POST['action'] == 'fetch_references') {
-    $id_pedido = $_POST['id_pedido'];
-    $sql = "SELECT ref, id_detalle FROM detalle_pedido WHERE id_pedido = $id_pedido";
-    $result = pg_query($conn, $sql);
+    $id_pedido = intval($_POST['id_pedido']); // Sanitización de entrada
+    $sql = "SELECT ref, id_detalle FROM detalle_pedido WHERE id_pedido = $1";
+    $result = pg_query_params($conn, $sql, [$id_pedido]);
+
 
     if ($result) {
         $references = [];

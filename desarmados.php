@@ -1,14 +1,3 @@
-<?php
-session_start();
-include('config.php');
-header('Content-Type: application/json');
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.html');
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -50,10 +39,10 @@ if (!isset($_SESSION['user_id'])) {
             <thead>
                 <tr>
                     <th>Asesor</th>
-                    <th>Cedula Cliente</th>
-                    <th>Envio</th>
+                    <th>Cédula Cliente</th>
+                    <th>Envío</th>
                     <th>Estado</th>
-                    <th>Fecha Limite</th>
+                    <th>Fecha Límite</th>
                     <th>Fecha Pedido</th>
                     <th>ID Pedido</th>
                     <th>Medio Conocimiento</th>
@@ -70,76 +59,61 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <script>
-$(document).ready(function () {
-    // Mostrar pedidos desarmados (estado "eliminado")
-    $('#btn-show-deactivated').on('click', function () {
-        $.ajax({
-            url: 'pedidos_back.php',
-            type: 'POST',
-            data: { action: 'fetch_deactivated' },
-            success: function (response) {
-                try {
-                    const data = JSON.parse(response);
+        $(document).ready(function () {
+            // Evento para cargar pedidos desarmados al hacer clic en el botón
+            $('#btn-show-deactivated').on('click', function () {
+                $.ajax({
+                    url: 'pedidos_back.php',
+                    type: 'POST',
+                    data: { action: 'fetch_deactivated' },
+                    dataType: 'json',  // Aseguramos que la respuesta se trate como JSON
+                    success: function (response) {
+                        console.log('Respuesta recibida:', response);
 
-                    if (data.pedidos && data.pedidos.length > 0) {
-                        let tableRows = '';
-                        data.pedidos.forEach(item => {
-                            tableRows += `
-                                <tr>
-                                    <td>${item.asesor}</td>
-                                    <td>${item.cliente_cedula}</td>
-                                    <td>${item.envio}</td>
-                                    <td>${item.estado}</td>
-                                    <td>${item.fecha_limite}</td>
-                                    <td>${item.fecha_pedido}</td>
-                                    <td>${item.id_pedido}</td>
-                                    <td>${item.medio_conocimiento}</td>
-                                    <td>${item.observaciones}</td>
-                                    <td>${item.pedido_separado ? 'Sí' : 'No'}</td>
-                                    <td>${item.total_pedido}</td>
-                                    <td>
-                                        <select onchange="showReferences(${item.id_pedido})">
-                                            <option value="">Seleccionar</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            `;
-                        });
-                        $('#tabla-pedidos-desarmados tbody').html(tableRows);
-                        $('#tabla-pedidos-desarmados').show();
-                    } else {
-                        alert('No hay pedidos desarmados.');
-                        $('#tabla-pedidos-desarmados').hide();
+                        if (response.pedidos && response.pedidos.length > 0) {
+                            let tableRows = '';
+                            response.pedidos.forEach(item => {
+                                tableRows += `
+                                    <tr>
+                                        <td>${item.asesor}</td>
+                                        <td>${item.cliente_cedula}</td>
+                                        <td>${item.envio}</td>
+                                        <td>${item.estado}</td>
+                                        <td>${item.fecha_limite}</td>
+                                        <td>${item.fecha_pedido}</td>
+                                        <td>${item.id_pedido}</td>
+                                        <td>${item.medio_conocimiento}</td>
+                                        <td>${item.observaciones}</td>
+                                        <td>${item.pedido_separado ? 'Sí' : 'No'}</td>
+                                        <td>${item.total_pedido}</td>
+                                        <td>
+                                            <select onchange="showReferences(${item.id_pedido})">
+                                                <option value="">Seleccionar</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+
+                            $('#tabla-pedidos-desarmados tbody').html(tableRows);
+                            $('#tabla-pedidos-desarmados').show();
+                        } else {
+                            alert('No hay pedidos desarmados.');
+                            $('#tabla-pedidos-desarmados').hide();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', xhr.responseText);
+                        alert('Error al cargar los datos.');
                     }
-                } catch (error) {
-                    console.error('Error al procesar los datos:', error);
-                }
-            },
-            error: function () {
-                alert('Error al cargar los datos.');
-            }
+                });
+            });
         });
-    });
-});
 
-$.ajax({
-    url: 'pedidos_back.php',
-    type: 'POST',
-    data: { action: 'fetch_deactivated' },
-    dataType: 'json',  // Asegura que la respuesta se trate como JSON
-    success: function (response) {
-        console.log('Respuesta recibida:', response);
-        if (response.pedidos && response.pedidos.length > 0) {
-            // Procesar datos
-        } else {
-            alert('No hay pedidos desarmados.');
+        // Función para mostrar referencias (puedes agregar la lógica en main_user.js)
+        function showReferences(idPedido) {
+            alert('Mostrar referencias para el pedido: ' + idPedido);
         }
-    },
-    error: function (xhr, status, error) {
-        console.error('Error:', xhr.responseText);
-        alert('Error al cargar los datos.');
-    }
-});
-</script>
+    </script>
 </body>
 </html>

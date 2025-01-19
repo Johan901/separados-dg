@@ -111,9 +111,30 @@
         });
 
         // Función para mostrar referencias (puedes agregar la lógica en main_user.js)
-        function showReferences(idPedido) {
-            alert('Mostrar referencias para el pedido: ' + idPedido);
+        // Función para obtener referencias y colores de cada pedido
+        function fetchReferences(idPedido) {
+            $.ajax({
+                url: 'pedidos_back.php',
+                type: 'POST',
+                data: { action: 'fetch_references', id_pedido: idPedido },
+                dataType: 'json',
+                success: function (response) {
+                    let refCell = $(`#ref-${idPedido}`);
+
+                    if (response.length > 0) {
+                        let refContent = response.map(item => `Ref: ${item.ref}, Color: ${item.color}`).join('<br>');
+                        refCell.html(refContent);
+                    } else {
+                        refCell.html('No disponible');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', xhr.responseText);
+                    $(`#ref-${idPedido}`).html('Error');
+                }
+            });
         }
+
     </script>
 </body>
 </html>

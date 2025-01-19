@@ -60,53 +60,50 @@
 
     <script>
         $(document).ready(function () {
-            // Evento para cargar pedidos desarmados al hacer clic en el botón
-            $('#btn-show-deactivated').on('click', function () {
-                $.ajax({
-                    url: 'pedidos_back.php',
-                    type: 'POST',
-                    data: { action: 'fetch_deactivated' },
-                    dataType: 'json',  // Aseguramos que la respuesta se trate como JSON
-                    success: function (response) {
-                        console.log('Respuesta recibida:', response);
+        // Evento para cargar pedidos desarmados al hacer clic en el botón
+        $('#btn-show-deactivated').on('click', function () {
+            $.ajax({
+                url: 'pedidos_back.php',
+                type: 'POST',
+                data: { action: 'fetch_deactivated' },
+                dataType: 'json', 
+                success: function (response) {
+                    console.log('Pedidos recibidos:', response);
 
-                        if (response.pedidos && response.pedidos.length > 0) {
-                            let tableRows = '';
-                            response.pedidos.forEach(item => {
-                                tableRows += `
-                                    <tr>
-                                        <td>${item.asesor}</td>
-                                        <td>${item.cliente_cedula}</td>
-                                        <td>${item.envio}</td>
-                                        <td>${item.estado}</td>
-                                        <td>${item.fecha_limite}</td>
-                                        <td>${item.fecha_pedido}</td>
-                                        <td>${item.id_pedido}</td>
-                                        <td>${item.medio_conocimiento}</td>
-                                        <td>${item.observaciones}</td>
-                                        <td>${item.pedido_separado ? 'Sí' : 'No'}</td>
-                                        <td>${item.total_pedido}</td>
-                                        <td>
-                                            <select onchange="showReferences(${item.id_pedido})">
-                                                <option value="">Seleccionar</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                `;
-                            });
+                    if (response.pedidos && response.pedidos.length > 0) {
+                        let tableRows = '';
+                        response.pedidos.forEach(item => {
+                            tableRows += `
+                                <tr>
+                                    <td>${item.asesor}</td>
+                                    <td>${item.cliente_cedula}</td>
+                                    <td>${item.envio}</td>
+                                    <td>${item.estado}</td>
+                                    <td>${item.fecha_limite}</td>
+                                    <td>${item.fecha_pedido}</td>
+                                    <td>${item.id_pedido}</td>
+                                    <td>${item.medio_conocimiento}</td>
+                                    <td>${item.observaciones}</td>
+                                    <td>${item.pedido_separado ? 'Sí' : 'No'}</td>
+                                    <td>${item.total_pedido}</td>
+                                    <td id="ref-${item.id_pedido}">Cargando...</td>
+                                </tr>
+                            `;
 
-                            $('#tabla-pedidos-desarmados tbody').html(tableRows);
-                            $('#tabla-pedidos-desarmados').show();
-                        } else {
-                            alert('No hay pedidos desarmados.');
-                            $('#tabla-pedidos-desarmados').hide();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error:', xhr.responseText);
-                        alert('Error al cargar los datos.');
+                            fetchReferences(item.id_pedido);
+                        });
+
+                        $('#tabla-pedidos-desarmados tbody').html(tableRows);
+                        $('#tabla-pedidos-desarmados').show();
+                    } else {
+                        alert('No hay pedidos desarmados.');
+                        $('#tabla-pedidos-desarmados').hide();
                     }
-                });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', xhr.responseText);
+                    alert('Error al cargar los datos.');
+                }
             });
         });
 
@@ -114,7 +111,7 @@
         // Función para obtener referencias y colores de cada pedido
         function fetchReferences(idPedido) {
             $.ajax({
-                url: 'pedidos_back.php',
+                url: 'detalle_pedido_back.php',
                 type: 'POST',
                 data: { action: 'fetch_references', id_pedido: idPedido },
                 dataType: 'json',

@@ -12,17 +12,23 @@ $query = "SELECT dp.ref, dp.color, SUM(dp.cantidad) AS cantidad
           WHERE 1=1";
 
 // Si se ha seleccionado un día, filtramos por fecha
-if ($dia) {
+if (!empty($dia)) {
     $query .= " AND DATE(p.fecha_pedido) = ?";
-    $params = [$dia];
-} elseif ($mes) {
-    // Si se ha seleccionado un mes, filtramos por el mes
-    $query .= " AND DATE_FORMAT(p.fecha_pedido, '%Y-%m') = ?";
-    $params = [$mes];
-} else {
-    // Si no se selecciona ni un día ni un mes, mostramos todas las ventas
-    $params = [];
+    $params[] = $dia;
+} elseif (!empty($mes)) {
+    // Asegurar que el formato del mes es correcto antes de la consulta
+    if (preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $mes)) {
+        $query .= " AND DATE_FORMAT(p.fecha_pedido, '%Y-%m') = ?";
+        $params[] = $mes;
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Formato de mes incorrecto.'
+        ]);
+        exit;
+    }
 }
+
 
 $query .= " GROUP BY dp.ref, dp.color ORDER BY cantidad DESC LIMIT 10";  // Limitar a las 10 referencias más vendidas
 

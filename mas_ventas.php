@@ -21,7 +21,7 @@
                 <a href="inventario.php">Inventario de productos</a>
                 <a href="nuevo_pedido.php">Agregar nuevo pedido</a>
                 <a href="historial_pedidos.php">Historial de pedidos</a>
-                <a href="reportes.php">Reportes</a>
+                <a href="admin_panel.php">Reportes</a>
             </div>
         </div>
         <a href="admin_panel.php" class="logo">Dulce Guadalupe</a>
@@ -31,13 +31,11 @@
     <div class="container">
         <h1>Reportes de Ventas</h1>
 
-        <!-- Formulario para ingresar fecha del día -->
         <label for="dia">Seleccionar día:</label>
-        <input type="date" id="dia" name="dia">
+        <input type="date" id="dia" name="dia" placeholder="dd/mm/aaaa">
 
-        <!-- Formulario para ingresar mes -->
         <label for="mes">Seleccionar mes:</label>
-        <input type="month" id="mes" name="mes">
+        <input type="month" id="mes" name="mes" placeholder="enero de 2025">
 
         <!-- Botón para generar los reportes -->
         <button id="btn-generar-reporte" class="button" type="button">Generar Reporte</button>
@@ -61,50 +59,54 @@
         $(document).ready(function () {
             // Evento para generar el reporte
             $('#btn-generar-reporte').on('click', function () {
-                var dia = $('#dia').val();
-                var mes = $('#mes').val();
+    var dia = $('#dia').val();
+    var mes = $('#mes').val();
 
-                // Validar que al menos uno de los campos sea ingresado
-                if (!dia && !mes) {
-                    alert('Debe seleccionar al menos un día o mes.');
-                    return;
-                }
+    console.log("Día seleccionado:", dia);
+    console.log("Mes seleccionado:", mes);
 
-                // Realizar la solicitud AJAX para obtener los datos
-                $.ajax({
-                    url: 'reporte_mas_ventas.php',
-                    type: 'POST',
-                    data: {
-                        dia: dia,
-                        mes: mes
-                    },
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.success) {
-                            let tableRows = '';
-                            response.referencias.forEach(item => {
-                                tableRows += `
-                                    <tr>
-                                        <td>${item.ref}</td>
-                                        <td>${item.color}</td>
-                                        <td>${item.cantidad}</td>
-                                    </tr>
-                                `;
-                            });
+    // Validar que al menos uno de los campos sea ingresado
+    if (!dia && !mes) {
+        alert('Debe seleccionar al menos un día o mes.');
+        return;
+    }
 
-                            $('#tabla-referencias tbody').html(tableRows);
-                            $('#tabla-referencias').show();
-                        } else {
-                            alert('No se encontraron datos para la fecha seleccionada.');
-                            $('#tabla-referencias').hide();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error:', xhr.responseText);
-                        alert('Error al generar el reporte.');
-                    }
+    // Realizar la solicitud AJAX para obtener los datos
+    $.ajax({
+        url: 'reporte_mas_ventas.php',
+        type: 'POST',
+        data: {
+            dia: dia,
+            mes: mes
+        },
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                let tableRows = '';
+                response.referencias.forEach(item => {
+                    tableRows += `
+                        <tr>
+                            <td>${item.ref}</td>
+                            <td>${item.color}</td>
+                            <td>${item.cantidad}</td>
+                        </tr>
+                    `;
                 });
-            });
+
+                $('#tabla-referencias tbody').html(tableRows);
+                $('#tabla-referencias').show();
+            } else {
+                alert('No se encontraron datos para la fecha seleccionada.');
+                $('#tabla-referencias').hide();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', xhr.responseText);
+            alert('Error al generar el reporte.');
+        }
+    });
+});
+
         });
     </script>
 </body>

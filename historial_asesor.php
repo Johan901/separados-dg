@@ -60,6 +60,13 @@
             <input type="text" name="cliente_cedula" required>
             <input class="button" type="submit" value="Buscar pedidos de clientes">
         </form>
+
+        <!-- Buscar por Cédula o nombre cliente -->
+        <form action="historial_asesor.php" method="GET" class="search-form">
+                <label for="buscar">Buscar cliente por nombre o cédula:</label>
+                <input type="text" name="buscar" required>
+                <input type="submit" value="Buscar">
+        </form>
     </div>
 </div>
     <script src="js/main_user.js?v=1.1"></script>
@@ -116,6 +123,12 @@ if (isset($_GET['id_pedido']) && is_numeric($_GET['id_pedido'])) {
 if (isset($_GET['cliente_cedula'])) {
     $cliente_cedula = $_GET['cliente_cedula'];
     $conditions[] = "p.cliente_cedula = :cliente_cedula";
+}
+
+// Filtro por cédula o nombre del cliente
+if (isset($_GET['buscar']) && !empty($_GET['buscar'])) {
+    $buscar = $_GET['buscar'];
+    $conditions[] = "(p.cliente_cedula LIKE :buscar OR c.nombre LIKE :buscar)";
 }
 
 // Agregar las condiciones de filtro

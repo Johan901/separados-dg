@@ -693,8 +693,8 @@ input[type="month"] {
 /* Efecto al hacer foco en los inputs */
 input[type="date"]:focus,
 input[type="month"]:focus {
-    border-color: #2E7D32;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+    border-color: #e91d29;
+    box-shadow: 0 0 10px rgba(255, 15, 3, 0.5);
     background-color: #fff;
 }
 

@@ -669,7 +669,7 @@ canvas {
 /* Estilos para los labels */
 label {
     font-size: 18px;
-    color: #4CAF50;
+    color: #000;
     font-weight: 600;
     margin-bottom: 5px;
     display: block;
@@ -682,7 +682,7 @@ input[type="month"] {
     padding: 12px;
     font-size: 16px;
     color: #333;
-    border: 2px solid #4CAF50;
+    border: 2px solid #e91d29;
     border-radius: 8px;
     outline: none;
     background-color: #f9f9f9;

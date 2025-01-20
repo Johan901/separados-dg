@@ -40,7 +40,7 @@
         <input type="month" id="mes" name="mes">
 
         <!-- Botón para generar los reportes -->
-        <button id="btn-generar-reporte" type="button">Generar Reporte</button>
+        <button id="btn-generar-reporte" class="button" type="button">Generar Reporte</button>
 
         <h2>Referencias más vendidas</h2>
         <table id="tabla-referencias" border="1" style="width: 100%; border-collapse: collapse; display: none;">
@@ -108,4 +108,31 @@
         });
     </script>
 </body>
+
+
+<footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2 class="footer-title">Sobre Nosotros</h2>
+                <p>Somos una empresa comprometida en brindar el mejor servicio a nuestros clientes. Contáctanos para más información.</p>
+            </div>
+            <div class="footer-section links">
+                <h2 class="footer-title">Enlaces Rápidos</h2>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section contact-form">
+                <h2 class="footer-title">Contáctanos</h2>
+                <p>Email: info@dulceguadalupe.com</p>
+                <p>Teléfono: +57 3153925613</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+        &copy; 2025 Dulce Guadalupe | Todos los derechos reservados | Sistema de Gestión de separodos e Inventario.
+    </div>        
+    </footer>
 </html>

@@ -130,7 +130,6 @@ if (isset($_SESSION['nombre_usuario'])) {
                 <a href="nuevo_pedido.php">Agregar Nuevo Pedido</a>
                 <a href="historial_pedidos.php">Historial de Pedidos</a>
                 <a href="detalle_pedido.php">Detalles de los Pedidos</a>
-                <a href="desarmados.php">Pedidos desarmados</a>
             </div>
         </div>
         <div class="section" style="background-color:rgb(165, 212, 157);">
@@ -140,7 +139,6 @@ if (isset($_SESSION['nombre_usuario'])) {
                 <a href="separados_asesor.php">Separados Por Línea</a>
                 <a href="prendas.php">Prendas Agotadas</a>
                 <a href="vencimiento.php">Separados Por Vencer</a>
-                <a href="mas_ventas.php">Ventas día/mes</a>
             </div>
         </div>
     </div>

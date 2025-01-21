@@ -63,8 +63,8 @@
 
         <!-- Buscar por Cédula o nombre cliente -->
         <form action="historial_asesor.php" method="GET" class="search-form">
-                <label for="nombre_cliente">Buscar cliente por nombre:</label>
-                <input type="text" name="nombre_cliente" required>
+                <label for="buscar">Buscar cliente por nombre o cédula:</label>
+                <input type="text" name="buscar" required>
                 <input type="submit" value="Buscar">
         </form>
     </div>
@@ -125,10 +125,10 @@ if (isset($_GET['cliente_cedula'])) {
     $conditions[] = "p.cliente_cedula = :cliente_cedula";
 }
 
-// Filtro por nombre de cliente
-if (isset($_GET['nombre_cliente'])) {
-    $nombre_cliente = $_GET['nombre_cliente'];
-    $conditions[] = "c.nombre LIKE :nombre_cliente";
+// Filtro por cédula o nombre del cliente
+if (isset($_GET['buscar']) && !empty($_GET['buscar'])) {
+    $buscar = '%' . $_GET['buscar'] . '%';  // Usar LIKE para buscar coincidencias parciales
+    $conditions[] = "(p.cliente_cedula LIKE :buscar OR c.nombre LIKE :buscar)";
 }
 
 // Agregar las condiciones de filtro
@@ -142,19 +142,22 @@ $query .= " GROUP BY p.id_pedido, c.nombre, p.estado ORDER BY p.fecha_pedido DES
 // Preparar y ejecutar la consulta
 $stmt = $conn->prepare($query);
 
+// Vincular los parámetros si es necesario
+if (isset($buscar)) {
+    $stmt->bindValue(':buscar', $buscar, PDO::PARAM_STR);
+}
+
 if (isset($id_pedido)) {
     $stmt->bindValue(':id_pedido', $id_pedido, PDO::PARAM_INT);
 }
 if (isset($cliente_cedula)) {
     $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
 }
-if (isset($buscar)) {
-    $stmt->bindValue(':nombre_cliente', $nombre_cliente, PDO::PARAM_STR);
-}
 
 try {
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     // Comprobar si el resultado está vacío
     if (empty($result)) {
         echo "<script>

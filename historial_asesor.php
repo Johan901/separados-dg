@@ -63,8 +63,8 @@
 
         <!-- Buscar por Cédula o nombre cliente -->
         <form action="historial_asesor.php" method="GET" class="search-form">
-                <label for="buscar">Buscar cliente por nombre o cédula:</label>
-                <input type="text" name="buscar" required>
+                <label for="nombre_cliente">Buscar cliente por nombre:</label>
+                <input type="text" name="nombre_cliente" required>
                 <input type="submit" value="Buscar">
         </form>
     </div>

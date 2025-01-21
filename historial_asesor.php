@@ -54,13 +54,6 @@
             <input class="button" type="submit" value="Buscar pedido">
         </form>
 
-        <!-- Buscar por Cédula Cliente -->
-        <form action="historial_asesor.php" method="GET" class="search-form">
-            <label for="cliente_cedula">Buscar pedidos por Cédula Cliente:</label>
-            <input type="text" name="cliente_cedula" required>
-            <input class="button" type="submit" value="Buscar pedidos de clientes">
-        </form>
-
         <!-- Buscar por Cédula o nombre cliente -->
         <form action="historial_asesor.php" method="GET" class="search-form">
                 <label for="buscar">Buscar cliente por nombre o cédula:</label>
@@ -119,16 +112,10 @@ if (isset($_GET['id_pedido']) && is_numeric($_GET['id_pedido'])) {
     $conditions[] = "p.id_pedido = :id_pedido";
 }
 
-// Filtro por cédula de cliente
-if (isset($_GET['cliente_cedula'])) {
-    $cliente_cedula = $_GET['cliente_cedula'];
-    $conditions[] = "p.cliente_cedula = :cliente_cedula";
-}
-
-// Filtro por cédula o nombre del cliente
+// Filtro por cédula o nombre del cliente, sin importar mayúsculas o minúsculas
 if (isset($_GET['buscar']) && !empty($_GET['buscar'])) {
     $buscar = '%' . $_GET['buscar'] . '%';  // Usar LIKE para buscar coincidencias parciales
-    $conditions[] = "(p.cliente_cedula LIKE :buscar OR c.nombre LIKE :buscar)";
+    $conditions[] = "(LOWER(p.cliente_cedula) LIKE LOWER(:buscar) OR LOWER(c.nombre) LIKE LOWER(:buscar))";
 }
 
 // Agregar las condiciones de filtro
@@ -150,9 +137,7 @@ if (isset($buscar)) {
 if (isset($id_pedido)) {
     $stmt->bindValue(':id_pedido', $id_pedido, PDO::PARAM_INT);
 }
-if (isset($cliente_cedula)) {
-    $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
-}
+
 
 try {
     $stmt->execute();
@@ -168,7 +153,7 @@ try {
                     confirmButtonText: 'Aceptar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = 'asesor_panel.php';
+                        window.location.href = 'historial_asesor.php';
                     }
                 });
               </script>";

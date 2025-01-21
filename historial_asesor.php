@@ -125,9 +125,8 @@ if (isset($_GET['cliente_cedula'])) {
     $conditions[] = "p.cliente_cedula = :cliente_cedula";
 }
 
-// Filtro por cédula o nombre del cliente
 if (isset($_GET['buscar']) && !empty($_GET['buscar'])) {
-    $buscar = $_GET['buscar'];
+    $buscar = '%' . $_GET['buscar'] . '%';
     $conditions[] = "(p.cliente_cedula LIKE :buscar OR c.nombre LIKE :buscar)";
 }
 
@@ -148,11 +147,13 @@ if (isset($id_pedido)) {
 if (isset($cliente_cedula)) {
     $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
 }
+if (isset($buscar)) {
+    $stmt->bindValue(':buscar', $buscar, PDO::PARAM_STR);
+}
 
 try {
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     // Comprobar si el resultado está vacío
     if (empty($result)) {
         echo "<script>

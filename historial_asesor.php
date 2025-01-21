@@ -125,9 +125,10 @@ if (isset($_GET['cliente_cedula'])) {
     $conditions[] = "p.cliente_cedula = :cliente_cedula";
 }
 
-if (isset($_GET['buscar']) && !empty($_GET['buscar'])) {
-    $buscar = '%' . $_GET['buscar'] . '%';
-    $conditions[] = "(p.cliente_cedula LIKE :buscar OR c.nombre LIKE :buscar)";
+// Filtro por nombre de cliente
+if (isset($_GET['nombre_cliente'])) {
+    $nombre_cliente = $_GET['nombre_cliente'];
+    $conditions[] = "c.nombre LIKE :nombre_cliente";
 }
 
 // Agregar las condiciones de filtro
@@ -148,7 +149,7 @@ if (isset($cliente_cedula)) {
     $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
 }
 if (isset($buscar)) {
-    $stmt->bindValue(':buscar', $buscar, PDO::PARAM_STR);
+    $stmt->bindValue(':nombre_cliente', $nombre_cliente, PDO::PARAM_STR);
 }
 
 try {

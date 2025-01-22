@@ -28,18 +28,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if ($resultados) {
-                echo "<h3>Reporte de prendas separadas por asesor: $asesor</h3>";
+                $total_prendas = 0;
+            
+                foreach ($resultados as $fila) {
+                    $total_prendas += $fila['total_cantidad'];
+                }
+            
+                echo "<h3>Reporte de prendas separadas por asesor: $asesor ha separado ($total_prendas) prendas</h3>";
                 echo "<table><thead><tr><th>Referencia</th><th>Color</th><th>Cantidad Separada</th></tr></thead><tbody>";
-
+            
                 $chartData = [["Referencia", "Cantidad Separada"]];
-
+            
                 foreach ($resultados as $fila) {
                     echo "<tr><td>" . $fila['ref'] . "</td><td>" . $fila['color'] . "</td><td>" . $fila['total_cantidad'] . "</td></tr>";
                     $chartData[] = [$fila['ref'] . " - " . $fila['color'], (int)$fila['total_cantidad']];
-
                 }
-
+            
                 echo "</tbody></table>";
+            }
+            
 
                 $chartDataJson = json_encode($chartData);
 

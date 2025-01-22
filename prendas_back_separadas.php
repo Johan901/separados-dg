@@ -45,8 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             
                 echo "</tbody></table>";
-            }
-            
 
                 $chartDataJson = json_encode($chartData);
 

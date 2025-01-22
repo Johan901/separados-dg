@@ -13,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 SELECT 
                     dp.ref, 
                     dp.color, 
-                    COUNT(dp.ref) AS cantidad_separada
-                FROM pedidos p
-                INNER JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido
-                WHERE p.asesor = :asesor
-                AND p.estado = 'abierto'  -- Filtrar solo pedidos abiertos
+                    SUM(dp.cantidad) AS total_cantidad
+                FROM detalle_pedido dp
+                INNER JOIN pedidos p ON dp.id_pedido = p.id_pedido
+                WHERE p.asesor = :asesor 
+                AND p.estado = 'abierto'
                 AND DATE(p.fecha_pedido) BETWEEN :fecha_inicio AND :fecha_fin
                 GROUP BY dp.ref, dp.color
-                ORDER BY cantidad_separada DESC
+                ORDER BY dp.ref, dp.color
             ";
 
             $stmt = $conn->prepare($query);

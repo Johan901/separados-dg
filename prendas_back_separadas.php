@@ -34,8 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $chartData = [["Referencia", "Cantidad Separada"]];
 
                 foreach ($resultados as $fila) {
-                    echo "<tr><td>" . $fila['ref'] . "</td><td>" . $fila['color'] . "</td><td>" . $fila['cantidad_separada'] . "</td></tr>";
-                    $chartData[] = [$fila['ref'] . " - " . $fila['color'], (int)$fila['cantidad_separada']];
+                    echo "<tr><td>" . $fila['ref'] . "</td><td>" . $fila['color'] . "</td><td>" . $fila['total_cantidad'] . "</td></tr>";
+                    $chartData[] = [$fila['ref'] . " - " . $fila['color'], (int)$fila['total_cantidad']];
+
                 }
 
                 echo "</tbody></table>";

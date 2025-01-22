@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             chartArea: {width: '60%'},
                             hAxis: {title: 'Referencia - Color', minValue: 0},
                             vAxis: {title: 'Cantidad Separada'},
-                            series: {0: {color: '#4CAF50'}}
+                            series: {0: {color: '#e91d29'}}
                         };
             
                         var chart = new google.visualization.ColumnChart(document.getElementById('separadosChart'));

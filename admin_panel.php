@@ -141,6 +141,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                 <a href="prendas.php">Prendas Agotadas</a>
                 <a href="vencimiento.php">Separados Por Vencer</a>
                 <a href="mas_ventas.php">Ventas día/mes</a>
+                <a href="prendas_separadas.php">Prendas separadas</a>
             </div>
         </div>
     </div>

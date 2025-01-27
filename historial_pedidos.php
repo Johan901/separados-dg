@@ -41,6 +41,8 @@
                 <label><input type="checkbox" name="estado[]" value="cerrado"> Pedidos Cerrados</label>
                 <label><input type="checkbox" name="cuenta_regresiva_hoy" value="hoy"> Cuenta regresiva termina hoy</label>
                 <label><input type="checkbox" name="sin_separar" value="sin_separar"> Pedidos sin separar</label>
+                <label><input type="checkbox" name="linea[]" value="3104238002"> Línea 310</label>
+                <label><input type="checkbox" name="linea[]" value="3147363095"> Línea 314</label>
             </div>
             <button type="submit" class="button">Aplicar</button>
             <button type="reset" class="button" onclick="window.location.href='historial_pedidos.php';">Limpiar</button>
@@ -97,6 +99,14 @@ if (isset($_GET['estado']) && is_array($_GET['estado'])) {
         return $conn->quote($estado);
     }, $_GET['estado']);
     $conditions[] = "p.estado IN (" . implode(",", $estado_filtro) . ")";
+}
+
+// Filtros por línea
+if (isset($_GET['linea']) && is_array($_GET['linea'])) {
+    $linea_filtro = array_map(function($linea) use ($conn) {
+        return $conn->quote($linea);
+    }, $_GET['linea']);
+    $conditions[] = "p.asesor IN (" . implode(",", $linea_filtro) . ")";
 }
 
 // Filtro para cuenta regresiva hoy

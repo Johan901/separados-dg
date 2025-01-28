@@ -105,7 +105,10 @@ if (isset($_SESSION['nombre_usuario'])) {
     </div>
 
     <h2 style="text-align:center;">SISTEMA DE GESTIÓN DE SEPARADOS E INVENTARIO</h2>
-    <h2 style="text-align:center;">Dulce Guadalupe</h2>
+    <h2 style="text-align:center;">
+    Dulce Guadalupe
+    <img src="LOGOCORAZON.PNG" alt="Corazón" style="vertical-align: middle; margin-left: 10px; width: 30px; height: 30px;">
+    </h2>
 
     <div class="sections">
         <div class="section" style="background-color: #d1c4e9;">

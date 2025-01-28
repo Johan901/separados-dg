@@ -16,10 +16,19 @@ $query = "SELECT dp.ref, dp.color, SUM(dp.cantidad) AS cantidad
 
 // Si se ha seleccionado un día, filtramos por fecha
 if (!empty($dia)) {
-    $query .= " AND DATE(p.fecha_pedido) = ?";
-    $params[] = $dia;
+    // Verificamos que el formato de $dia sea correcto (YYYY-MM-DD)
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $dia)) {
+        $query .= " AND DATE(p.fecha_pedido) = ?";
+        $params[] = $dia;
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Formato de fecha incorrecto. Use el formato YYYY-MM-DD.'
+        ]);
+        exit;
+    }
 } elseif (!empty($mes)) {
-    // Asegurar que el formato del mes es correcto antes de la consulta
+    // Aseguramos que el formato del mes sea correcto (YYYY-MM)
     if (preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $mes)) {
         $query .= " AND DATE_FORMAT(p.fecha_pedido, '%Y-%m') = ?";
         $params[] = $mes;

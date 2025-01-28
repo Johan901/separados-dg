@@ -5,6 +5,9 @@ include 'config.php';
 $dia = isset($_POST['dia']) ? $_POST['dia'] : null;
 $mes = isset($_POST['mes']) ? $_POST['mes'] : null;
 
+// Inicializamos el array de parámetros
+$params = [];
+
 // Creamos la consulta para obtener las referencias más vendidas
 $query = "SELECT dp.ref, dp.color, SUM(dp.cantidad) AS cantidad
           FROM detalle_pedido dp
@@ -23,19 +26,27 @@ if (!empty($dia)) {
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Formato de mes incorrecto.'
+            'message' => 'Formato de mes incorrecto. Use el formato YYYY-MM.'
         ]);
         exit;
     }
 }
 
-
-$query .= " GROUP BY dp.ref, dp.color ORDER BY cantidad DESC LIMIT 10";  // Limitar a las 10 referencias más vendidas
+// Agrupar y ordenar resultados
+$query .= " GROUP BY dp.ref, dp.color ORDER BY cantidad DESC LIMIT 10";
 
 try {
     $stmt = $conn->prepare($query);
     $stmt->execute($params);
     $referencias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($referencias)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'No se encontraron datos para la fecha seleccionada.'
+        ]);
+        exit;
+    }
 
     // Enviar la respuesta en formato JSON
     echo json_encode([

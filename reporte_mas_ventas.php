@@ -5,6 +5,9 @@ include 'config.php';
 $dia = isset($_POST['dia']) ? $_POST['dia'] : null;
 $mes = isset($_POST['mes']) ? $_POST['mes'] : null;
 
+// Depuración: Mostrar los valores recibidos
+var_dump($dia, $mes);
+
 // Inicializamos el array de parámetros
 $params = [];
 

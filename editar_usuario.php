@@ -96,7 +96,7 @@ $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
         <input type="text" name="telefono" value="<?php echo $cliente['telefono']; ?>" required class="form-input">
 
         <label for="email" class="form-label">Correo Electrónico:</label>
-        <input type="email" name="email" value="<?php echo $cliente['email']; ?>" required class="form-input">
+        <input type="email" name="email" value="<?php echo $cliente['email']; ?>" class="form-input">
 
         <label for="pais" class="form-label">País:</label>
         <input type="text" name="pais" value="<?php echo $cliente['pais']; ?>" required class="form-input">

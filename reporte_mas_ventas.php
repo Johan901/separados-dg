@@ -21,8 +21,12 @@ if (!empty($dia)) {
 } elseif (!empty($mes)) {
     // Asegurar que el formato del mes es correcto antes de la consulta
     if (preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $mes)) {
-        $query .= " AND DATE_FORMAT(p.fecha_pedido, '%Y-%m') = ?";
-        $params[] = $mes;
+        // Filtrar por rango de fechas de inicio y fin del mes
+        $inicio_mes = $mes . '-01';  // Primer día del mes
+        $fin_mes = $mes . '-31';     // Último día del mes
+        $query .= " AND p.fecha_pedido BETWEEN ? AND ?";
+        $params[] = $inicio_mes;
+        $params[] = $fin_mes;
     } else {
         echo json_encode([
             'success' => false,
@@ -36,6 +40,10 @@ if (!empty($dia)) {
 $query .= " GROUP BY dp.ref, dp.color ORDER BY cantidad DESC LIMIT 10";
 
 try {
+    // Depuración: mostrar la consulta y los parámetros
+    echo "Consulta SQL: " . $query . "<br>";
+    echo "Parámetros: " . print_r($params, true) . "<br>";
+
     $stmt = $conn->prepare($query);
     $stmt->execute($params);
     $referencias = $stmt->fetchAll(PDO::FETCH_ASSOC);

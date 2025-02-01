@@ -22,7 +22,7 @@ if (!empty($mes)) {
     $params[] = $mes;
 }
 
-$query .= " GROUP BY dp.ref, dp.color ORDER BY cantidad DESC LIMIT 10";
+$query .= " GROUP BY dp.ref, dp.color ORDER BY cantidad DESC LIMIT 15";
 
 try {
     $stmt = $conn->prepare($query);

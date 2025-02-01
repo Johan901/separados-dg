@@ -55,60 +55,76 @@
         </table>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            // Evento para generar el reporte
-            $('#btn-generar-reporte').on('click', function () {
-    var dia = $('#dia').val();
-    var mes = $('#mes').val();
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        // Evento para generar el reporte
+        $('#btn-generar-reporte').on('click', function () {
+            var dia = $('#dia').val();
+            var mes = $('#mes').val();
 
-    console.log("Día seleccionado:", dia);
-    console.log("Mes seleccionado:", mes);
+            console.log("Día seleccionado:", dia);
+            console.log("Mes seleccionado:", mes);
 
-    // Validar que al menos uno de los campos sea ingresado
-    if (!dia && !mes) {
-        alert('Debe seleccionar al menos un día o mes.');
-        return;
-    }
-
-    // Realizar la solicitud AJAX para obtener los datos
-    $.ajax({
-        url: 'reporte_mas_ventas.php',
-        type: 'POST',
-        data: {
-            dia: dia,
-            mes: mes
-        },
-        dataType: 'json',
-        success: function (response) {
-            if (response.success) {
-                let tableRows = '';
-                response.referencias.forEach(item => {
-                    tableRows += `
-                        <tr>
-                            <td>${item.ref}</td>
-                            <td>${item.color}</td>
-                            <td>${item.cantidad}</td>
-                        </tr>
-                    `;
+            // Validar que al menos uno de los campos sea ingresado
+            if (!dia && !mes) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Datos requeridos',
+                    text: 'Debe seleccionar al menos un día o mes.',
+                    confirmButtonText: 'Entendido'
                 });
-
-                $('#tabla-referencias tbody').html(tableRows);
-                $('#tabla-referencias').show();
-            } else {
-                alert('No se encontraron datos para la fecha seleccionada.');
-                $('#tabla-referencias').hide();
+                return;
             }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error:', xhr.responseText);
-            alert('Error al generar el reporte.');
-        }
-    });
-});
 
+            // Realizar la solicitud AJAX para obtener los datos
+            $.ajax({
+                url: 'reporte_mas_ventas.php',
+                type: 'POST',
+                data: {
+                    dia: dia,
+                    mes: mes
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        let tableRows = '';
+                        response.referencias.forEach(item => {
+                            tableRows += `
+                                <tr>
+                                    <td>${item.ref}</td>
+                                    <td>${item.color}</td>
+                                    <td>${item.cantidad}</td>
+                                </tr>
+                            `;
+                        });
+
+                        $('#tabla-referencias tbody').html(tableRows);
+                        $('#tabla-referencias').show();
+                    } else {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Sin resultados',
+                            text: 'No se encontraron datos para la fecha seleccionada.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                        $('#tabla-referencias').hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un problema al generar el reporte.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            });
         });
-    </script>
+    });
+</script>
+
 </body>
 
 

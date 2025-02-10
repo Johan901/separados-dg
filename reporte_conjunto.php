@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             chartArea: {width: '50%'},
                             hAxis: {title: 'Número de Pedidos'},
                             vAxis: {title: 'Asesor'},
-                            series: {0: {color: '#1e88e5'}}
+                            series: {0: {color: '#e91d29'}}
                         };
 
                         var chart = new google.visualization.BarChart(document.getElementById('ventasChartConjunto'));

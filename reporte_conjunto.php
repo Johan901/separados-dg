@@ -8,12 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fecha_fin = $_POST['fecha_fin_conjunto'];
 
         try {
-            // Consulta para obtener el reporte conjunto filtrado por estado "abierto"
+            // Consulta para obtener el reporte conjunto filtrado por estado "cerrado"
             $query = "
                 SELECT p.asesor, COUNT(*) as num_pedidos, SUM(p.total_pedido) as total_ventas
                 FROM pedidos p
                 WHERE DATE(p.fecha_limite) BETWEEN :fecha_inicio AND :fecha_fin
-                AND p.estado = 'abierto'
+                AND p.estado = 'cerrado'
                 GROUP BY p.asesor
             ";
             $stmt = $conn->prepare($query);
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ventasConjunto = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if ($ventasConjunto) {
-                echo "<h3>Reporte conjunto de pedidos abiertos desde $fecha_inicio hasta $fecha_fin</h3>";
+                echo "<h3>Reporte conjunto de pedidos cerrados desde $fecha_inicio hasta $fecha_fin</h3>";
                 echo "<table><thead><tr><th>Asesor</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
 
                 // Preparar datos para el gráfico
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         var data = google.visualization.arrayToDataTable($chartDataConjuntoJson);
 
                         var options = {
-                            title: 'Pedidos Abiertos por Asesor',
+                            title: 'Pedidos Cerrados por Asesor',
                             chartArea: {width: '50%'},
                             hAxis: {title: 'Número de Pedidos'},
                             vAxis: {title: 'Asesor'},
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id='ventasChartConjunto' style='width: 900px; height: 500px;'></div>
                 ";
             } else {
-                echo "<p>No se encontraron pedidos abiertos en el rango de fechas seleccionado.</p>";
+                echo "<p>No se encontraron pedidos cerrados en el rango de fechas seleccionado.</p>";
             }
         } catch (PDOException $e) {
             echo "<p>Error al obtener los datos: " . $e->getMessage() . "</p>";

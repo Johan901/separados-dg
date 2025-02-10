@@ -9,13 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fecha_fin = $_POST['fecha_fin'];
 
         try {
-            // Filtrar por fecha_fin en lugar de fecha_pedido
+            // Filtra solo por la fecha de cierre (fecha_limite)
             $query = "
-                SELECT p.id_pedido, p.fecha_pedido, p.fecha_fin, p.total_pedido
+                SELECT p.id_pedido, p.fecha_pedido, p.fecha_limite, p.total_pedido
                 FROM pedidos p
                 WHERE p.asesor = :asesor 
-                AND p.estado = 'cerrado'  
-                AND DATE(p.fecha_fin) BETWEEN :fecha_inicio AND :fecha_fin
+                AND p.estado = 'cerrado'  -- Filtra solo los pedidos cerrados
+                AND DATE(p.fecha_limite) BETWEEN :fecha_inicio AND :fecha_fin
             ";
 
             $stmt = $conn->prepare($query);
@@ -26,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 SELECT COUNT(*) as num_pedidos
                 FROM pedidos p
                 WHERE p.asesor = :asesor
-                AND p.estado = 'cerrado'  
-                AND DATE(p.fecha_fin) BETWEEN :fecha_inicio AND :fecha_fin
+                AND p.estado = 'cerrado'  -- Filtra solo los pedidos cerrados
+                AND DATE(p.fecha_limite) BETWEEN :fecha_inicio AND :fecha_fin
             ";
             $countStmt = $conn->prepare($countQuery);
             $countStmt->execute(['asesor' => $asesor, 'fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin]);
@@ -37,12 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($ventas) {
                 echo "<h3>Reporte de ventas para la línea $asesor desde $fecha_inicio hasta $fecha_fin</h3>";
                 echo "<p>La línea $asesor ha realizado un total de $numPedidos pedidos cerrados en las fechas seleccionadas.</p>";
-                echo "<table><thead><tr><th>ID Pedido</th><th>Fecha Pedido</th><th>Fecha Fin</th><th>Total Pedido</th></tr></thead><tbody>";
+                echo "<table><thead><tr><th>ID Pedido</th><th>Fecha Pedido</th><th>Fecha Cierre</th><th>Total Pedido</th></tr></thead><tbody>";
 
                 $dataArray = [];
                 foreach ($ventas as $venta) {
-                    echo "<tr><td>" . $venta['id_pedido'] . "</td><td>" . $venta['fecha_pedido'] . "</td><td>" . $venta['fecha_fin'] . "</td><td>" . $venta['total_pedido'] . "</td></tr>";
-                    $dataArray[] = "['" . $venta['fecha_fin'] . "', " . $venta['total_pedido'] . "]";
+                    echo "<tr><td>" . $venta['id_pedido'] . "</td><td>" . $venta['fecha_pedido'] . "</td><td>" . $venta['fecha_limite'] . "</td><td>" . $venta['total_pedido'] . "</td></tr>";
+                    $dataArray[] = "['" . $venta['fecha_limite'] . "', " . $venta['total_pedido'] . "]";
                 }
 
                 echo "</tbody></table>";
@@ -56,14 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
                     function drawChart() {
                         var data = google.visualization.arrayToDataTable([
-                            ['Fecha Fin', 'Total Pedido'],
+                            ['Fecha Cierre', 'Total Pedido'],
                             $chartData
                         ]);
             
                         var options = {
                             title: 'Ventas Totales por Fecha de Cierre',
                             chartArea: {width: '50%'},
-                            hAxis: {title: 'Fecha Fin', minValue: 0},
+                            hAxis: {title: 'Fecha Cierre', minValue: 0},
                             vAxis: {title: 'Total Pedido'},
                             series: {0: {color: '#e91d29'}}
                         };
@@ -86,12 +86,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fecha_fin = $_POST['fecha_fin_conjunto'];
 
         try {
-            // Filtrar por fecha_fin en lugar de fecha_pedido
+            // Filtra solo por la fecha de cierre (fecha_limite)
             $query = "
                 SELECT p.asesor, COUNT(*) as num_pedidos, SUM(p.total_pedido) as total_ventas
                 FROM pedidos p
-                WHERE DATE(p.fecha_fin) BETWEEN :fecha_inicio AND :fecha_fin
-                AND p.estado = 'cerrado'  
+                WHERE DATE(p.fecha_limite) BETWEEN :fecha_inicio AND :fecha_fin
+                AND p.estado = 'cerrado'  -- Filtra solo los pedidos cerrados
                 GROUP BY p.asesor
             ";
 

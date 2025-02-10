@@ -8,12 +8,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fecha_fin = $_POST['fecha_fin_conjunto'];
 
         try {
-            // Consulta para obtener el reporte conjunto filtrado por estado "cerrado"
+            // Consulta para obtener el reporte conjunto filtrado por estado "abierto"
             $query = "
                 SELECT p.asesor, COUNT(*) as num_pedidos, SUM(p.total_pedido) as total_ventas
                 FROM pedidos p
-                WHERE DATE(p.fecha_pedido) BETWEEN :fecha_inicio AND :fecha_fin
-                AND p.estado = 'cerrado'
+                WHERE DATE(p.fecha_limite) BETWEEN :fecha_inicio AND :fecha_fin
+                AND p.estado = 'abierto'
                 GROUP BY p.asesor
             ";
             $stmt = $conn->prepare($query);
@@ -21,12 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ventasConjunto = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if ($ventasConjunto) {
-                echo "<h3>Reporte conjunto de ventas desde $fecha_inicio hasta $fecha_fin</h3>";
+                echo "<h3>Reporte conjunto de pedidos abiertos desde $fecha_inicio hasta $fecha_fin</h3>";
                 echo "<table><thead><tr><th>Asesor</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
 
                 // Preparar datos para el gráfico
                 $chartDataConjunto = [["Asesor", "Número de Pedidos", ["role" => "style"]]];
-                $colors = ['#e91d29', '#d81b24', '#c71a20', '#b6191c', '#a51818'];
+                $colors = ['#1e88e5', '#1565c0', '#0d47a1', '#2196f3', '#42a5f5']; // Colores azulados
                 $colorIndex = 0;
 
                 foreach ($ventasConjunto as $venta) {
@@ -49,14 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     function drawChartConjunto() {
                         var data = google.visualization.arrayToDataTable($chartDataConjuntoJson);
+
                         var options = {
-                            title: 'Número de Pedidos por Asesor',
-                            chartArea: {width: '70%', height: '70%'},
+                            title: 'Pedidos Abiertos por Asesor',
+                            chartArea: {width: '50%'},
                             hAxis: {title: 'Número de Pedidos'},
                             vAxis: {title: 'Asesor'},
-                            legend: {position: 'none'}
+                            series: {0: {color: '#1e88e5'}}
                         };
-            
+
                         var chart = new google.visualization.BarChart(document.getElementById('ventasChartConjunto'));
                         chart.draw(data, options);
                     }
@@ -64,15 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id='ventasChartConjunto' style='width: 900px; height: 500px;'></div>
                 ";
             } else {
-                echo "<p>No se encontraron ventas en el rango de fechas seleccionado.</p>";
+                echo "<p>No se encontraron pedidos abiertos en el rango de fechas seleccionado.</p>";
             }
         } catch (PDOException $e) {
-            echo "<p>Error al obtener los datos: " . htmlspecialchars($e->getMessage()) . "</p>";
+            echo "<p>Error al obtener los datos: " . $e->getMessage() . "</p>";
         }
     } else {
         echo "<p>Por favor, completa todos los campos requeridos.</p>";
     }
-} else {
-    echo "<p>Acceso no autorizado.</p>";
 }
 ?>

@@ -28,9 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $chartDataConjunto = [["Asesor", "Número de Pedidos", ["role" => "style"]]];
                 $colors = ['#e91d29', '#e91d29', '#e91d29', '#e91d29', '#e91d29']; // Colores rojo oscuro
                 $colorIndex = 0;
+                $totalVentasGlobal = 0;
 
                 foreach ($ventasConjunto as $venta) {
                     $color = $colors[$colorIndex % count($colors)];
+                    $totalVentasGlobal += $venta['total_ventas']; // Sumar total de ventas
                     $totalVentasFormatted = "$" . number_format($venta['total_ventas'], 0, ',', '.'); // Formato COP
                     echo "<tr>
                             <td>" . htmlspecialchars($venta['asesor']) . "</td>
@@ -42,6 +44,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 echo "</tbody></table>";
+
+                // Formatear el total global de ventas
+                $totalVentasFormattedGlobal = "$" . number_format($totalVentasGlobal, 0, ',', '.');
+
+                // Animación para mostrar el total
+                echo "
+                <div id='ventasTotales' style='font-size: 24px; font-weight: bold; margin-top: 20px; text-align: center; opacity: 0; transform: scale(0.8); color: #e91d29;'>
+                    Por ahora vamos vendiendo <span id='totalAnimado'></span>
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        let totalVentas = '$totalVentasFormattedGlobal';
+                        let totalElement = document.getElementById('totalAnimado');
+                        let ventasTotales = document.getElementById('ventasTotales');
+                        
+                        setTimeout(() => {
+                            ventasTotales.style.opacity = '1';
+                            ventasTotales.style.transform = 'scale(1)';
+                            totalElement.innerText = totalVentas;
+                        }, 500);
+                    });
+                </script>
+                ";
 
                 // Convertir datos del gráfico a formato JSON
                 $chartDataConjuntoJson = json_encode($chartDataConjunto);

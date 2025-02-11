@@ -20,6 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute(['fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin]);
             $ventasConjunto = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            // Variable para calcular la suma total de ventas
+            $suma_total_ventas = 0;
+
             if ($ventasConjunto) {
                 echo "<h3>Reporte conjunto de pedidos cerrados desde $fecha_inicio hasta $fecha_fin</h3>";
                 echo "<table><thead><tr><th>Asesor</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
@@ -28,12 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $chartDataConjunto = [["Asesor", "Número de Pedidos", ["role" => "style"]]];
                 $colors = ['#e91d29', '#e91d29', '#e91d29', '#e91d29', '#e91d29']; // Colores rojo oscuro
                 $colorIndex = 0;
-                $totalVentasGlobal = 0;
 
                 foreach ($ventasConjunto as $venta) {
                     $color = $colors[$colorIndex % count($colors)];
-                    $totalVentasGlobal += $venta['total_ventas']; // Sumar total de ventas
                     $totalVentasFormatted = "$" . number_format($venta['total_ventas'], 0, ',', '.'); // Formato COP
+
+                    // Sumar todas las ventas
+                    $suma_total_ventas += $venta['total_ventas'];
+
                     echo "<tr>
                             <td>" . htmlspecialchars($venta['asesor']) . "</td>
                             <td>" . htmlspecialchars($venta['num_pedidos']) . "</td>
@@ -44,30 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 echo "</tbody></table>";
-
-                // Formatear el total global de ventas
-                $totalVentasFormattedGlobal = "$" . number_format($totalVentasGlobal, 0, ',', '.');
-
-                // Animación para mostrar el total
-                echo "
-                <div id='ventasTotales' style='font-size: 24px; font-weight: bold; margin-top: 20px; text-align: center; opacity: 0; transform: scale(0.8); color: #e91d29;'>
-                    Por ahora vamos vendiendo <span id='totalAnimado'></span>
-                </div>
-
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        let totalVentas = '$totalVentasFormattedGlobal';
-                        let totalElement = document.getElementById('totalAnimado');
-                        let ventasTotales = document.getElementById('ventasTotales');
-                        
-                        setTimeout(() => {
-                            ventasTotales.style.opacity = '1';
-                            ventasTotales.style.transform = 'scale(1)';
-                            totalElement.innerText = totalVentas;
-                        }, 500);
-                    });
-                </script>
-                ";
 
                 // Convertir datos del gráfico a formato JSON
                 $chartDataConjuntoJson = json_encode($chartDataConjunto);
@@ -94,6 +75,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 </script>
                 <div id='ventasChartConjunto' style='width: 900px; height: 500px;'></div>
+                ";
+
+                // Formatear total de ventas
+                $suma_total_ventas_formateado = "$" . number_format($suma_total_ventas, 0, ',', '.');
+
+                // Mostrar el mensaje animado con JavaScript
+                echo "
+                <div id='mensajeVentas' style='font-size: 20px; font-weight: bold; color: #e91d29; opacity: 0; transition: opacity 1s ease-in-out;'>
+                    Por ahora vamos vendiendo <span id='totalVentas'>$suma_total_ventas_formateado</span> COP 🎉
+                </div>
+
+                <script>
+                    setTimeout(function() {
+                        document.getElementById('mensajeVentas').style.opacity = 1;
+                    }, 500);
+                </script>
                 ";
             } else {
                 echo "<p>No se encontraron pedidos cerrados en el rango de fechas seleccionado.</p>";

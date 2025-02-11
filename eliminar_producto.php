@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json'); // IMPORTANTE
+$data = json_decode(file_get_contents("php://input"), true);
 include 'config.php';
 session_start();
 

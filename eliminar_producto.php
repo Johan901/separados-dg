@@ -1,8 +1,11 @@
 <?php
-header('Content-Type: application/json'); // IMPORTANTE
-$data = json_decode(file_get_contents("php://input"), true);
+header('Content-Type: application/json');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include 'config.php';
 session_start();
+$data = json_decode(file_get_contents("php://input"), true);
+
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.html');

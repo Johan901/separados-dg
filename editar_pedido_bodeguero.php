@@ -205,36 +205,45 @@ function toggleChecklist(checkbox) {
     localStorage.setItem(checkbox.id, checkbox.checked);
 }
         
-        function eliminarProducto(id_detalle) {
-            // Lógica para eliminar el producto del detalle
-            Swal.fire({
-                title: '¿Estás seguro de que quieres eliminar este producto?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch('eliminar_producto.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ id_detalle: id_detalle, id_pedido: <?php echo $id_pedido; ?> })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire('Eliminado!', data.message, 'success').then(() => {
-                                location.reload(); // Recarga la página para actualizar la lista
-                            });
-                        } else {
-                            Swal.fire('Error!', data.message, 'error');
-                        }
-                    });
+function eliminarProducto(id_detalle, id_pedido) { 
+    Swal.fire({
+        title: '¿Estás seguro de que quieres eliminar este producto?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('eliminar_producto.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id_detalle: id_detalle, id_pedido: id_pedido })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('Eliminado!', data.message, 'success').then(() => {
+                        location.reload(); // Recarga la página para actualizar la lista
+                    });
+                } else {
+                    Swal.fire('Error!', data.message, 'error');
+                }
+            })
+            .catch(error => {
+                Swal.fire('Error!', 'Hubo un problema con la solicitud.', 'error');
+                console.error('Error en la eliminación:', error);
             });
         }
+    });
+}
+
 
     function modificarCantidad(id_detalle, cambio) {
     const cantidadCell = document.getElementById('cantidad_' + id_detalle);

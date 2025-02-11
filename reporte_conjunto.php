@@ -26,12 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Preparar datos para el gráfico
                 $chartDataConjunto = [["Asesor", "Número de Pedidos", ["role" => "style"]]];
-                $colors = ['#e91d29', '#e91d29', '#e91d29', '#e91d29', '#e91d29']; // Colores azulados
+                $colors = ['#e91d29', '#e91d29', '#e91d29', '#e91d29', '#e91d29']; // Colores rojo oscuro
                 $colorIndex = 0;
 
                 foreach ($ventasConjunto as $venta) {
                     $color = $colors[$colorIndex % count($colors)];
-                    echo "<tr><td>" . htmlspecialchars($venta['asesor']) . "</td><td>" . htmlspecialchars($venta['num_pedidos']) . "</td><td>" . htmlspecialchars($venta['total_ventas']) . "</td></tr>";
+                    $totalVentasFormatted = "$" . number_format($venta['total_ventas'], 0, ',', '.'); // Formato COP
+                    echo "<tr>
+                            <td>" . htmlspecialchars($venta['asesor']) . "</td>
+                            <td>" . htmlspecialchars($venta['num_pedidos']) . "</td>
+                            <td>" . htmlspecialchars($totalVentasFormatted) . "</td>
+                          </tr>";
                     $chartDataConjunto[] = [$venta['asesor'], (int)$venta['num_pedidos'], $color];
                     $colorIndex++;
                 }

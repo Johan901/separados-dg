@@ -3,12 +3,10 @@ include('config.php'); // Conexión a la base de datos
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['fecha_inicio_conjunto']) && isset($_POST['fecha_fin_conjunto'])) {
-        // Variables del formulario
         $fecha_inicio = $_POST['fecha_inicio_conjunto'];
         $fecha_fin = $_POST['fecha_fin_conjunto'];
 
         try {
-            // Consulta para obtener el reporte conjunto filtrado por estado "cerrado"
             $query = "
                 SELECT p.asesor, COUNT(*) as num_pedidos, SUM(p.total_pedido) as total_ventas
                 FROM pedidos p
@@ -20,23 +18,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute(['fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin]);
             $ventasConjunto = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Variable para calcular la suma total de ventas
             $suma_total_ventas = 0;
 
             if ($ventasConjunto) {
                 echo "<h3>Reporte conjunto de pedidos cerrados desde $fecha_inicio hasta $fecha_fin</h3>";
                 echo "<table><thead><tr><th>Asesor</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
 
-                // Preparar datos para el gráfico
                 $chartDataConjunto = [["Asesor", "Número de Pedidos", ["role" => "style"]]];
-                $colors = ['#e91d29', '#e91d29', '#e91d29', '#e91d29', '#e91d29']; // Colores rojo oscuro
+                $colors = ['#e91d29', '#e91d29', '#e91d29', '#e91d29', '#e91d29'];
                 $colorIndex = 0;
 
                 foreach ($ventasConjunto as $venta) {
                     $color = $colors[$colorIndex % count($colors)];
-                    $totalVentasFormatted = "$" . number_format($venta['total_ventas'], 0, ',', '.'); // Formato COP
-
-                    // Sumar todas las ventas
+                    $totalVentasFormatted = "$" . number_format($venta['total_ventas'], 0, ',', '.');
                     $suma_total_ventas += $venta['total_ventas'];
 
                     echo "<tr>
@@ -50,10 +44,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 echo "</tbody></table>";
 
-                // Convertir datos del gráfico a formato JSON
                 $chartDataConjuntoJson = json_encode($chartDataConjunto);
+                $suma_total_ventas_formateado = "$" . number_format($suma_total_ventas, 0, ',', '.');
 
-                // Script del gráfico 
+                // Mensaje animado de alerta guapa
+                echo "
+                <style>
+                    @keyframes parpadeo {
+                        0% { opacity: 1; }
+                        50% { opacity: 0.5; }
+                        100% { opacity: 1; }
+                    }
+                    #mensajeVentas {
+                        font-size: 22px;
+                        font-weight: bold;
+                        color: #e91d29;
+                        text-align: center;
+                        margin: 20px 0;
+                        animation: parpadeo 1.5s infinite ease-in-out;
+                        padding: 10px;
+                        border-radius: 10px;
+                        background: rgba(233, 29, 41, 0.1);
+                    }
+                </style>
+
+                <div id='mensajeVentas'>
+                    🚀 ¡Por ahora vamos vendiendo <span id='totalVentas'>$suma_total_ventas_formateado</span> COP! 🎉
+                </div>
+                ";
+
+                // Script del gráfico
                 echo "
                 <script type='text/javascript'>
                     google.charts.load('current', {'packages':['corechart', 'bar']});
@@ -75,22 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 </script>
                 <div id='ventasChartConjunto' style='width: 900px; height: 500px;'></div>
-                ";
-
-                // Formatear total de ventas
-                $suma_total_ventas_formateado = "$" . number_format($suma_total_ventas, 0, ',', '.');
-
-                // Mostrar el mensaje animado con JavaScript
-                echo "
-                <div id='mensajeVentas' style='font-size: 20px; font-weight: bold; color: #e91d29; opacity: 0; transition: opacity 1s ease-in-out;'>
-                    Por ahora vamos vendiendo <span id='totalVentas'>$suma_total_ventas_formateado</span> COP 🎉
-                </div>
-
-                <script>
-                    setTimeout(function() {
-                        document.getElementById('mensajeVentas').style.opacity = 1;
-                    }, 500);
-                </script>
                 ";
             } else {
                 echo "<p>No se encontraron pedidos cerrados en el rango de fechas seleccionado.</p>";

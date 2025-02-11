@@ -41,7 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $dataArray = [];
                 foreach ($ventas as $venta) {
-                    echo "<tr><td>" . $venta['id_pedido'] . "</td><td>" . $venta['fecha_pedido'] . "</td><td>" . $venta['fecha_limite'] . "</td><td>" . $venta['total_pedido'] . "</td></tr>";
+                    echo "<tr>
+                        <td>" . $venta['id_pedido'] . "</td>
+                        <td>" . $venta['fecha_pedido'] . "</td>
+                        <td>" . $venta['fecha_limite'] . "</td>
+                        <td>" . '$' . number_format($venta['total_pedido'], 0, ',', '.') . "</td>
+                    </tr>";
                     $dataArray[] = "['" . $venta['fecha_limite'] . "', " . $venta['total_pedido'] . "]";
                 }
 
@@ -105,9 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $chartDataConjunto = [["Asesor", "Total Ventas"]];
                 foreach ($ventasConjunto as $venta) {
-                    echo "<tr><td>" . $venta['asesor'] . "</td><td>" . $venta['num_pedidos'] . "</td><td>" . $venta['total_ventas'] . "</td></tr>";
+                    echo "<tr>
+                        <td>" . $venta['asesor'] . "</td>
+                        <td>" . $venta['num_pedidos'] . "</td>
+                        <td>" . '$' . number_format($venta['total_ventas'], 0, ',', '.') . "</td>
+                    </tr>";
                     $chartDataConjunto[] = [$venta['asesor'], (int)$venta['total_ventas']];
                 }
+                
 
                 echo "</tbody></table>";
 

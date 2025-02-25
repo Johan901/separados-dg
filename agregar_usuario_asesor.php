@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="nombre" required>
         
         <label for="telefono">Teléfono:</label>
-        <input type="text" name="telefono" required>
+        <input type="text" name="telefono">
         
         <label for="email">Correo Electrónico:</label>
         <input type="email" name="email">
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="ciudad">
         
         <label for="direccion">Dirección:</label>
-        <input type="text" name="direccion" required>
+        <input type="text" name="direccion">
         
         <label for="sexo">Sexo:</label>
         <select name="sexo" required>

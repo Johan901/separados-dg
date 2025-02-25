@@ -137,7 +137,7 @@ if (!empty($conditions)) {
 }
 
 // Agrupar y ordenar los resultados
-$query .= " GROUP BY p.id_pedido, c.nombre, p.estado ORDER BY p.fecha_pedido DESC";
+$query .= " GROUP BY p.id_pedido, c.nombre, p.estado ORDER BY p.fecha_pedido DESC LIMIT 50";
 
 // Preparar y ejecutar la consulta
 $stmt = $conn->prepare($query);

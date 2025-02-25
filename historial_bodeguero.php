@@ -125,6 +125,13 @@ if (!empty($conditions)) {
 // Agrupar y ordenar los resultados
 $query .= " GROUP BY p.id_pedido, c.nombre, p.estado ORDER BY p.fecha_pedido DESC";
 
+// Generar los parámetros de filtro en la URL
+$query_params = $_GET;
+$query_params['page'] = '{page_number}'; // Este valor será reemplazado dinámicamente
+
+// Generar la URL para la paginación
+$base_url = 'historial_bodeguero.php?' . http_build_query($query_params);
+
 
 // PAGINACION
 // Definir cuántos registros se mostrarán por página
@@ -145,6 +152,11 @@ $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+echo "<nav>";
+for ($i = 1; $i <= $total_pages; $i++) {
+    echo "<a href='" . str_replace('{page_number}', $i, $base_url) . "'>" . $i . "</a> ";
+}
+echo "</nav>";
 
 
 if (isset($id_pedido)) {

@@ -148,7 +148,7 @@ function buscarDisponibilidad() {
             } else {
                 response.forEach(item => {
                     let row = `<tr>
-                        <td>${item.referencia}</td>
+                        <td>${item.ref}</td>
                         <td>${item.color}</td>
                         <td>${item.cantidad}</td>
                     </tr>`;

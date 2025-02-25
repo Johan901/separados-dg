@@ -537,6 +537,39 @@ tr:hover {
 
 /* PAGINACION */
 
+.pagination-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pagination-form label {
+    font-size: 16px;
+    color: #333;
+}
+
+.pagination-form select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-form select:hover {
+    border-color: #e91d29;
+}
+
+.pagination-form select:focus {
+    outline: none;
+    border-color: #e91d29;
+    box-shadow: 0 0 5px rgba(233, 29, 41, 0.5);
+}
+
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -549,18 +582,18 @@ tr:hover {
     text-decoration: none;
     border: 1px solid #ddd;
     border-radius: 5px;
-    color: #333;
+    color: #a80000;
     transition: all 0.3s ease;
 }
 
 .pagination a.active {
-    background-color: #007bff;
+    background-color: #ff1a1a;
     color: white;
-    border-color: #007bff;
+    border-color: #ff1a1a;
 }
 
 .pagination a:hover {
-    background-color: #ddd;
+    background-color: #a80000;
 }
 
 .pagination .dots {

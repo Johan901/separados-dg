@@ -330,7 +330,7 @@ echo "
 ?>
 
 <!-- Dropdown para seleccionar cuántos pedidos mostrar -->
-<form method="GET" action="historial_pedidos.php">
+<form method="GET" action="historial_pedidos.php" class="pagination-form">
     <label>Mostrar:</label>
     <select name="limit" onchange="this.form.submit()">
         <option value="10" <?= ($limit == 10) ? 'selected' : '' ?>>10</option>
@@ -338,6 +338,7 @@ echo "
         <option value="50" <?= ($limit == 50) ? 'selected' : '' ?>>50</option>
     </select>
 </form>
+
 
 <div class="pagination">
     <?php if ($page > 1): ?>

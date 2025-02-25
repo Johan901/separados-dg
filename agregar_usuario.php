@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     window.onload = function() {
         <?php if ($response == "success") : ?>
             swal("Éxito!", "Cliente agregado con éxito.", "success").then(() => {
-                window.location.href = 'admin_panel.php';
+                window.location.href = 'nuevo_pedido.php';
             });
         <?php elseif ($response == "duplicate") : ?>
             swal("Error!", "El cliente con esta cédula ya está registrado.", "error");

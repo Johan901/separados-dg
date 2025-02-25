@@ -122,6 +122,47 @@ function buscarReferencia() {
     });
 }
 
+
+
+function buscarDisponibilidad() {
+    let referencia = document.getElementById("referencia-busqueda").value;
+
+    if (referencia.trim() === "") {
+        alert("Por favor, ingrese una referencia.");
+        return;
+    }
+
+    // Petición AJAX para obtener disponibilidad
+    $.ajax({
+        url: "buscar_disponibilidad.php",
+        type: "POST",
+        data: { referencia: referencia },
+        dataType: "json",
+        success: function(response) {
+            let tablaBody = document.querySelector("#tabla-disponibilidad tbody");
+            tablaBody.innerHTML = ""; // Limpiar tabla antes de agregar nueva información
+
+            if (response.length === 0) {
+                let row = `<tr><td colspan="3">No hay disponibilidad para esta referencia</td></tr>`;
+                tablaBody.innerHTML = row;
+            } else {
+                response.forEach(item => {
+                    let row = `<tr>
+                        <td>${item.referencia}</td>
+                        <td>${item.color}</td>
+                        <td>${item.cantidad}</td>
+                    </tr>`;
+                    tablaBody.innerHTML += row;
+                });
+            }
+        },
+        error: function() {
+            alert("Error al buscar disponibilidad.");
+        }
+    });
+}
+
+
 // Función para seleccionar precio al por mayor
 function seleccionarMayor() {
     if (precioMayor) {

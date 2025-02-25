@@ -228,17 +228,18 @@ document.getElementById('cantidad').addEventListener('change', function() {
     }
 });
 
-//AGREGAR PRODCUTO
+
+// Agregar producto a la lista de productos
 let totalPedido = 0;
 
 function agregarProducto() {
     const referencia = document.getElementById('referencia-busqueda').value;
     const color = document.getElementById('color').value;
     const cantidad = parseInt(document.getElementById('cantidad').value);
-    const precioUnitario = parseFloat(document.getElementById('precio-unitario').value.replace(/[^\d.]/g, '').trim());
+    const precioUnitario = parseFloat(document.getElementById('precio-unitario').value.replace(/[$,.]/g, '').trim());
     const subtotal = cantidad * precioUnitario;
 
-    if (!referencia || !color || color === 'Seleccione un color' || isNaN(cantidad) || cantidad <= 0 || isNaN(precioUnitario) || precioUnitario <= 0) {
+    if (!referencia || !color || color === 'Seleccione un color' || isNaN(cantidad) || cantidad <= 0 || isNaN(precioUnitario) || precioUnitario <= 0 || subtotal < 0) {
         Swal.fire({
             icon: 'error',
             title: 'Por favor completa todos los campos correctamente antes de agregar el producto',
@@ -272,27 +273,28 @@ function agregarProducto() {
                         confirmButtonText: 'Aceptar',
                     });
                 } else {
-                    // Agregar fila solo si hay suficiente inventario
                     const tabla = document.getElementById('productos').getElementsByTagName('tbody')[0];
-                    const fila = tabla.insertRow();
-                    fila.innerHTML = `
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
                         <td>${referencia}</td>
                         <td>${color}</td>
                         <td>${cantidad}</td>
                         <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(precioUnitario)}</td>
                         <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(subtotal)}</td>
                         <td><button class="btn-eliminar" onclick="eliminarFila(this, ${subtotal})">X</button></td>
+
                     `;
 
-                    totalPedido += subtotal;
+                    totalPedido += subtotal;  // Actualizar el total del pedido
                     document.getElementById('total-pedido').value = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(totalPedido);
 
-                    // Limpiar los campos
+                    // Limpiar campos después de agregar el producto
                     document.getElementById('referencia-busqueda').value = '';
                     document.getElementById('color').value = 'Seleccione un color';
                     document.getElementById('cantidad').value = '';
                     document.getElementById('precio-unitario').value = '';
 
+                    // Mostrar alerta de éxito
                     Swal.fire({
                         icon: 'success',
                         title: 'Producto agregado correctamente',
@@ -301,7 +303,7 @@ function agregarProducto() {
                 }
             }
         },
-        error: function() {
+        error: function(xhr, status, error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error en la solicitud',
@@ -330,7 +332,6 @@ function eliminarFila(btn, subtotal) {
         }
     });
 }
-
 
 function buscarPedidos() {
     console.log('Función buscarPedidos llamada');

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - DG</title>
-    <link rel="stylesheet" href="css/styles_historial.css?v=7.0">
+    <link rel="stylesheet" href="css/styles_historial.css?v=9.0">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -125,8 +125,28 @@ if (!empty($conditions)) {
 // Agrupar y ordenar los resultados
 $query .= " GROUP BY p.id_pedido, c.nombre, p.estado ORDER BY p.fecha_pedido DESC";
 
-// Preparar y ejecutar la consulta
+
+// PAGINACION
+// Definir cuántos registros se mostrarán por página
+$limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 10;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+// Contar el total de pedidos
+$count_query = "SELECT COUNT(*) as total FROM pedidos";
+$total_result = $conn->query($count_query)->fetch(PDO::FETCH_ASSOC);
+$total_pedidos = $total_result['total'];
+$total_pages = ceil($total_pedidos / $limit);
+
+// Agregar paginación a la consulta
+$query .= " LIMIT :limit OFFSET :offset";
 $stmt = $conn->prepare($query);
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 
 if (isset($id_pedido)) {
     $stmt->bindValue(':id_pedido', $id_pedido, PDO::PARAM_INT);
@@ -290,6 +310,43 @@ echo "
 </div>";
 
 ?>
+
+<!-- Dropdown para seleccionar cuántos pedidos mostrar -->
+<form method="GET" action="historial_pedidos.php" class="pagination-form">
+    <label>Mostrar:</label>
+    <select name="limit" onchange="this.form.submit()">
+        <option value="10" <?= ($limit == 10) ? 'selected' : '' ?>>10</option>
+        <option value="25" <?= ($limit == 25) ? 'selected' : '' ?>>25</option>
+        <option value="50" <?= ($limit == 50) ? 'selected' : '' ?>>50</option>
+    </select>
+</form>
+
+
+<div class="pagination">
+    <?php if ($page > 1): ?>
+        <a href="?limit=<?= $limit ?>&page=<?= $page - 1 ?>">Anterior</a>
+    <?php endif; ?>
+
+    <?php 
+    if ($total_pages > 5) {
+        if ($page > 2) echo '<span class="dots">...</span>';
+        
+        for ($i = max(1, $page - 1); $i <= min($total_pages, $page + 1); $i++): ?>
+            <a href="?limit=<?= $limit ?>&page=<?= $i ?>" class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
+        <?php endfor; 
+        
+        if ($page < $total_pages - 1) echo '<span class="dots">...</span>';
+    } else {
+        for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="?limit=<?= $limit ?>&page=<?= $i ?>" class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
+        <?php endfor;
+    }
+    ?>
+
+    <?php if ($page < $total_pages): ?>
+        <a href="?limit=<?= $limit ?>&page=<?= $page + 1 ?>">Siguiente</a>
+    <?php endif; ?>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>

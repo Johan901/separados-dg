@@ -537,69 +537,33 @@ tr:hover {
 
 /* PAGINACION */
 
-/* Estilos para el formulario de selección */
-form {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-form label {
-    font-size: 16px;
-    color: #333;
-}
-
-form select {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-form select:hover {
-    border-color: #e91d29;
-}
-
-form select:focus {
-    outline: none;
-    border-color: #e91d29;
-    box-shadow: 0 0 5px rgba(233, 29, 41, 0.5);
-}
-
-/* Estilos para la paginación */
 .pagination {
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 8px;
     margin-top: 20px;
 }
 
 .pagination a {
-    display: inline-block;
     padding: 8px 12px;
-    background-color: #e91d29;
-    color: white;
     text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, transform 0.2s;
-}
-
-.pagination a:hover {
-    background-color: #123d4e;
-    transform: scale(1.1);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #333;
+    transition: all 0.3s ease;
 }
 
 .pagination a.active {
-    background-color: #123d4e;
-    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
 }
 
-.pagination a:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+.pagination .dots {
+    padding: 8px 12px;
+    color: #777;
 }

@@ -339,20 +339,32 @@ echo "
     </select>
 </form>
 
-<!-- Botones de paginación -->
 <div class="pagination">
     <?php if ($page > 1): ?>
         <a href="?limit=<?= $limit ?>&page=<?= $page - 1 ?>">Anterior</a>
     <?php endif; ?>
 
-    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-        <a href="?limit=<?= $limit ?>&page=<?= $i ?>" class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
-    <?php endfor; ?>
+    <?php 
+    if ($total_pages > 5) {
+        if ($page > 2) echo '<span class="dots">...</span>';
+        
+        for ($i = max(1, $page - 1); $i <= min($total_pages, $page + 1); $i++): ?>
+            <a href="?limit=<?= $limit ?>&page=<?= $i ?>" class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
+        <?php endfor; 
+        
+        if ($page < $total_pages - 1) echo '<span class="dots">...</span>';
+    } else {
+        for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="?limit=<?= $limit ?>&page=<?= $i ?>" class="<?= ($i == $page) ? 'active' : '' ?>"><?= $i ?></a>
+        <?php endfor;
+    }
+    ?>
 
     <?php if ($page < $total_pages): ?>
         <a href="?limit=<?= $limit ?>&page=<?= $page + 1 ?>">Siguiente</a>
     <?php endif; ?>
 </div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>

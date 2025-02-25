@@ -149,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 text: "Cliente agregado con éxito.",
                 type: "success"
             }, function() {
-                window.location.href = 'nuevo_pedido.php';
+                window.location.href = 'nuevo_pedido_asesor.php';
             });
 
         <?php elseif ($response == "duplicate") : ?>

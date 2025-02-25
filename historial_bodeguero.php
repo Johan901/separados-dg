@@ -143,7 +143,6 @@ $query .= " LIMIT :limit OFFSET :offset";
 $stmt = $conn->prepare($query);
 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-$stmt->execute();
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
@@ -155,6 +154,9 @@ if (isset($id_pedido)) {
 if (isset($buscar)) {
     $stmt->bindValue(':buscar', $buscar, PDO::PARAM_STR);
 }
+
+$stmt->execute();
+
 
 try {
     $stmt->execute();

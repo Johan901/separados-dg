@@ -199,7 +199,7 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <script src="js/main_user.js?v=1.1"></script>
-    <script src="pedidos_script.js?v=9.0" defer></script>
+    <script src="pedidos_script.js?v=10.0" defer></script>
 
 </body>
 

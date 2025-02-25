@@ -146,7 +146,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Manejar la respuesta después de que se haya enviado el formulario
     window.onload = function() {
         <?php if ($response == "success") : ?>
-            swal("Éxito!", "Cliente agregado con éxito.", "success").then(() => {
+            swal({
+                title: "Éxito!",
+                text: "Cliente agregado con éxito.",
+                type: "success"
+            }, function() {
                 window.location.href = 'nuevo_pedido.php';
             });
         <?php elseif ($response == "duplicate") : ?>

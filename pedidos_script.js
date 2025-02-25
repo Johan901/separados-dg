@@ -274,8 +274,8 @@ function agregarProducto() {
                     });
                 } else {
                     const tabla = document.getElementById('productos').getElementsByTagName('tbody')[0];
-                    const fila = tbody.insertRow();
-                    row.innerHTML = `
+                    const fila = tabla.insertRow();
+                    fila.innerHTML = `
                         <td>${referencia}</td>
                         <td>${color}</td>
                         <td>${cantidad}</td>

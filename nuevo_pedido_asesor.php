@@ -73,7 +73,7 @@ if (!isset($_SESSION['user_id'])) {
         <label for="referencia-busqueda">Buscar Referencia:</label>
         <div class="input-group">
             <input type="text" id="referencia-busqueda" name="referencia" placeholder="Ingrese la referencia">
-            <button class="boton-buscar" type="button" onclick="buscarReferencia()">Buscar</button>
+            <button class="boton-buscar" type="button" onclick="buscarReferencia(); buscarDisponibilidad();">Buscar</button>
         </div>
 
 <!-- Tabla de Disponibilidad de Colores -->

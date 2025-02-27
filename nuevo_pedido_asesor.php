@@ -76,6 +76,21 @@ if (!isset($_SESSION['user_id'])) {
             <button class="boton-buscar" type="button" onclick="buscarReferencia()">Buscar</button>
         </div>
 
+<!-- Tabla de Disponibilidad de Colores -->
+<div class="section-title">Disponibilidad de Colores</div>
+<table id="tabla-disponibilidad">
+    <thead>
+        <tr>
+            <th>Referencia</th>
+            <th>Color</th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Aquí se mostrarán los datos de disponibilidad -->
+    </tbody>
+</table>
+
         <!-- Selección de tipo de compra -->
 <label for="tipo-compra">Tipo de Compra:</label>
 <div>

@@ -13,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 SELECT 
                     dp.ref, 
                     dp.color, 
+                    p.estado,
                     SUM(dp.cantidad) AS total_cantidad
                 FROM detalle_pedido dp
                 INNER JOIN pedidos p ON dp.id_pedido = p.id_pedido
                 WHERE p.asesor = :asesor 
-                AND p.estado = 'abierto'
                 AND DATE(dp.fecha_agregado) BETWEEN :fecha_inicio AND :fecha_fin
-                GROUP BY dp.ref, dp.color
-                ORDER BY dp.ref, dp.color
+                GROUP BY dp.ref, dp.color, p.estado
+                ORDER BY dp.ref, dp.color, p.estado
             ";
 
             $stmt = $conn->prepare($query);

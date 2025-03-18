@@ -69,7 +69,7 @@ if (!isset($_SESSION['user_id'])) {
 
        <!-- Nuevo Div con estilos -->
        <div class="report-box">
-            <h1>Reporte de Ventas de Líneas en Conjunto</h1>
+            <h1>Reporte de Seoarados de Líneas en Conjunto</h1>
 
             <form id="filtro-asesor-conjunto" method="POST" action="">
                 <label for="fecha_inicio_conjunto">Fecha Inicio:</label>
@@ -125,7 +125,7 @@ if (!isset($_SESSION['user_id'])) {
             }
 
             $.ajax({
-                url: 'reporte_conjunto.php',
+                url: 'prendas_conjunto.php',
                 type: 'POST',
                 data: { fecha_inicio_conjunto, fecha_fin_conjunto },
                 success: function (response) {

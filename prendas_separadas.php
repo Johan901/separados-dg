@@ -65,6 +65,8 @@ if (!isset($_SESSION['user_id'])) {
             <button type="submit">Generar Reporte</button>
         </form>
 
+        <div id="reporte" class="reporte-container"></div>
+
        <!-- Nuevo Div con estilos -->
        <div class="report-box">
             <h1>Reporte de Ventas de Líneas en Conjunto</h1>

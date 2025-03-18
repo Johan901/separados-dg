@@ -70,6 +70,26 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
+
+ <!-- Nuevo Div con estilos -->
+ <div class="report-box">
+            <h1>Reporte de Ventas de Líneas en Conjunto</h1>
+
+            <form id="filtro-asesor-conjunto" method="POST" action="">
+                <label for="fecha_inicio_conjunto">Fecha Inicio:</label>
+                <input type="date" name="fecha_inicio_conjunto" id="fecha_inicio_conjunto">
+
+                <label for="fecha_fin_conjunto">Fecha Fin:</label>
+                <input type="date" name="fecha_fin_conjunto" id="fecha_fin_conjunto">
+
+                <button type="submit">Generar Reporte</button>
+            </form>
+
+            <div id="reporte_conjunto"></div>
+        </div>
+    </div>
+
+
     <script>
     $(document).ready(function () {
         // Reporte por Asesor
@@ -97,6 +117,30 @@ if (!isset($_SESSION['user_id'])) {
             });
         });     
     });
+
+ // Reporte Conjunto 
+ $('#filtro-asesor-conjunto').on('submit', function (e) {
+            e.preventDefault();
+            const fecha_inicio_conjunto = $('#fecha_inicio_conjunto').val();
+            const fecha_fin_conjunto = $('#fecha_fin_conjunto').val();
+
+            if (!fecha_inicio_conjunto || !fecha_fin_conjunto) {
+                alert("Por favor, complete todos los campos.");
+                return;
+            }
+
+            $.ajax({
+                url: 'reporte_conjunto.php',
+                type: 'POST',
+                data: { fecha_inicio_conjunto, fecha_fin_conjunto },
+                success: function (response) {
+                    $('#reporte_conjunto').html(response);
+                },
+                error: function () {
+                    alert("Ocurrió un error al generar el reporte conjunto.");
+                }
+            });
+        });
 
 </script>
 </body>

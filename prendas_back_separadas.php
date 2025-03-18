@@ -3,7 +3,7 @@ include('config.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['asesor']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin'])) {
-        // Reporte por Asesor con detalles de ref y color
+        // Reporte por Asesor con detalles de ref, color y estado
         $asesor = $_POST['asesor'];
         $fecha_inicio = $_POST['fecha_inicio'];
         $fecha_fin = $_POST['fecha_fin'];
@@ -35,12 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             
                 echo "<h3>Reporte de prendas separadas por asesor: $asesor ha separado ($total_prendas) prendas</h3>";
-                echo "<table><thead><tr><th>Referencia</th><th>Color</th><th>Cantidad Separada</th></tr></thead><tbody>";
+                echo "<table><thead><tr><th>Referencia</th><th>Color</th><th>Cantidad Separada</th><th>Estado</th></tr></thead><tbody>";
             
                 $chartData = [["Referencia", "Cantidad Separada"]];
             
                 foreach ($resultados as $fila) {
-                    echo "<tr><td>" . $fila['ref'] . "</td><td>" . $fila['color'] . "</td><td>" . $fila['total_cantidad'] . "</td></tr>";
+                    $estado = ($fila['estado'] === 'cerrado') ? 'Facturado' : 'Separado';
+                    echo "<tr>
+                            <td>" . htmlspecialchars($fila['ref']) . "</td>
+                            <td>" . htmlspecialchars($fila['color']) . "</td>
+                            <td>" . htmlspecialchars($fila['total_cantidad']) . "</td>
+                            <td>" . htmlspecialchars($estado) . "</td>
+                          </tr>";
                     $chartData[] = [$fila['ref'] . " - " . $fila['color'], (int)$fila['total_cantidad']];
                 }
             

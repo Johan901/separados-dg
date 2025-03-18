@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fecha_fin = $_POST['fecha_fin_conjunto'];
 
         try {
+            // Obtener cantidad de prendas separadas por asesor
             $query = "
                 SELECT 
                     p.asesor, 
@@ -20,6 +21,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $conn->prepare($query);
             $stmt->execute(['fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin]);
             $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Obtener cantidad de prendas separadas (estado "abierto")
+            $query_separadas = "
+                SELECT SUM(dp.cantidad) AS total_separadas
+                FROM detalle_pedido dp
+                INNER JOIN pedidos p ON dp.id_pedido = p.id_pedido
+                WHERE p.estado = 'abierto' AND DATE(dp.fecha_agregado) BETWEEN :fecha_inicio AND :fecha_fin
+            ";
+            $stmt_separadas = $conn->prepare($query_separadas);
+            $stmt_separadas->execute(['fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin]);
+            $separadas = $stmt_separadas->fetch(PDO::FETCH_ASSOC)['total_separadas'] ?? 0;
+
+            // Obtener cantidad de prendas facturadas (estado "cerrado")
+            $query_facturadas = "
+                SELECT SUM(dp.cantidad) AS total_facturadas
+                FROM detalle_pedido dp
+                INNER JOIN pedidos p ON dp.id_pedido = p.id_pedido
+                WHERE p.estado = 'cerrado' AND DATE(dp.fecha_agregado) BETWEEN :fecha_inicio AND :fecha_fin
+            ";
+            $stmt_facturadas = $conn->prepare($query_facturadas);
+            $stmt_facturadas->execute(['fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin]);
+            $facturadas = $stmt_facturadas->fetch(PDO::FETCH_ASSOC)['total_facturadas'] ?? 0;
 
             if ($resultados) {
                 echo "<h3>Prendas separadas desde $fecha_inicio hasta $fecha_fin</h3>";
@@ -41,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $chartDataJson = json_encode($chartData);
 
-                // Mensaje animado bonito
+                // Estilos y mensajes animados
                 echo "
                 <style>
                     @keyframes fade {
@@ -49,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         50% { opacity: 0.5; }
                         100% { opacity: 1; }
                     }
-                    #mensajePrendas {
+                    .mensajeAnimado {
                         font-size: 22px;
                         font-weight: bold;
                         color: #e91d29;
@@ -60,10 +83,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         border-radius: 10px;
                         background: rgba(233, 29, 41, 0.1);
                     }
+                    .contenedorMensajes {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 10px;
+                    }
+                    .mensajeLateral {
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #1e88e5;
+                        padding: 10px;
+                        border-radius: 10px;
+                        background: rgba(30, 136, 229, 0.1);
+                        animation: fade 2s infinite ease-in-out;
+                    }
                 </style>
 
-                <div id='mensajePrendas'>
+                <div class='mensajeAnimado'>
                     ✨ Por ahora vamos por <span id='totalPrendas'>$suma_total_prendas</span> prendas separadas en total ✨
+                </div>
+
+                <div class='contenedorMensajes'>
+                    <div class='mensajeLateral'>🛒 $separadas prendas fueron separadas</div>
+                    <div class='mensajeLateral'>💰 $facturadas prendas fueron facturadas</div>
                 </div>
                 ";
 

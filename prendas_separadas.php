@@ -68,9 +68,6 @@ if (!isset($_SESSION['user_id'])) {
         <div id="reporte" class="reporte-container"></div>
             <div id="reporte_conjunto"></div>
         </div>
-    </div>
-
-
  <!-- Nuevo Div con estilos -->
  <div class="report-box">
             <h1>Reporte de Ventas de Líneas en Conjunto</h1>
@@ -89,6 +86,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
+    </div>
 
     <script>
     $(document).ready(function () {

@@ -65,11 +65,8 @@ if (!isset($_SESSION['user_id'])) {
             <button type="submit">Generar Reporte</button>
         </form>
 
-        <div id="reporte" class="reporte-container"></div>
-            <div id="reporte_conjunto"></div>
-        </div>
- <!-- Nuevo Div con estilos -->
- <div class="report-box">
+       <!-- Nuevo Div con estilos -->
+       <div class="report-box">
             <h1>Reporte de Ventas de Líneas en Conjunto</h1>
 
             <form id="filtro-asesor-conjunto" method="POST" action="">
@@ -84,8 +81,6 @@ if (!isset($_SESSION['user_id'])) {
 
             <div id="reporte_conjunto"></div>
         </div>
-    </div>
-
     </div>
 
     <script>

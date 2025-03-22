@@ -115,6 +115,13 @@ if (isset($_SESSION['nombre_usuario'])) {
             </div>
         </div>
 
+        <div class="section" style="background-color:rgb(103, 164, 119);">
+            <h3>OBSERVACIONES</h3>
+            <div class="dropdown">
+                <a href="observaciones_bodeguero.php">Ver todas las observaciones</a>
+            </div>
+        </div>
+
         <div class="section" style="background-color: #ffe0b2;">
             <h3>PEDIDOS</h3>
             <div class="dropdown">

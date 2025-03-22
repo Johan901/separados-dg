@@ -144,7 +144,6 @@ $detalles = $stmt_detalle->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo number_format($detalle['precio_unitario'], 2); ?></td>
                     <td id="subtotal_<?php echo $detalle['id_detalle']; ?>" data-precio-unitario="<?php echo htmlspecialchars($detalle['precio_unitario']); ?>">
                         <?php echo number_format($detalle['subtotal'], 2); ?>                    <td>
-                        <button type="button" class="button" onclick="eliminarProducto(<?php echo $detalle['id_detalle']; ?>)">Eliminar</button>
                         <button type="button" class="button" onclick="modificarCantidad(<?php echo $detalle['id_detalle']; ?>, -1)">-</button>
                         <button type="button" class="button" onclick="modificarCantidad(<?php echo $detalle['id_detalle']; ?>, 1)">+</button>
                         <!-- Checkbox de pago -->

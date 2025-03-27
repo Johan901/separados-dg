@@ -67,8 +67,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/styles_editar_user.css?v=4.1">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+</head>
 <body>
     <!-- Header -->
     <header>
@@ -133,15 +133,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
         // Manejar la respuesta después de que se haya enviado el formulario
         window.onload = function() {
-            <?php if ($response == "success") : ?>
-                swal("Éxito!", "Cantidad actualizada con éxito.", "success").then(() => {
-                    window.location.href = 'inventario_bodeguero.php';
-                });
+    <?php if ($response == "success") : ?>
+        swal({
+            title: "Éxito!",
+            text: "Cantidad actualizada con éxito.",
+            type: "success",
+            showConfirmButton: true
+        }, function() {
+            window.location.href = 'inventario_bodeguero.php';
+        });
 
-            <?php elseif (strpos($response, "error") !== false) : ?>
-                swal("Error!", "<?= $response ?>", "error");
-            <?php endif; ?>
-        }
+    <?php elseif (strpos($response, "error") !== false) : ?>
+        swal({
+            title: "Error!",
+            text: "<?= $response ?>",
+            type: "error",
+            showConfirmButton: true
+        });
+    <?php endif; ?>
+}
+
     </script>
 
     <script src="js/main_user.js?v=1.1"></script>

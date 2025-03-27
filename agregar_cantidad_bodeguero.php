@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     try {
         // Actualizar la cantidad en la base de datos
-        $query = "UPDATE inventario SET cantidad = cantidad + :cantidad WHERE ref = :ref AND color = :color";
+        $query = "UPDATE inventario SET cantidad = :cantidad WHERE ref = :ref AND color = :color";
         
         $stmt = $conn->prepare($query);
         

@@ -82,12 +82,14 @@
 
         echo "<tr>
             <td>{$producto['ref']}</td>
-            <td>{$producto['tipo_prenda']}</td>
-            <td>{$producto['color']}</td>
-            <td>{$producto['cantidad']}</td>
-            <td>{$precio_al_detal_formateado}</td>
-            <td>{$precio_por_mayor_formateado}</td>
-            <td><a href='agregar_cantidad_bodeguero.php?ref={$producto['ref']}&color=" . urlencode($producto['color']) . "' class='button'>Agregar Cantidad</a></td>
+<td>{$producto['tipo_prenda']}</td>
+<td>{$producto['color']}</td>
+<td>{$producto['cantidad']}</td>
+<td>{$precio_al_detal_formateado}</td>
+<td>{$precio_por_mayor_formateado}</td>
+<td>
+    <a href='agregar_cantidad_bodeguero.php?ref=" . urlencode($producto['ref']) . "&color=" . urlencode($producto['color']) . "' class='button'>Agregar Cantidad</a>
+</td>
         </tr>";
     }
     echo "</table>";

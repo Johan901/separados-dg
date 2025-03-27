@@ -15,7 +15,7 @@ $ref = $_GET['ref'];
 $color = isset($_GET['color']) ? urldecode($_GET['color']) : '';
 
 // Consultar la base de datos para obtener la cantidad
-$query = "SELECT cantidad FROM inventario WHERE ref = :ref AND color = :color";
+$query = "SELECT cantidad FROM inventario WHERE ref = :ref AND TRIM(color) = TRIM(:color)";
 $stmt = $conn->prepare($query);
 $stmt->bindParam(':ref', $ref);
 $stmt->bindParam(':color', $color);

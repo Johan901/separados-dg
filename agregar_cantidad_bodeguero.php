@@ -134,23 +134,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Manejar la respuesta después de que se haya enviado el formulario
         window.onload = function() {
     <?php if ($response == "success") : ?>
-        swal({
+        Swal.fire({
             title: "Éxito!",
             text: "Cantidad actualizada con éxito.",
             icon: "success",
-            allowOutsideClick: false,  // Evita que se cierre al hacer clic afuera
-            allowEscapeKey: false      // Evita que se cierre con la tecla ESC
+            allowOutsideClick: false,
+            confirmButtonText: "OK"
         }).then(() => {
             window.location.href = 'inventario_bodeguero.php';
         });
 
     <?php elseif (strpos($response, "error") !== false) : ?>
-        swal({
+        Swal.fire({
             title: "Error!",
             text: "<?= $response ?>",
             icon: "error",
-            allowOutsideClick: false,
-            allowEscapeKey: false
+            confirmButtonColor: "#d33",
+            confirmButtonText: "OK"
         });
     <?php endif; ?>
 }

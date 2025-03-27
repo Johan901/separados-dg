@@ -13,6 +13,8 @@ if (!isset($_SESSION['user_id'])) {
 // Captura los parámetros de la URL (ref y color)
 $ref = $_GET['ref'];
 $color = isset($_GET['color']) ? urldecode($_GET['color']) : '';
+$color = "'" . urldecode($_GET['color']) . "'";
+
 
 // Consultar la base de datos para obtener la cantidad
 $query = "SELECT cantidad FROM inventario WHERE ref = :ref AND TRIM(color) = TRIM(:color)";
@@ -37,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     try {
         // Actualizar la cantidad en la base de datos
-        $query = "UPDATE inventario SET cantidad = :cantidad WHERE ref = :ref AND color = :color";
+        $query = "UPDATE inventario SET cantidad = :cantidad WHERE ref = :ref AND BINARY color = :color";
         
         $stmt = $conn->prepare($query);
         

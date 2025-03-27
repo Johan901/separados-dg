@@ -49,7 +49,7 @@
     }
 
     if (isset($_GET['ref']) && !empty($_GET['ref'])) {
-        $ref = $_GET['ref'];
+        $ref = trim($_GET['ref']);
         $query = "SELECT * FROM inventario WHERE ref = :ref";
         $stmt = $conn->prepare($query);
         $stmt->execute(['ref' => $ref]);

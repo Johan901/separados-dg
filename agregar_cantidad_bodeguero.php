@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Captura los parámetros de la URL (ref y color)
 $ref = $_GET['ref'];
-$color = isset($_GET['color']) ? trim(urldecode($_GET['color'])) : '';
+$color = isset($_GET['color']) ? urldecode($_GET['color']) : '';
 
 // Consultar la base de datos para obtener la cantidad
 $query = "SELECT cantidad FROM inventario WHERE ref = :ref AND color = :color";

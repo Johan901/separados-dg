@@ -48,22 +48,37 @@
         exit();
     }
 
-    if (isset($_GET['ref']) && !empty($_GET['ref'])) {
-        $ref = trim($_GET['ref']);
-        $query = "SELECT * FROM inventario WHERE ref = :ref";
+    if (isset($_GET['ref']) && !empty($_GET['ref']) || isset($_GET['color']) && !empty($_GET['color'])) {
+        $ref = isset($_GET['ref']) ? trim($_GET['ref']) : null;
+        $color = isset($_GET['color']) ? trim($_GET['color']) : null;
+    
+        $query = "SELECT * FROM inventario WHERE 1=1"; // Base de la consulta
+    
+        $params = [];
+    
+        if ($ref) {
+            $query .= " AND ref = :ref";
+            $params['ref'] = $ref;
+        }
+        if ($color) {
+            $query .= " AND LOWER(color) = LOWER(:color)";
+            $params['color'] = $color;
+        }
+    
         $stmt = $conn->prepare($query);
-        $stmt->execute(['ref' => $ref]);
-
+        $stmt->execute($params);
+    
         if ($stmt->rowCount() > 0) {
             echo "<h2>Resultados de la búsqueda</h2>";
         } else {
-            echo "No se encontraron prendas con la referencia: $ref";
+            echo "No se encontraron prendas con los criterios ingresados.";
         }
     } else {
         $query = "SELECT * FROM inventario";
         $stmt = $conn->query($query);
         echo "<h2>Stock de Prendas</h2>";
     }
+    
 
     echo "<table>
         <tr>

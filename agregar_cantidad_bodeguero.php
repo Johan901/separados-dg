@@ -135,8 +135,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         window.onload = function() {
             <?php if ($response == "success") : ?>
                 swal("Éxito!", "Cantidad actualizada con éxito.", "success").then(() => {
-                    window.location.href = 'bodeguero_panel.php';
+                    window.location.href = 'inventario_bodeguero.php';
                 });
+
             <?php elseif (strpos($response, "error") !== false) : ?>
                 swal("Error!", "<?= $response ?>", "error");
             <?php endif; ?>

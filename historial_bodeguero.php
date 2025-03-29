@@ -501,7 +501,7 @@ document.getElementById('select_all').addEventListener('change', function() {
 <div id="notifications"></div>  <!-- Contenedor de notificaciones -->
 
 <script>
-const eventSource = new EventSource('/escuchar_notificacion.php');
+const eventSource = new EventSource('escuchar_notificacion.php');
 
 eventSource.onmessage = function(event) {
     try {

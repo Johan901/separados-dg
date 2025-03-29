@@ -24,7 +24,10 @@
         exit();
     }
 
-    $query = "SELECT id_pedido, asesor, observaciones FROM pedidos ORDER BY id_pedido DESC";
+    $query = "SELECT id_pedido, asesor, observaciones 
+    FROM pedidos 
+    WHERE observaciones IS NOT NULL AND observaciones <> '' 
+    ORDER BY ultima_actualizacion_observacion DESC";
     $stmt = $conn->query($query);
 
     echo "<table>

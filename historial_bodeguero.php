@@ -475,7 +475,54 @@ document.getElementById('select_all').addEventListener('change', function() {
     });
 });
 
-    </script>
+</script>
+
+<style>
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ffcc00;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .notification .close {
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: auto;
+    }
+</style>
+
+<div id="notifications"></div>  <!-- Contenedor de notificaciones -->
+
+<script>
+const eventSource = new EventSource('/escuchar_notificacion.php');
+
+eventSource.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    showNotification(`Nueva observación en el pedido ${data.id_pedido}: ${data.observaciones}`);
+};
+
+function showNotification(message) {
+    const notification = document.createElement("div");
+    notification.className = "notification";
+    notification.innerHTML = `<span>${message}</span> <span class="close">✖</span>`;
+
+    // Cerrar notificación al hacer clic en "X"
+    notification.querySelector(".close").addEventListener("click", function() {
+        notification.remove();
+    });
+
+    document.getElementById("notifications").appendChild(notification);
+}
+</script>
+
+
 </body>
 
 

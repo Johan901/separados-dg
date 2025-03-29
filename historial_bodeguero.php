@@ -506,9 +506,10 @@ const eventSource = new EventSource('/escuchar_notificacion.php');
 eventSource.onmessage = function(event) {
     try {
         const data = JSON.parse(event.data);
-        
-        // 🔥 Verificar que los valores no sean undefined
+
+        // 🔥 Asegurar que la notificación es nueva y válida
         if (data.id_pedido && data.observaciones) {
+            console.log("✅ Nueva notificación recibida:", data);
             showNotification(`Nueva observación en el pedido ${data.id_pedido}: ${data.observaciones}`);
         }
     } catch (error) {
@@ -516,18 +517,19 @@ eventSource.onmessage = function(event) {
     }
 };
 
+// Mostrar notificación
 function showNotification(message) {
     const notification = document.createElement("div");
     notification.className = "notification";
     notification.innerHTML = `<span>${message}</span> <span class="close">✖</span>`;
 
-    // Cerrar notificación al hacer clic en "X"
     notification.querySelector(".close").addEventListener("click", function() {
         notification.remove();
     });
 
     document.getElementById("notifications").appendChild(notification);
 }
+
 </script>
 
 

@@ -24,7 +24,7 @@
         exit();
     }
 
-    $query = "SELECT id_pedido, asesor, observaciones, FROM pedidos WHERE observaciones IS NOT NULL AND observaciones <> '' ORDER BY fecha DESC";
+    $query = "SELECT id_pedido, asesor, observaciones FROM pedidos ORDER BY id_pedido DESC";
     $stmt = $conn->query($query);
 
     echo "<table>
@@ -44,6 +44,7 @@
     echo "</table>";
     ?>
 </body>
+
 
 <footer class="footer">
     <div class="footer-content">

@@ -24,7 +24,7 @@
         exit();
     }
 
-    $query = "SELECT id_pedido, asesor, observaciones, fecha FROM pedidos WHERE observaciones IS NOT NULL AND observaciones <> '' ORDER BY fecha DESC";
+    $query = "SELECT id_pedido, asesor, observaciones, FROM pedidos WHERE observaciones IS NOT NULL AND observaciones <> '' ORDER BY fecha DESC";
     $stmt = $conn->query($query);
 
     echo "<table>

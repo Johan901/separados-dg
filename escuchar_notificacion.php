@@ -1,25 +1,23 @@
 <?php
-include('config.php');
-
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
+header('Connection: keep-alive');
 
-$channel = 'new_observation';
+require 'config.php'; // Conexión a la BD
 
-$conn->exec("LISTEN $channel;");
-
-echo "event: connected\ndata: Conectado al canal '$channel'\n\n";
-ob_flush();
-flush();
+$conn->exec("LISTEN new_observation;"); // Escuchar el canal 'new_observation'
 
 while (true) {
-    $result = $conn->pgsqlGetNotify(PDO::FETCH_ASSOC, 10000);
-    if ($result) {
-        echo "event: message\n";
-        echo "data: " . json_encode($result['payload']) . "\n\n";
-        ob_flush();
-        flush();
+    $result = $conn->query("SELECT 1"); // Evita desconexiones
+
+    if ($conn->pgsqlGetNotify(PDO::FETCH_ASSOC, 1000)) { // Esperar notificación
+        $notification = $conn->pgsqlGetNotify(PDO::FETCH_ASSOC);
+        if ($notification) {
+            echo "data: " . $notification['payload'] . "\n\n";
+            ob_flush();
+            flush();
+        }
     }
-    usleep(100000); // Pequeña pausa para evitar alta carga en el servidor
+    sleep(1); // Evita consumo excesivo de CPU
 }
 ?>

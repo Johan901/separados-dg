@@ -504,8 +504,16 @@ document.getElementById('select_all').addEventListener('change', function() {
 const eventSource = new EventSource('/escuchar_notificacion.php');
 
 eventSource.onmessage = function(event) {
-    const data = JSON.parse(event.data);
-    showNotification(`Nueva observación en el pedido ${data.id_pedido}: ${data.observaciones}`);
+    try {
+        const data = JSON.parse(event.data);
+        
+        // 🔥 Verificar que los valores no sean undefined
+        if (data.id_pedido && data.observaciones) {
+            showNotification(`Nueva observación en el pedido ${data.id_pedido}: ${data.observaciones}`);
+        }
+    } catch (error) {
+        console.error("Error al procesar la notificación:", error);
+    }
 };
 
 function showNotification(message) {

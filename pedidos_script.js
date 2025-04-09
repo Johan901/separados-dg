@@ -256,55 +256,49 @@ function agregarProducto() {
         data: { ref: referencia, color: color, cantidad: cantidad, cedula: cedula },
         success: function(data) {
             data = typeof data === 'string' ? JSON.parse(data) : data;
-
+        
             if (data.error) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al verificar inventario',
+                    title: 'Error al reservar',
                     text: data.error,
                     confirmButtonText: 'Aceptar',
                 });
-            } else {
-                const cantidadDisponible = data.cantidadDisponible;
-
-                if (cantidadDisponible < cantidad) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Cantidad insuficiente',
-                        text: `Solo hay ${cantidadDisponible} unidades disponibles.`,
-                        confirmButtonText: 'Aceptar',
-                    });
-                } else {
-                    const tabla = document.getElementById('productos').getElementsByTagName('tbody')[0];
-                    const fila = tabla.insertRow();
-                    fila.innerHTML = `
-                        <td>${referencia}</td>
-                        <td>${color}</td>
-                        <td>${cantidad}</td>
-                        <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(precioUnitario)}</td>
-                        <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(subtotal)}</td>
-                        <td><button class="btn-eliminar" onclick="eliminarFila(this, ${subtotal})">X</button></td>
-
-                    `;
-
-                    totalPedido += subtotal;  // Actualizar el total del pedido
-                    document.getElementById('total-pedido').value = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(totalPedido);
-
-                    // Limpiar campos después de agregar el producto
-                    document.getElementById('referencia-busqueda').value = '';
-                    document.getElementById('color').value = 'Seleccione un color';
-                    document.getElementById('cantidad').value = '';
-                    document.getElementById('precio-unitario').value = '';
-
-                    // Mostrar alerta de éxito
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Producto agregado correctamente',
-                        confirmButtonText: 'Aceptar',
-                    });
-                }
+                return;
             }
+        
+            // Si reserva fue exitosa, agregar a tabla
+            const tabla = document.getElementById('productos').getElementsByTagName('tbody')[0];
+            const fila = tabla.insertRow();
+            fila.innerHTML = `
+                <td>${referencia}</td>
+                <td>${color}</td>
+                <td>${cantidad}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(precioUnitario)}</td>
+                <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(subtotal)}</td>
+                <td><button class="btn-eliminar" onclick="eliminarFila(this, ${subtotal})">X</button></td>
+            `;
+        
+            totalPedido += subtotal;
+            document.getElementById('total-pedido').value = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(totalPedido);
+        
+            // Limpiar campos
+            document.getElementById('referencia-busqueda').value = '';
+            document.getElementById('color').value = 'Seleccione un color';
+            document.getElementById('cantidad').value = '';
+            document.getElementById('precio-unitario').value = '';
+        
+            Swal.fire({
+                icon: 'success',
+                title: 'Producto agregado correctamente',
+                confirmButtonText: 'Aceptar',
+            });
         },
+        
         error: function(xhr, status, error) {
             Swal.fire({
                 icon: 'error',

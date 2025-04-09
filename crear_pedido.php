@@ -79,6 +79,9 @@ foreach ($productos as $producto) {
     // Ahora, descontamos la cantidad de productos del inventario
     $stmt_inventario = $conn->prepare("UPDATE inventario SET cantidad = cantidad - ? WHERE ref = ? AND color = ?");
     $stmt_inventario->execute([$producto['cantidad'], $producto['referencia'], $producto['color']]);
+    $stmt = $conn->prepare("DELETE FROM reservas_temporales WHERE cedula_cliente = :cedula");
+    $stmt->execute(['cedula' => $_POST['cedula']]);
+
 
 }
 

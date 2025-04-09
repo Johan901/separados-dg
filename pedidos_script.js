@@ -238,6 +238,8 @@ function agregarProducto() {
     const cantidad = parseInt(document.getElementById('cantidad').value);
     const precioUnitario = parseFloat(document.getElementById('precio-unitario').value.replace(/[$,.]/g, '').trim());
     const subtotal = cantidad * precioUnitario;
+    const cedula = document.getElementById('cedula').value;
+
 
     if (!referencia || !color || color === 'Seleccione un color' || isNaN(cantidad) || cantidad <= 0 || isNaN(precioUnitario) || precioUnitario <= 0 || subtotal < 0) {
         Swal.fire({
@@ -249,9 +251,9 @@ function agregarProducto() {
     }
 
     $.ajax({
-        url: 'verificar_inventario.php',
-        type: 'GET',
-        data: { ref: referencia, color: color },
+        url: 'reservar_inventario.php',
+        type: 'POST',
+        data: { ref: referencia, color: color, cantidad: cantidad, cedula: cedula },
         success: function(data) {
             data = typeof data === 'string' ? JSON.parse(data) : data;
 
@@ -325,13 +327,64 @@ function eliminarFila(btn, subtotal) {
     }).then((result) => {
         if (result.isConfirmed) {
             const fila = btn.closest('tr');
-            fila.remove();
+            const cells = fila.getElementsByTagName('td');
 
-            totalPedido -= subtotal;
-            document.getElementById('total-pedido').value = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(totalPedido);
+            const ref = cells[0].textContent;       // Asegúrate que la columna 0 sea ref
+            const color = cells[1].textContent;
+            const cantidad = parseInt(cells[2].textContent);
+            const cedula = document.getElementById('cedula').value;
+
+            // AJAX para liberar reserva en BD
+            $.ajax({
+                url: 'eliminar_reserva.php',
+                type: 'POST',
+                data: {
+                    ref: ref,
+                    color: color,
+                    cantidad: cantidad,
+                    cedula: cedula
+                },
+                success: function(response) {
+                    response = typeof response === 'string' ? JSON.parse(response) : response;
+
+                    if (response.success) {
+                        // Ahora sí, eliminar la fila y actualizar total
+                        fila.remove();
+
+                        totalPedido -= subtotal;
+                        document.getElementById('total-pedido').value = new Intl.NumberFormat('es-CO', {
+                            style: 'currency',
+                            currency: 'COP',
+                            minimumFractionDigits: 0
+                        }).format(totalPedido);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Producto eliminado correctamente',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.error || 'No se pudo devolver el producto al inventario.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error en la solicitud',
+                        text: 'No se pudo contactar al servidor para liberar la reserva.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            });
         }
     });
 }
+
 
 function buscarPedidos() {
     console.log('Función buscarPedidos llamada');

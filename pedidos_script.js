@@ -229,16 +229,20 @@ document.getElementById('cantidad').addEventListener('change', function() {
 });
 
 
-function agregarProducto(event) {
-    const boton = event?.target;
-    if (boton) boton.disabled = true;
+// Agregar producto a la lista de productos
+let totalPedido = 0;
 
+function agregarProducto() {
     const referencia = document.getElementById('referencia-busqueda').value;
     const color = document.getElementById('color').value;
     const cantidad = parseInt(document.getElementById('cantidad').value);
     const precioUnitario = parseFloat(document.getElementById('precio-unitario').value.replace(/[$,.]/g, '').trim());
     const subtotal = cantidad * precioUnitario;
     const cedula = document.getElementById('cedula').value;
+    const boton = event?.target;
+    if (boton) boton.disabled = true;
+
+
 
     if (!referencia || !color || color === 'Seleccione un color' || isNaN(cantidad) || cantidad <= 0 || isNaN(precioUnitario) || precioUnitario <= 0 || subtotal < 0) {
         Swal.fire({
@@ -246,7 +250,6 @@ function agregarProducto(event) {
             title: 'Por favor completa todos los campos correctamente antes de agregar el producto',
             confirmButtonText: 'Aceptar',
         });
-        if (boton) boton.disabled = false;
         return;
     }
 
@@ -256,7 +259,7 @@ function agregarProducto(event) {
         data: { ref: referencia, color: color, cantidad: cantidad, cedula: cedula },
         success: function(data) {
             data = typeof data === 'string' ? JSON.parse(data) : data;
-
+        
             if (data.error) {
                 Swal.fire({
                     icon: 'error',
@@ -264,10 +267,10 @@ function agregarProducto(event) {
                     text: data.error,
                     confirmButtonText: 'Aceptar',
                 });
-                if (boton) boton.disabled = false;
                 return;
             }
-
+        
+            // Si reserva fue exitosa, agregar a tabla
             const tabla = document.getElementById('productos').getElementsByTagName('tbody')[0];
             const fila = tabla.insertRow();
             fila.innerHTML = `
@@ -278,29 +281,27 @@ function agregarProducto(event) {
                 <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(subtotal)}</td>
                 <td><button class="btn-eliminar" onclick="eliminarFila(this, ${subtotal})">X</button></td>
             `;
-
+        
             totalPedido += subtotal;
             document.getElementById('total-pedido').value = new Intl.NumberFormat('es-CO', {
                 style: 'currency',
                 currency: 'COP',
                 minimumFractionDigits: 0
             }).format(totalPedido);
-
+        
             // Limpiar campos
             document.getElementById('referencia-busqueda').value = '';
             document.getElementById('color').value = 'Seleccione un color';
             document.getElementById('cantidad').value = '';
             document.getElementById('precio-unitario').value = '';
-
+        
             Swal.fire({
                 icon: 'success',
                 title: 'Producto agregado correctamente',
                 confirmButtonText: 'Aceptar',
             });
-
-            if (boton) boton.disabled = false;
         },
-
+        
         error: function(xhr, status, error) {
             Swal.fire({
                 icon: 'error',
@@ -308,7 +309,6 @@ function agregarProducto(event) {
                 text: 'Ocurrió un error al verificar el inventario. Por favor intenta nuevamente.',
                 confirmButtonText: 'Aceptar',
             });
-            if (boton) boton.disabled = false;
         }
     });
 }

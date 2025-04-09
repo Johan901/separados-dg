@@ -239,6 +239,9 @@ function agregarProducto() {
     const precioUnitario = parseFloat(document.getElementById('precio-unitario').value.replace(/[$,.]/g, '').trim());
     const subtotal = cantidad * precioUnitario;
     const cedula = document.getElementById('cedula').value;
+    const boton = event?.target;
+    if (boton) boton.disabled = true;
+
 
 
     if (!referencia || !color || color === 'Seleccione un color' || isNaN(cantidad) || cantidad <= 0 || isNaN(precioUnitario) || precioUnitario <= 0 || subtotal < 0) {

@@ -77,12 +77,10 @@ foreach ($productos as $producto) {
     ]);
 
     // Ahora, descontamos la cantidad de productos del inventario
-    
-    $stmt = $conn->prepare("DELETE FROM reservas_temporales WHERE cedula_cliente = :cedula");
-    $stmt->execute(['cedula' => $_POST['cedula']]);
-
-
 }
+
+$stmt = $conn->prepare("DELETE FROM reservas_temporales WHERE cedula_cliente = :cedula");
+$stmt->execute(['cedula' => $_POST['cedula']]);
 
     $conn->commit();
     echo json_encode(['success' => true, 'message' => 'Pedido procesado correctamente']);

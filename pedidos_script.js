@@ -232,7 +232,7 @@ document.getElementById('cantidad').addEventListener('change', function() {
 // Agregar producto a la lista de productos
 let totalPedido = 0;
 
-function agregarProducto() {
+function agregarProducto(event) {
     const referencia = document.getElementById('referencia-busqueda').value;
     const color = document.getElementById('color').value;
     const cantidad = parseInt(document.getElementById('cantidad').value);
@@ -266,7 +266,9 @@ function agregarProducto() {
                     title: 'Error al reservar',
                     text: data.error,
                     confirmButtonText: 'Aceptar',
+                    
                 });
+                if (boton) boton.disabled = false; // ✅ aquí
                 return;
             }
         
@@ -300,6 +302,8 @@ function agregarProducto() {
                 title: 'Producto agregado correctamente',
                 confirmButtonText: 'Aceptar',
             });
+            if (boton) boton.disabled = false; // ✅ aquí
+
         },
         
         error: function(xhr, status, error) {
@@ -309,6 +313,8 @@ function agregarProducto() {
                 text: 'Ocurrió un error al verificar el inventario. Por favor intenta nuevamente.',
                 confirmButtonText: 'Aceptar',
             });
+            if (boton) boton.disabled = false; // ✅ aquí
+
         }
     });
 }

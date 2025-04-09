@@ -114,7 +114,7 @@ if (!isset($_SESSION['user_id'])) {
 
         
 
-        <button class="boton-buscar" onclick="agregarProducto()">Agregar Producto</button>
+        <button class="boton-buscar" onclick="agregarProducto(event)">Agregar Producto</button>
 
         <div class="section-title">Productos en el Pedido</div>
         

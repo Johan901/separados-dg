@@ -73,7 +73,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
 </head>
 <body>
     <!-- Header -->
@@ -148,13 +150,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Manejar la respuesta después de que se haya enviado el formulario
     window.onload = function() {
         <?php if ($response == "success") : ?>
-            swal("Éxito!", "Referencia agregada con éxito.", "success").then(() => {
+            Swal.fire("Éxito!", "Referencia agregada con éxito.", "success").then(() => {
                 window.location.href = 'bodeguero_panel.php'; // Redirige a bodeguero_panel.php
             });
         <?php elseif ($response == "duplicate") : ?>
-            swal("Error!", "La referencia ya está registrada.", "error");
+            Swal.fire("Error!", "La referencia ya está registrada.", "error");
         <?php elseif (strpos($response, "error") !== false) : ?>
-            swal("Error!", "<?= $response ?>", "error").then(() => {
+            Swal.fire("Error!", "<?= $response ?>", "error").then(() => {
                 window.location.href = 'bodeguero_panel.php'; // Redirige a bodeguero_panel.php si hay un error
             });
         <?php endif; ?>

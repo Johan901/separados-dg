@@ -19,9 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cantidad = $_POST['cantidad']; // Cantidad
     $precio_al_detal = $_POST['precio_al_detal']; // Precio al detalle
     $precio_por_mayor = $_POST['precio_por_mayor']; // Precio por mayor
-    
+    $mercancia_nueva = $_POST['mercancia_nueva']; // Si es mercancía nueva
+
     try {
-        // Verificar si la referencia ya existe
+        // Verificar si la referencia ya existe en inventario
         $checkQuery = "SELECT COUNT(*) FROM inventario WHERE ref = :ref AND color = :color";
         $checkStmt = $conn->prepare($checkQuery);
         $checkStmt->bindParam(':ref', $ref);
@@ -29,30 +30,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checkStmt->execute();
         $count = $checkStmt->fetchColumn();
 
-
         if ($count > 0) {
             // La referencia ya existe, devolver error
             $response = "duplicate";
         } else {
-            // Insertar nueva referencia si no existe
-            $query = "INSERT INTO inventario (ref, tipo_prenda, color, cantidad, precio_al_detal, precio_por_mayor) 
-                      VALUES (:ref, :tipo_prenda, :color, :cantidad, :precio_al_detal, :precio_por_mayor)";
-            
-            $stmt = $conn->prepare($query);
+            // Si es mercancía nueva, insertar en la tabla 'mercancia_nueva'
+            if ($mercancia_nueva == 'si') {
+                $query_nueva = "INSERT INTO mercancia_nueva (ref, tipo_prenda, color, cantidad, precio_al_detal, precio_por_mayor, fecha_creacion) 
+                                VALUES (:ref, :tipo_prenda, :color, :cantidad, :precio_al_detal, :precio_por_mayor, NOW())";
 
-            // Vincular los parámetros
-            $stmt->bindParam(':ref', $ref);
-            $stmt->bindParam(':tipo_prenda', $tipo_prenda);
-            $stmt->bindParam(':color', $color);
-            $stmt->bindParam(':cantidad', $cantidad);
-            $stmt->bindParam(':precio_al_detal', $precio_al_detal);
-            $stmt->bindParam(':precio_por_mayor', $precio_por_mayor);
+                $stmt_nueva = $conn->prepare($query_nueva);
+                // Vincular los parámetros
+                $stmt_nueva->bindParam(':ref', $ref);
+                $stmt_nueva->bindParam(':tipo_prenda', $tipo_prenda);
+                $stmt_nueva->bindParam(':color', $color);
+                $stmt_nueva->bindParam(':cantidad', $cantidad);
+                $stmt_nueva->bindParam(':precio_al_detal', $precio_al_detal);
+                $stmt_nueva->bindParam(':precio_por_mayor', $precio_por_mayor);
 
-            // Ejecutar la consulta
-            if ($stmt->execute()) {
-                $response = "success";
+                // Ejecutar la consulta para 'mercancia_nueva'
+                if ($stmt_nueva->execute()) {
+                    $response = "success_new";
+                } else {
+                    $response = "error_new";
+                }
             } else {
-                $response = "error";
+                // Si es mercancía vieja, insertar solo en inventario
+                $query_inventario = "INSERT INTO inventario (ref, tipo_prenda, color, cantidad, precio_al_detal, precio_por_mayor) 
+                                     VALUES (:ref, :tipo_prenda, :color, :cantidad, :precio_al_detal, :precio_por_mayor)";
+
+                $stmt_inventario = $conn->prepare($query_inventario);
+                // Vincular los parámetros
+                $stmt_inventario->bindParam(':ref', $ref);
+                $stmt_inventario->bindParam(':tipo_prenda', $tipo_prenda);
+                $stmt_inventario->bindParam(':color', $color);
+                $stmt_inventario->bindParam(':cantidad', $cantidad);
+                $stmt_inventario->bindParam(':precio_al_detal', $precio_al_detal);
+                $stmt_inventario->bindParam(':precio_por_mayor', $precio_por_mayor);
+
+                // Ejecutar la consulta para 'inventario'
+                if ($stmt_inventario->execute()) {
+                    $response = "success_old";
+                } else {
+                    $response = "error_old";
+                }
             }
         }
     } catch (PDOException $e) {
@@ -70,15 +91,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/styles_editar_user.css?v=4.1">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
-
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="hamburger-menu">
             <i class="fas fa-bars"></i>
@@ -115,6 +131,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="precio_por_mayor">Precio por Mayor: (SOLO EL NUMERO)</label>
         <input type="number" name="precio_por_mayor" required step="0.01">
 
+        <!-- Pregunta sobre mercancía nueva -->
+        <label>¿Es mercancía nueva?</label><br>
+        <input type="radio" name="mercancia_nueva" value="si" required> Sí, es nueva
+        <input type="radio" name="mercancia_nueva" value="no" required> No, es vieja
+
         <input type="submit" value="Agregar">
     </form>
 
@@ -147,10 +168,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Script para manejar la respuesta -->
     <script>
-    // Manejar la respuesta después de que se haya enviado el formulario
     window.onload = function() {
-        <?php if ($response == "success") : ?>
-            Swal.fire("Éxito!", "Referencia agregada con éxito.", "success").then(() => {
+        <?php if ($response == "success_new") : ?>
+            Swal.fire("Éxito!", "Mercancía nueva agregada con éxito.", "success").then(() => {
+                window.location.href = 'bodeguero_panel.php'; // Redirige a bodeguero_panel.php
+            });
+        <?php elseif ($response == "success_old") : ?>
+            Swal.fire("Éxito!", "Mercancía agregada con éxito.", "success").then(() => {
                 window.location.href = 'bodeguero_panel.php'; // Redirige a bodeguero_panel.php
             });
         <?php elseif ($response == "duplicate") : ?>
@@ -161,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         <?php endif; ?>
     }
-</script>
+    </script>
 
 
     <script src="js/main_user.js?v=1.1"></script>

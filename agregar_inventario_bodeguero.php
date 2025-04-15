@@ -144,23 +144,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <!-- Script para manejar la respuesta -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
-        // Manejar la respuesta después de que se haya enviado el formulario
-        window.onload = function() {
-            <?php if ($response == "success") : ?>
-                swal("Éxito!", "Referencia agregada con éxito.", "success").then(() => {
-                    window.location.href = 'admin_panel.php';
-                });
-            <?php elseif ($response == "duplicate") : ?>
-                swal("Error!", "La referencia ya está registrada.", "error");
-            <?php elseif (strpos($response, "error") !== false) : ?>
-                swal("Error!", "<?= $response ?>", "error").then(() => {
-                    window.location.href = 'admin_panel.php';
-                });
-            <?php endif; ?>
-        }
-    </script>
+    // Manejar la respuesta después de que se haya enviado el formulario
+    window.onload = function() {
+        <?php if ($response == "success") : ?>
+            swal("Éxito!", "Referencia agregada con éxito.", "success").then(() => {
+                window.location.href = 'bodeguero_panel.php'; // Redirige a bodeguero_panel.php
+            });
+        <?php elseif ($response == "duplicate") : ?>
+            swal("Error!", "La referencia ya está registrada.", "error");
+        <?php elseif (strpos($response, "error") !== false) : ?>
+            swal("Error!", "<?= $response ?>", "error").then(() => {
+                window.location.href = 'bodeguero_panel.php'; // Redirige a bodeguero_panel.php si hay un error
+            });
+        <?php endif; ?>
+    }
+</script>
+
 
     <script src="js/main_user.js?v=1.1"></script>
 </body>

@@ -3,23 +3,20 @@ include 'config.php'; // Incluir la conexión
 
 $response = ""; // Variable para manejar la respuesta
 
-// Verifica si el usuario ha iniciado sesión
 session_start(); // Asegúrate de iniciar la sesión
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.html');
     exit();
 }
 
-// Si se envía el formulario, procesa e inserta en la base de datos
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recoger los datos del formulario
-    $ref = $_POST['ref']; // Referencia
-    $tipo_prenda = $_POST['tipo_prenda']; // Tipo de prenda
-    $color = $_POST['color']; // Color
-    $cantidad = $_POST['cantidad']; // Cantidad
-    $precio_al_detal = $_POST['precio_al_detal']; // Precio al detalle
-    $precio_por_mayor = $_POST['precio_por_mayor']; // Precio por mayor
-    $mercancia_nueva = $_POST['mercancia_nueva']; // Si es mercancía nueva
+    $ref = $_POST['ref'];
+    $tipo_prenda = $_POST['tipo_prenda'];
+    $color = $_POST['color'];
+    $cantidad = $_POST['cantidad'];
+    $precio_al_detal = $_POST['precio_al_detal'];
+    $precio_por_mayor = $_POST['precio_por_mayor'];
+    $mercancia_nueva = $_POST['mercancia_nueva'];
 
     try {
         // Verificar si la referencia ya existe en inventario
@@ -31,16 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $count = $checkStmt->fetchColumn();
 
         if ($count > 0) {
-            // La referencia ya existe, devolver error
             $response = "duplicate";
         } else {
-            // Si es mercancía nueva, insertar en la tabla 'mercancia_nueva'
             if ($mercancia_nueva == 'si') {
+                // Insertar en mercancia_nueva
                 $query_nueva = "INSERT INTO mercancia_nueva (ref, tipo_prenda, color, cantidad, precio_al_detal, precio_por_mayor, fecha_creacion) 
                                 VALUES (:ref, :tipo_prenda, :color, :cantidad, :precio_al_detal, :precio_por_mayor, NOW())";
-
                 $stmt_nueva = $conn->prepare($query_nueva);
-                // Vincular los parámetros
                 $stmt_nueva->bindParam(':ref', $ref);
                 $stmt_nueva->bindParam(':tipo_prenda', $tipo_prenda);
                 $stmt_nueva->bindParam(':color', $color);
@@ -48,19 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt_nueva->bindParam(':precio_al_detal', $precio_al_detal);
                 $stmt_nueva->bindParam(':precio_por_mayor', $precio_por_mayor);
 
-                // Ejecutar la consulta para 'mercancia_nueva'
-                if ($stmt_nueva->execute()) {
-                    $response = "success_new";
-                } else {
-                    $response = "error_new";
-                }
-            } else {
-                // Si es mercancía vieja, insertar solo en inventario
+                // Insertar en inventario
                 $query_inventario = "INSERT INTO inventario (ref, tipo_prenda, color, cantidad, precio_al_detal, precio_por_mayor) 
                                      VALUES (:ref, :tipo_prenda, :color, :cantidad, :precio_al_detal, :precio_por_mayor)";
-
                 $stmt_inventario = $conn->prepare($query_inventario);
-                // Vincular los parámetros
                 $stmt_inventario->bindParam(':ref', $ref);
                 $stmt_inventario->bindParam(':tipo_prenda', $tipo_prenda);
                 $stmt_inventario->bindParam(':color', $color);
@@ -68,7 +53,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt_inventario->bindParam(':precio_al_detal', $precio_al_detal);
                 $stmt_inventario->bindParam(':precio_por_mayor', $precio_por_mayor);
 
-                // Ejecutar la consulta para 'inventario'
+                // Ejecutar ambas inserciones
+                if ($stmt_nueva->execute() && $stmt_inventario->execute()) {
+                    $response = "success_new";
+                } else {
+                    $response = "error_new";
+                }
+            } else {
+                // Insertar solo en inventario si no es nueva
+                $query_inventario = "INSERT INTO inventario (ref, tipo_prenda, color, cantidad, precio_al_detal, precio_por_mayor) 
+                                     VALUES (:ref, :tipo_prenda, :color, :cantidad, :precio_al_detal, :precio_por_mayor)";
+                $stmt_inventario = $conn->prepare($query_inventario);
+                $stmt_inventario->bindParam(':ref', $ref);
+                $stmt_inventario->bindParam(':tipo_prenda', $tipo_prenda);
+                $stmt_inventario->bindParam(':color', $color);
+                $stmt_inventario->bindParam(':cantidad', $cantidad);
+                $stmt_inventario->bindParam(':precio_al_detal', $precio_al_detal);
+                $stmt_inventario->bindParam(':precio_por_mayor', $precio_por_mayor);
+
                 if ($stmt_inventario->execute()) {
                     $response = "success_old";
                 } else {
@@ -81,6 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

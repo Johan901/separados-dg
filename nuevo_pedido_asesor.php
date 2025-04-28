@@ -193,7 +193,7 @@ if (!isset($_SESSION['user_id'])) {
         <label for="total-pedido">Total del Pedido:</label>
         <input type="text" id="total-pedido" name="total-pedido" placeholder="Total del pedido" disabled>
 
-        <button class="boton-buscar" onclick="crearPedido()">Crear Pedido</button>
+        <button class="boton-buscar" id="btn-crear-pedido" onclick="crearPedido()">Crear Pedido</button>
     </div>
 
     <script src="js/main_user.js?v=1.1"></script>

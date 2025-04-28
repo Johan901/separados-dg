@@ -459,6 +459,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // Función para crear el pedido
 function crearPedido() {
+    const btnCrear = document.getElementById('btn-crear-pedido');
+    if (btnCrear) btnCrear.disabled = true; // 🔒 Bloquear el botón
+
     const cedula = document.getElementById('cedula').value;
     const nombre = document.getElementById('nombre').value;
     const asesor = document.getElementById('asesor').value;
@@ -473,6 +476,7 @@ function crearPedido() {
             title: 'No hay productos en el pedido',
             confirmButtonText: 'Aceptar',
         });
+        if (btnCrear) btnCrear.disabled = false; // 🔓 Volver a habilitar si hay error
         return;
     }
 
@@ -511,6 +515,7 @@ function crearPedido() {
                     confirmButtonText: 'Aceptar',
                 }).then(() => location.reload());
             } else {
+                if (btnCrear) btnCrear.disabled = false; // 🔓 Volver a habilitar si hubo error
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -520,6 +525,7 @@ function crearPedido() {
             }
         },
         error: function(xhr, status, error) {
+            if (btnCrear) btnCrear.disabled = false; // 🔓 Volver a habilitar si hubo error
             Swal.fire({
                 icon: 'error',
                 title: 'Error en la solicitud',

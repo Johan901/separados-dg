@@ -253,28 +253,28 @@ $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha si
         // Establecer el estado color
         $estado_color = $ha_expirado ? "style='color: red;'" : "";
         echo "<tr data-id-pedido='{$row['id_pedido']}'>
-                <td>{$row['id_pedido']}</td>
-                <td>{$row['cliente_cedula']}</td>
-                <td>{$row['nombre_cliente']}</td>
-                <td>{$row['fecha_pedido']}</td>
-                <td>{$row['fecha_limite']}</td>
-                <td>{$total_formateado}</td>
-                <td>{$row['asesor']}</td>
-                <td>{$row['envio']}</td>
-                <td>{$row['estado']} $alerta_nuevo_cliente</td>
-                <td $estado_color>$cuenta_regresiva</td>
-                <td class='action-buttons'>
-                    <a href='detalle_pedido_bodeguero.php?id={$row['id_pedido']}' class='button'>Ver Detalles</a>
-                    <a href='editar_pedido_bodeguero.php?id_pedido={$row['id_pedido']}' class='button'>Editar Separado</a>
-                    <div class='checkbox-container'>
-                    <input type='checkbox'
-                            class='checkbox-separado'
-                            data-id='<?= $pedido['id'] ?>'
-                            <?= $pedido['separado_check'] ? 'checked' : '' ?>>
-                    </div>
+        <td>{$row['id_pedido']}</td>
+        <td>{$row['cliente_cedula']}</td>
+        <td>{$row['nombre_cliente']}</td>
+        <td>{$row['fecha_pedido']}</td>
+        <td>{$row['fecha_limite']}</td>
+        <td>{$total_formateado}</td>
+        <td>{$row['asesor']}</td>
+        <td>{$row['envio']}</td>
+        <td>{$row['estado']} $alerta_nuevo_cliente</td>
+        <td $estado_color>$cuenta_regresiva</td>
+        <td class='action-buttons'>
+            <a href='detalle_pedido_bodeguero.php?id={$row['id_pedido']}' class='button'>Ver Detalles</a>
+            <a href='editar_pedido_bodeguero.php?id_pedido={$row['id_pedido']}' class='button'>Editar Separado</a>
+            <div class='checkbox-container'>
+                <input type='checkbox'
+                    class='checkbox-separado'
+                    data-id='" . $row['id_pedido'] . "' " . ($row['separado_check'] ? "checked" : "") . ">
+            </div>
+        </td>
+        <td>" . $mensaje_separado . "</td>
+    </tr>";
 
-                <td>' . $mensaje_separado . '</td>
-            </tr>";
     }
     echo "</table>
     </div>";

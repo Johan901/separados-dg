@@ -45,7 +45,7 @@ button {
     display: block;
     width: 100%;
     padding: 10px 15px;
-    background-color: #e91d29;
+    background-color: #800020;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -73,7 +73,7 @@ button:hover {
 .main-title {
     text-align: center;
     font-size: 2.5em;
-    color: #e91d29;
+    color: #800020;
     margin-bottom: 30px;
     padding: 10px;
     border-radius: 5px;
@@ -108,7 +108,7 @@ button:hover {
 
 
 .footer {
-    background-color: #e91d29;
+    background-color: #800020;
     color: #fff;
     padding: 30px 0;
     text-align: center;

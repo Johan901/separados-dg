@@ -75,7 +75,7 @@ if (isset($_SESSION['nombre_usuario'])) {
             transition: background-color 0.3s;
         }
         .dropdown a:hover {
-            background-color: #e91d29;
+            background-color: #800020;
             color: white;
         }
       

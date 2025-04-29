@@ -64,7 +64,7 @@ if ($user) {
             transform: translate(-50%, -50%);
             padding: 70px;
             font-size: 40px;
-            background-color: #e91d29;
+            background-color: #800020;
             color: white;
             border-radius: 8px;
             z-index: 1000;
@@ -76,7 +76,7 @@ if ($user) {
             justify-content: center;
             margin-top: 10px;
             background-color: white;
-            color: #e91d29;
+            color: #800020;
             border: none;
             padding: 20px 40px;
             cursor: pointer;

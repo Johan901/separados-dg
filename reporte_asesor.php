@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             chartArea: {width: '50%'},
                             hAxis: {title: 'Fecha Cierre', minValue: 0},
                             vAxis: {title: 'Total Pedido'},
-                            series: {0: {color: '#e91d29'}}
+                            series: {0: {color: '#800020'}}
                         };
             
                         var chart = new google.visualization.BarChart(document.getElementById('ventasChart'));

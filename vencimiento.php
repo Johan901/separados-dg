@@ -168,14 +168,14 @@ if (!isset($_SESSION['user_id'])) {
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #e91d29;
+            background-color: #800020;
             color: white;
             border: none;
             border-radius: 5px;
         }
 
         .report-box button:hover {
-            background-color: #e91d29;
+            background-color: #800020;
         }
 
         #reporte, #reporte_conjunto {

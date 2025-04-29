@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     .mensajeAnimado {
                         font-size: 22px;
                         font-weight: bold;
-                        color: #e91d29;
+                        color: #800020;
                         text-align: center;
                         margin: 20px 0;
                         animation: fade 1.5s infinite ease-in-out;

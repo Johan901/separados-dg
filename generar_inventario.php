@@ -95,13 +95,13 @@ $(document).ready(function () {
         }
 
         #search-ref:focus {
-            border-color: #e91d29; /* Cambia el color del borde al enfocar */
+            border-color: #800020; /* Cambia el color del borde al enfocar */
             outline: none; /* Elimina el borde de enfoque predeterminado */
         }
 
         /* Estilos para el botón de búsqueda */
         #search-form button {
-            background-color: #e91d29;
+            background-color: #800020;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -151,14 +151,14 @@ $(document).ready(function () {
         padding: 10px;
         font-size: 16px;
         cursor: pointer;
-        background-color: #e91d29;
+        background-color: #800020;
         color: white;
         border: none;
         border-radius: 5px;
     }
 
     .report-box button:hover {
-        background-color: #e91d29;
+        background-color: #800020;
     }
 
     #reporte, #reporte_conjunto {

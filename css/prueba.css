@@ -13,7 +13,7 @@ header {
     font-family: 'Poppins', regular;
     font-size: 38px;
     font-weight: bold;
-    color: #e91d29; /* Color del texto */
+    color: #800020; /* Color del texto */
     text-decoration: none; /* Quita el subrayado del enlace */
     transition: transform 0.3s; /* Animación */
 
@@ -27,7 +27,7 @@ header {
 
 main h2 {
     padding-left: 20px; /* Ajusta este valor según tus necesidades. */
-    color: #e91d29;
+    color: #800020;
     margin: 20px auto; /* Centrar contenido principal con margen */
     padding: 20px;
     max-width: 1200px;
@@ -42,7 +42,7 @@ main h2 {
 .button {
     display: inline-block;
     padding: 8px 16px;
-    background-color: #e91d29; /* Color de fondo */
+    background-color: #800020; /* Color de fondo */
     color: #fff; /* Color de texto */
     border: none;
     border-radius: 4px;
@@ -65,7 +65,7 @@ main h2 {
     display: block;
     width: 100%;
     padding: 10px;
-    background-color: #e91d29;
+    background-color: #800020;
     color: white;
     border: none;
     cursor: pointer;
@@ -92,7 +92,7 @@ main h2 {
 
 footer {
     padding: 20px;
-    background-color: #e91d29;
+    background-color: #800020;
     color: white;
     text-align: center;
 }
@@ -118,12 +118,12 @@ footer {
 .cart img {
     width: 52px;
     height: 52px;
-    color: #e91d29;
+    color: #800020;
 }
 
 .cart-icon i.fa-shopping-cart {
     font-size: 24px;  /* Tamaño de fuente incrementado para hacer el icono más grande */
-    color: #e91d29;
+    color: #800020;
 }
 
 /* Estilos iniciales para la animación */
@@ -162,7 +162,7 @@ body {
 .search-form input[type="submit"] {
     font-size: 16px;
     padding: 10px 20px;
-    background-color: #e91d29;
+    background-color: #800020;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -175,7 +175,7 @@ body {
 .logout-button {
     display: inline-block;
     padding: 8px 16px;
-    background-color: #e91d29; /* Color de fondo */
+    background-color: #800020; /* Color de fondo */
     color: #fff; /* Color de texto */
     border: none;
     border-radius: 4px;
@@ -201,7 +201,7 @@ body {
 
 .hamburger-menu i.fas.fa-bars {
     font-size: 30px; /* Aumento del tamaño del ícono */
-    color: #e91d29;
+    color: #800020;
     margin-right: 0px; /* Espacio entre el ícono y el logo */
 }
 
@@ -238,12 +238,12 @@ body {
 .dropdown-menu a {
     display: block;
     padding: 10px 20px;
-    color: #e91d29;
+    color: #800020;
     text-decoration: none;
 }
 
 .dropdown-menu a:hover {
-    background-color: #e91d29;
+    background-color: #800020;
     color: #fff;
 }
 
@@ -359,7 +359,7 @@ body {
 
 
 .footer {
-    background-color: #e91d29;
+    background-color: #800020;
     color: #fff;
     padding: 30px 0;
     text-align: center;
@@ -460,7 +460,7 @@ body {
 }
 
 .button {
-    background-color: #e91d29; /* Color de fondo azul */
+    background-color: #800020; /* Color de fondo azul */
     color: white; /* Color del texto blanco */
     padding: 10px 15px; /* Espaciado interno */
     border: none; /* Sin borde */
@@ -482,7 +482,7 @@ table {
 
 table th, table td {
     padding: 15px; /* Espaciado dentro de cada celda */
-    color: #e91d29; /* Cambia el color del texto a rojo */
+    color: #800020; /* Cambia el color del texto a rojo */
     text-align: left; /* Alineación del texto */
 }
 

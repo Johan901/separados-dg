@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "<table><thead><tr><th>Asesor</th><th>Número de Pedidos</th><th>Total Ventas</th></tr></thead><tbody>";
 
                 $chartDataConjunto = [["Asesor", "Número de Pedidos", ["role" => "style"]]];
-                $colors = ['#e91d29', '#e91d29', '#e91d29', '#e91d29', '#e91d29'];
+                $colors = ['#800020', '#800020', '#800020', '#800020', '#800020'];
                 $colorIndex = 0;
 
                 foreach ($ventasConjunto as $venta) {
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     #mensajeVentas {
                         font-size: 22px;
                         font-weight: bold;
-                        color: #e91d29;
+                        color: #800020;
                         text-align: center;
                         margin: 20px 0;
                         animation: parpadeo 1.5s infinite ease-in-out;
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             chartArea: {width: '50%'},
                             hAxis: {title: 'Número de Pedidos'},
                             vAxis: {title: 'Asesor'},
-                            series: {0: {color: '#e91d29'}}
+                            series: {0: {color: '#800020'}}
                         };
 
                         var chart = new google.visualization.BarChart(document.getElementById('ventasChartConjunto'));

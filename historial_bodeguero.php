@@ -85,7 +85,9 @@ $query = "SELECT p.id_pedido, p.cliente_cedula, p.fecha_pedido, p.fecha_limite,
           FROM pedidos p 
           LEFT JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido 
           LEFT JOIN clientes c ON p.cliente_cedula = c.cedula
-          GROUP BY p.id_pedido, c.nombre";
+          GROUP BY p.id_pedido, p.cliente_cedula, p.fecha_pedido, p.fecha_limite,
+                   p.asesor, p.envio, c.nombre, p.estado, p.separado_check";
+
 
 $conditions = [];
 

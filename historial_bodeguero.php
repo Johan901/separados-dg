@@ -267,9 +267,12 @@ $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha si
                     <a href='detalle_pedido_bodeguero.php?id={$row['id_pedido']}' class='button'>Ver Detalles</a>
                     <a href='editar_pedido_bodeguero.php?id_pedido={$row['id_pedido']}' class='button'>Editar Separado</a>
                     <div class='checkbox-container'>
-                        <input type='checkbox' class='pedido-checkbox' id='pedido_{$row['id_pedido']}'>
-                        <label for='pedido_{$row['id_pedido']}'>SEPARADO</label>
+                    <input type='checkbox'
+                            class='checkbox-separado'
+                            data-id='<?= $pedido['id'] ?>'
+                            <?= $pedido['separado_check'] ? 'checked' : '' ?>>
                     </div>
+
                 <td>' . $mensaje_separado . '</td>
             </tr>";
     }
@@ -530,6 +533,30 @@ function showNotification(message) {
     document.getElementById("notifications").appendChild(notification);
 }
 
+</script>
+
+<script>
+document.querySelectorAll('.checkbox-separado').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const pedidoId = this.dataset.id;
+        const separado = this.checked ? 1 : 0;
+
+        fetch('actualizar_separado.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `id=${pedidoId}&separado=${separado}`
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log('Servidor dijo:', data);
+        })
+        .catch(error => {
+            console.error('Error al actualizar:', error);
+        });
+    });
+});
 </script>
 
 

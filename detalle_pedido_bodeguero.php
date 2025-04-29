@@ -34,6 +34,31 @@
 
     <h2>Detalle de Pedido</h2>
     
+
+<script>
+    // Esta función maneja el click para marcar como separado sin necesidad de recargar la página
+    function marcarSeparado(idDetalle, idPedido) {
+        const formData = new FormData();
+        formData.append('id_detalle', idDetalle);
+        formData.append('id_pedido', idPedido);
+        formData.append('marcar_separado', true); // Indicamos la acción
+
+        fetch('detalle_pedido_bodeguero.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Actualizamos el estado del producto directamente en la página sin recargar
+            document.getElementById('estado-' + idDetalle).innerText = 'Ya separado';
+            document.getElementById('btn-separado-' + idDetalle).disabled = true; // Deshabilitar el botón
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
 <?php
 include 'config.php';
 

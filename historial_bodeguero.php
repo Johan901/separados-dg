@@ -271,7 +271,9 @@ $mensaje_separado = $pendientes ? "Faltan artículos por separar." : "Todo ha si
                 <input type='checkbox'
                     class='checkbox-separado'
                     data-id='" . $row['id_pedido'] . "' " . ($row['separado_check'] ? "checked" : "") . ">
+                <label for='pedido_{$row['id_pedido']}' class='separado-label'>SEPARADO</label>
             </div>
+
         </td>
         <td>" . $mensaje_separado . "</td>
     </tr>";

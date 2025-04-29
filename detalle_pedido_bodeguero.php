@@ -193,8 +193,9 @@ if (isset($_POST['marcar_separado'])) {
 
     ob_clean(); // Limpia cualquier salida previa
     $id_pedido = $_POST['id_pedido'];
-    header("Location: detalle_pedido_bodeguero.php?id_pedido=$id_pedido");
+    header("Location: detalle_pedido_bodeguero.php?id=$id_pedido");
     exit;
+
 
 }
 

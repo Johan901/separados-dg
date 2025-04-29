@@ -80,21 +80,31 @@ $message = '';
 
 // Consulta básica
 $query = "SELECT 
-             p.id_pedido, 
-             p.cliente_cedula, 
-             p.fecha_pedido, 
-             p.fecha_limite,
-             SUM(dp.subtotal) AS total_pedido, 
-             p.asesor, 
-             p.envio,
-             c.nombre AS nombre_cliente, 
-             p.estado, 
-             p.separado_check
-          FROM pedidos p 
-          LEFT JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido 
-          LEFT JOIN clientes c ON p.cliente_cedula = c.cedula
-          GROUP BY p.id_pedido, c.nombre, p.cliente_cedula, p.fecha_pedido, p.fecha_limite, 
-                   p.asesor, p.envio, p.estado, p.separado_check";
+    p.id_pedido,
+    p.cliente_cedula,
+    p.fecha_pedido,
+    p.fecha_limite,
+    SUM(dp.subtotal) AS total_pedido,
+    p.asesor,
+    p.envio,
+    c.nombre AS nombre_cliente,
+    p.estado,
+    p.separado_check
+FROM pedidos p
+LEFT JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido
+LEFT JOIN clientes c ON p.cliente_cedula = c.cedula
+GROUP BY 
+    p.id_pedido,
+    p.cliente_cedula,
+    p.fecha_pedido,
+    p.fecha_limite,
+    p.asesor,
+    p.envio,
+    c.nombre,
+    p.estado,
+    p.separado_check
+ORDER BY p.fecha_pedido DESC";
+
 
 
 $conditions = [];

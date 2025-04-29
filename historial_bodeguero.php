@@ -104,7 +104,10 @@ GROUP BY
     c.nombre, 
     p.estado, 
     p.separado_check
+ORDER BY 
+    p.fecha_pedido DESC
 ";
+
 
 
 $conditions = [];

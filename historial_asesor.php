@@ -41,6 +41,7 @@
                 <label><input type="checkbox" name="sin_separar" value="sin_separar"> Pedidos sin separar</label>
                 <label><input type="checkbox" name="linea[]" value="3104238002"> Línea 310</label>
                 <label><input type="checkbox" name="linea[]" value="3147363095"> Línea 314</label>
+                <label><input type="checkbox" name="linea[]" value="3155081961"> Línea 315</label>
             </div>
             <button type="submit" class="button">Aplicar</button>
             <button type="reset" class="button" onclick="window.location.href='historial_asesor.php';">Limpiar</button>

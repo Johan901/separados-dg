@@ -512,7 +512,7 @@ tr:hover {
     font-size: 0.9em;
     font-weight: 600;
     color: #ffffff;
-    background-color: #ff1a1a;
+    background-color: #800020;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: 8px;
@@ -587,9 +587,9 @@ tr:hover {
 }
 
 .pagination a.active {
-    background-color: #ff1a1a;
+    background-color: #800020;
     color: white;
-    border-color: #ff1a1a;
+    border-color: #800020;
 }
 
 .pagination a:hover {

@@ -101,7 +101,7 @@ if (!isset($_SESSION['user_id'])) {
             }
 
             $.ajax({
-                url: 'separados_individual.php',
+                url: 'separados_individual_todo.php',
                 type: 'POST',
                 data: { asesor, fecha_inicio, fecha_fin },
                 success: function (response) {
@@ -125,7 +125,7 @@ if (!isset($_SESSION['user_id'])) {
             }
 
             $.ajax({
-                url: 'separados_conjunto.php',
+                url: 'separados_conjunto_op.php',
                 type: 'POST',
                 data: { fecha_inicio_conjunto, fecha_fin_conjunto },
                 success: function (response) {

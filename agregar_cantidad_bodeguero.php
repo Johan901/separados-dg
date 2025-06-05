@@ -11,8 +11,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Captura los parámetros de la URL (ref y color)
-$ref = isset($_GET['ref']) ? urldecode($_GET['ref']) : '';
-$color = isset($_GET['color']) ? urldecode($_GET['color']) : '';
+$ref = $_GET['ref'] ?? '';
+$color = $_GET['color'] ?? '';
 
 
 // Consultar la base de datos para obtener la cantidad
@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2>Actualizar Cantidad en Inventario</h2>
 
     <!-- Formulario para actualizar cantidad -->
-    <form action="agregar_cantidad_bodeguero.php?ref=<?php echo $ref; ?>&color=<?php echo $color; ?>" method="post" class="user-edit-form">
+    <form action="agregar_cantidad_bodeguero.php?ref=<?= urlencode($ref) ?>&color=<?= urlencode($color) ?>" method="post">
     <label for="ref">Referencia:</label>
     <input type="text" name="ref" value="<?= htmlspecialchars($ref); ?>" readonly>
 

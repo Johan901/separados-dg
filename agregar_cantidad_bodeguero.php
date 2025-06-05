@@ -89,18 +89,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h2>Actualizar Cantidad en Inventario</h2>
 
     <!-- Formulario para actualizar cantidad -->
-    <form action="agregar_cantidad_bodeguero.php?ref=<?= urlencode($ref) ?>&color=<?= urlencode($color) ?>" method="post">
+    <form action="agregar_cantidad_bodeguero.php?ref=<?= urlencode($ref) ?>&color=<?= urlencode($color) ?>" method="post" class="user-edit-form">
+
+  <div>
     <label for="ref">Referencia:</label>
     <input type="text" name="ref" value="<?= htmlspecialchars($ref); ?>" readonly>
+  </div>
 
+  <div>
     <label for="color">Color:</label>
     <input type="text" name="color" value="<?= htmlspecialchars($color); ?>" readonly>
+  </div>
 
+  <div>
     <label for="cantidad">Cantidad Actual:</label>
     <input type="number" name="cantidad" value="<?= htmlspecialchars($cantidad_actual); ?>" required min="0">
+  </div>
 
-    <input type="submit" value="Actualizar Cantidad">
+  <input type="submit" value="Actualizar Cantidad">
+
 </form>
+
 
     <!-- Footer -->
     <footer class="footer">

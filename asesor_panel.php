@@ -110,6 +110,7 @@ if (isset($_SESSION['nombre_usuario'])) {
             <h3>CLIENTES</h3>
             <div class="dropdown">
                 <a href="agregar_usuario_asesor.php">Agregar Nuevo Cliente</a>
+                <a href="info_cliente_asesor.php">Info de Clientes</a>
             </div>
         </div>
         <div class="section" style="background-color: #ffe0b2;">

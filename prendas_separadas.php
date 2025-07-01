@@ -55,6 +55,7 @@ if (!isset($_SESSION['user_id'])) {
                 <option value="3104238002">3104238002</option>
                 <option value="3147363095">3147363095</option>
                 <option value="3155081961">3155081961</option>
+                <option value="JHON_VENTA">JHON_VENTA</option>
             </select>
 
             <label for="fecha_inicio">Fecha Inicio:</label>

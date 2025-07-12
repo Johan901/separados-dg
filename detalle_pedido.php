@@ -123,9 +123,10 @@ if (isset($_GET['id'])) {
 
             if ($total_result) {
                 $total_pedido = $total_result['total_pedido'];
-                echo "<div style='text-align:center; margin-top: 20px; font-size: 18px;'>
-                        <strong>Total del Pedido:</strong> $" . number_format($total_pedido, 0, '', '.') . "
-                      </div>";
+                echo "<div id='total-pedido' style='text-align:center; margin-top: 20px; font-size: 18px;'>
+                    <strong>Total del Pedido:</strong> $" . number_format($total_pedido, 0, '', '.') . "
+                </div>";
+
             }
         } else {
             echo "<p>No se encontraron detalles para el ID de pedido proporcionado.</p>";

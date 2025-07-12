@@ -128,9 +128,10 @@ if (isset($_GET['id'])) {
                 </div>";
 
                 // Agrega el botón justo después del total
-                echo "<div style='text-align:center; margin-top:20px;'>
-                         <button class='button' onclick='imprimirSoloTicket()'>🖨️ Imprimir Ticket</button>
-                    </div>";
+                echo "<div style='text-align:center; margin-top:20px; margin-bottom:60px;'>
+                    <button class='button' onclick='imprimirSoloTicket()'>🖨️ Imprimir Ticket</button>
+                </div>";
+
 
             }
         } else {

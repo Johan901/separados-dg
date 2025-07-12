@@ -129,7 +129,7 @@ if (isset($_GET['id'])) {
 
                 // Agrega el botón justo después del total
                 echo "<div style='text-align:center; margin-top:20px;'>
-                        <button onclick='imprimirSoloTicket()'>🖨️ Imprimir Ticket</button>
+                         <button class='button' onclick='imprimirSoloTicket()'>🖨️ Imprimir Ticket</button>
                     </div>";
 
             }

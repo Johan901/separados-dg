@@ -174,7 +174,92 @@ if (isset($_POST['marcar_separado'])) {
 }
 
 
+
 ?>
+
+<div style="text-align:center; margin-top:20px;">
+  <button onclick="imprimirSoloTicket()">🖨️ Imprimir Ticket</button>
+</div>
+
+<script>
+function imprimirSoloTicket() {
+  const tablaHTML = document.querySelector("table").outerHTML;
+  const totalHTML = document.querySelector("div[style*='Total del Pedido']").outerHTML;
+
+  const contenidoTicket = `
+    <html>
+      <head>
+        <title>Ticket Dulce Guadalupe</title>
+        <style>
+          @page { size: 80mm auto; margin: 5mm; }
+          body {
+            width: 80mm;
+            font-family: 'Poppins', sans-serif;
+            font-size: 9pt;
+            color: #000;
+            background: #fff;
+            text-align: center;
+          }
+
+          h2 {
+            font-size: 14pt;
+            margin-bottom: 5px;
+          }
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 10px;
+          }
+
+          th, td {
+            border-bottom: 1px dashed #000;
+            padding: 3px;
+            word-break: break-word;
+            font-size: 9pt;
+            text-align: left;
+          }
+
+          tr:last-child td {
+            border-bottom: none;
+          }
+
+          .footer-impresion {
+            margin-top: 20px;
+            font-size: 8pt;
+            line-height: 1.4;
+            text-align: center;
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+          }
+        </style>
+      </head>
+      <body>
+        <h2>Dulce Guadalupe</h2>
+
+        ${tablaHTML}
+        ${totalHTML}
+
+        <div class="footer-impresion">
+          © 2025 Dulce Guadalupe. Todos los derechos reservados.<br>
+          Cali - Colombia<br>
+          C.C La Casona - Cra. 6 #12-61 Local 302<br>
+          Equipo de Tecnología DG
+        </div>
+      </body>
+    </html>
+  `;
+
+  const ventana = window.open('', '', 'width=400,height=600');
+  ventana.document.write(contenidoTicket);
+  ventana.document.close();
+  ventana.focus();
+  ventana.print();
+  ventana.close();
+}
+</script>
+
 
 <script src="js/main_user.js?v=1.1"></script>
 

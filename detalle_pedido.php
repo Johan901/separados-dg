@@ -186,15 +186,23 @@ if (isset($_POST['marcar_separado'])) {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   window.imprimirSoloTicket = function () {
-    const tabla = document.querySelector("table");
+    const filas = document.querySelectorAll("table tr");
     const total = document.getElementById("total-pedido");
-
-    if (!tabla || !total) {
-      alert("⚠️ No se encontró la tabla o el total del pedido. Asegúrate de que esté todo cargado.");
+    if (!filas || filas.length < 2 || !total) {
+      alert("⚠️ No se encontró la tabla o el total del pedido.");
       return;
     }
 
-    const tablaHTML = tabla.outerHTML;
+    // Tomar la primera fila de datos para obtener los datos del cliente
+    const primeraFila = filas[1].querySelectorAll("td");
+    const id_pedido = primeraFila[0].textContent.trim();
+    const ref = primeraFila[1].textContent.trim();
+    const color = primeraFila[2].textContent.trim();
+    const cantidad = primeraFila[3].textContent.trim();
+    const cedula = primeraFila[7].textContent.trim();
+    const nombre = primeraFila[8].textContent.trim();
+
+    // Extraer el total del pedido
     const totalHTML = total.outerHTML;
 
     const contenidoTicket = `
@@ -209,22 +217,25 @@ document.addEventListener("DOMContentLoaded", function () {
               font-size: 9pt;
               color: #000;
               background: #fff;
-              text-align: center;
+              text-align: left;
             }
             h2 {
               font-size: 14pt;
-              margin-bottom: 5px;
+              text-align: center;
+              margin-bottom: 10px;
+            }
+            .datos-cliente, .productos {
+              margin: 5px 0;
             }
             table {
               width: 100%;
               border-collapse: collapse;
-              margin-top: 10px;
+              margin-top: 5px;
               margin-bottom: 10px;
             }
             th, td {
               border-bottom: 1px dashed #000;
               padding: 3px;
-              word-break: break-word;
               font-size: 9pt;
               text-align: left;
             }
@@ -244,7 +255,20 @@ document.addEventListener("DOMContentLoaded", function () {
         <body>
           <h2>Dulce Guadalupe</h2>
 
-          ${tablaHTML}
+          <div class="datos-cliente">
+            <strong>Datos del Cliente:</strong><br>
+            Nombre: ${nombre}<br>
+            Cédula: ${cedula}
+          </div>
+
+          <div class="productos">
+            <strong>Productos:</strong>
+            <table>
+              <tr><th>ID</th><th>Ref</th><th>Color</th><th>Cant</th></tr>
+              <tr><td>${id_pedido}</td><td>${ref}</td><td>${color}</td><td>${cantidad}</td></tr>
+            </table>
+          </div>
+
           ${totalHTML}
 
           <div class="footer-impresion">

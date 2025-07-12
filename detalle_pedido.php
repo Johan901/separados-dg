@@ -188,21 +188,34 @@ document.addEventListener("DOMContentLoaded", function () {
   window.imprimirSoloTicket = function () {
     const filas = document.querySelectorAll("table tr");
     const total = document.getElementById("total-pedido");
+
     if (!filas || filas.length < 2 || !total) {
       alert("⚠️ No se encontró la tabla o el total del pedido.");
       return;
     }
 
-    // Tomar la primera fila de datos para obtener los datos del cliente
-    const primeraFila = filas[1].querySelectorAll("td");
-    const id_pedido = primeraFila[0].textContent.trim();
-    const ref = primeraFila[1].textContent.trim();
-    const color = primeraFila[2].textContent.trim();
-    const cantidad = primeraFila[3].textContent.trim();
-    const cedula = primeraFila[7].textContent.trim();
-    const nombre = primeraFila[8].textContent.trim();
+    let nombre = "", cedula = "", productosHTML = "";
 
-    // Extraer el total del pedido
+    // Iterar desde la segunda fila (índice 1) porque la primera es el encabezado
+    for (let i = 1; i < filas.length; i++) {
+      const celdas = filas[i].querySelectorAll("td");
+      if (celdas.length < 9) continue;
+
+      const id = celdas[0].textContent.trim();
+      const ref = celdas[1].textContent.trim();
+      const color = celdas[2].textContent.trim();
+      const cantidad = celdas[3].textContent.trim();
+      cedula = celdas[7].textContent.trim();
+      nombre = celdas[8].textContent.trim();
+
+      productosHTML += `<tr>
+                          <td>${id}</td>
+                          <td>${ref}</td>
+                          <td>${color}</td>
+                          <td>${cantidad}</td>
+                        </tr>`;
+    }
+
     const totalHTML = total.outerHTML;
 
     const contenidoTicket = `
@@ -265,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <strong>Productos:</strong>
             <table>
               <tr><th>ID</th><th>Ref</th><th>Color</th><th>Cant</th></tr>
-              <tr><td>${id_pedido}</td><td>${ref}</td><td>${color}</td><td>${cantidad}</td></tr>
+              ${productosHTML}
             </table>
           </div>
 
@@ -275,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function () {
             © 2025 Dulce Guadalupe. Todos los derechos reservados.<br>
             Cali - Colombia<br>
             C.C La Casona - Cra. 6 #12-61 Local 302<br>
-            Equipo de Tecnología DG
+            <strong>Equipo de Tecnología DG</strong>
           </div>
         </body>
       </html>

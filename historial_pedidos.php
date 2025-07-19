@@ -44,6 +44,14 @@
                 <label><input type="checkbox" name="linea[]" value="3104238002"> Línea 310</label>
                 <label><input type="checkbox" name="linea[]" value="3147363095"> Línea 314</label>
                 <label><input type="checkbox" name="linea[]" value="3155081961"> Línea 315</label>
+                <label for="fecha_limite">Buscar OP Cerradas (Fecha límite):</label>
+                <input 
+                    type="date" 
+                    id="fecha_limite" 
+                    name="fecha_limite" 
+                    style="height: 30px; padding: 0 10px; font-size: 14px; border-radius: 5px; border: 1px solid #ccc;"
+                    value="<?php echo isset($_GET['fecha_limite']) ? htmlspecialchars($_GET['fecha_limite']) : ''; ?>"
+                >
 
             </div>
             <button type="submit" class="button">Aplicar</button>
@@ -121,6 +129,16 @@ if (isset($_GET['sin_separar']) && $_GET['sin_separar'] === 'sin_separar') {
     $conditions[] = "EXISTS (SELECT 1 FROM detalle_pedido dp WHERE dp.id_pedido = p.id_pedido AND CAST(dp.actualizado AS INTEGER) = 0)";
 }
 
+// Filtro por fecha límite (fecha exacta)
+if (isset($_GET['fecha_limite']) && !empty($_GET['fecha_limite'])) {
+    $fecha_limite = $_GET['fecha_limite'];
+    // Validar que sea fecha con formato YYYY-MM-DD (básico)
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_limite)) {
+        $conditions[] = "p.fecha_limite::date = :fecha_limite";
+    }
+}
+
+
 // Filtro por ID de pedido
 if (isset($_GET['id_pedido']) && is_numeric($_GET['id_pedido'])) {
     $id_pedido = $_GET['id_pedido'];
@@ -149,6 +167,9 @@ if (isset($id_pedido)) {
 }
 if (isset($cliente_cedula)) {
     $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
+}
+if (isset($fecha_limite)) {
+    $stmt->bindValue(':fecha_limite', $fecha_limite, PDO::PARAM_STR);
 }
 
 try {

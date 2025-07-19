@@ -130,13 +130,11 @@ if (isset($_GET['sin_separar']) && $_GET['sin_separar'] === 'sin_separar') {
 }
 
 // Filtro por fecha límite (fecha exacta)
-if (isset($_GET['fecha_limite']) && !empty($_GET['fecha_limite'])) {
+if (isset($_GET['fecha_limite']) && $_GET['fecha_limite'] !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['fecha_limite'])) {
     $fecha_limite = $_GET['fecha_limite'];
-    // Validar que sea fecha con formato YYYY-MM-DD (básico)
-    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_limite)) {
-        $conditions[] = "p.fecha_limite::date = :fecha_limite";
-    }
+    $conditions[] = "p.fecha_limite::date = :fecha_limite";
 }
+
 
 
 // Filtro por ID de pedido
@@ -168,6 +166,7 @@ if (isset($id_pedido)) {
 if (isset($cliente_cedula)) {
     $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
 }
+
 if (isset($fecha_limite)) {
     $stmt->bindValue(':fecha_limite', $fecha_limite, PDO::PARAM_STR);
 }

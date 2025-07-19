@@ -61,10 +61,10 @@ $page = $_GET['page'] ?? 'conversaciones';
         .content {
             margin-left: 230px;
             padding: 30px;
-            width: 100%;
+            width: calc(100% - 230px);
         }
 
-        /* Inputs y selects */
+        /* Estilos generales para inputs y botones */
         input[type="text"],
         input[type="date"],
         input[type="file"],
@@ -84,7 +84,6 @@ $page = $_GET['page'] ?? 'conversaciones';
             resize: vertical;
         }
 
-        /* Botones */
         button {
             background-color: var(--main-color);
             color: #fff;
@@ -115,64 +114,45 @@ $page = $_GET['page'] ?? 'conversaciones';
             .sidebar { width: 100px; }
             .sidebar a, .sidebar form button { font-size: 12px; padding: 10px; }
             .sidebar h2 { font-size: 16px; }
-            .content { margin-left: 100px; }
+            .content { margin-left: 100px; width: calc(100% - 100px); }
+        }
+
+        /* Extra para organizar filtros en panel_conversaciones */
+        .chat-filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-date,
+        .input-select {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: border 0.3s ease;
+        }
+
+        .input-date:focus,
+        .input-select:focus {
+            border-color: var(--main-color);
+            outline: none;
+        }
+
+        .numero-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .content-section {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.chat-filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.input-date,
-.input-select {
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    transition: border 0.3s ease;
-}
-
-.input-date:focus,
-.input-select:focus {
-    border-color: #800020;
-    outline: none;
-}
-
-.numero-form {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
+            max-width: 900px;
+            margin: 0 auto;
+        }
     </style>
-    <div class="chat-filters">
-    <h2>📢 Conversaciones del 
-        <input type="date" name="fecha" value="<?php echo $fecha; ?>" onchange="window.location.href='?page=conversaciones&fecha='+this.value" class="input-date">
-    </h2>
-    <form method="get" class="numero-form">
-        <input type="hidden" name="page" value="conversaciones">
-        <input type="hidden" name="fecha" value="<?php echo $fecha; ?>">
-        <label for="numero">Selecciona número:</label>
-        <select name="numero" onchange="this.form.submit()" class="input-select">
-            <?php foreach ($chats as $c): ?>
-                <option value="<?php echo $c['phone_number']; ?>" <?php echo $numero === $c['phone_number'] ? 'selected' : ''; ?>>
-                    <?php echo $c['phone_number']; ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-    </form>
-</div>
-
 </head>
 <body>
     <div class="sidebar">

@@ -120,11 +120,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && isset($
                             <?php
                                 $url = $m['media_url'];
                                 $es_twilio = strpos($url, 'twilio.com') !== false;
-                                $imagen_final = $es_twilio ? 'imgbb_proxy.php?url=' . urlencode($url) : $url;
+
+                                if ($es_twilio) {
+                                    // Llama al endpoint Flask que convierte la URL Twilio en ImgBB
+                                    $encoded = urlencode($url);
+                                    $imgbb_response = @file_get_contents("http://localhost:5000/convert?url=$encoded");
+
+                                    if ($imgbb_response !== false) {
+                                        $json = json_decode($imgbb_response, true);
+                                        $imagen_final = $json['imgbb_url'] ?? $url; // fallback
+                                    } else {
+                                        $imagen_final = $url;
+                                    }
+                                } else {
+                                    $imagen_final = $url;
+                                }
                             ?>
                             <div>
-                                <img class="msg-image" src="<?php echo $imagen_final; ?>" alt="Imagen recibida">
+                                <img class="msg-image" src="<?php echo htmlspecialchars($imagen_final); ?>" alt="Imagen recibida">
                             </div>
+
                         <?php endif; ?>
 
                         <hr>

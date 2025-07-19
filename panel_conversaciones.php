@@ -17,7 +17,7 @@ $stmt->execute([':fecha' => $fecha]);
 $chats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['numero']) && isset($_POST['respuesta'])) {
-    $numero = str_replace('whatsapp:', '', $_POST['numero']); // corrección
+    $numero = $_POST['numero'];
     $respuesta = $_POST['respuesta'];
     $sid = getenv('TWILIO_ACCOUNT_SID');
     $token = getenv('TWILIO_AUTH_TOKEN');
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['numero']) && isset($_
     $client = new Client($sid, $token);
 
     try {
-        $client->messages->create('whatsapp:' . $numero, [
+        $client->messages->create($numero, [
             'from' => $from,
             'body' => $respuesta
         ]);

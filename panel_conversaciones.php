@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['numero']) && isset($_
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && isset($_POST['numero_imagen'])) {
-    $numero = str_replace('whatsapp:', '', $_POST['numero_imagen']); // <--- 🔥 corrección
+    $numero = $_POST['numero_imagen'];
     $mensaje = $_POST['mensaje_imagen'] ?? '';
     $api_key = getenv('IMGBB_API_KEY');
 
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && isset($
             $client = new Client($sid, $token);
 
             try {
-                $client->messages->create('whatsapp:' . $numero, [
+                $client->messages->create($numero, [
                     'from' => $from,
                     'body' => $mensaje,
                     'mediaUrl' => [$media_url]

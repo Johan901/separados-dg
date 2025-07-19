@@ -108,11 +108,6 @@ $query = "SELECT p.id_pedido, p.cliente_cedula, p.fecha_pedido, p.fecha_limite,
 
 $conditions = [];
 
-// Filtro por fecha límite exacta
-if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
-    $fecha_filtrada = $_GET['fecha_busqueda'];
-    $conditions[] = "DATE(p.fecha_limite) = :fecha_busqueda";
-}
 
 // Filtros de estado
 if (isset($_GET['estado']) && is_array($_GET['estado'])) {
@@ -150,6 +145,12 @@ if (isset($_GET['id_pedido']) && is_numeric($_GET['id_pedido'])) {
 if (isset($_GET['cliente_cedula'])) {
     $cliente_cedula = $_GET['cliente_cedula'];
     $conditions[] = "p.cliente_cedula = :cliente_cedula";
+}
+
+// Filtro por fecha límite exacta (debe ir antes del WHERE)
+if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
+    $fecha_filtrada = $_GET['fecha_busqueda'];
+    $conditions[] = "DATE(p.fecha_limite) = :fecha_busqueda";
 }
 
 // Agregar las condiciones de filtro

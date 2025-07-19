@@ -115,7 +115,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && isset($
                         <?php if ($m['quoted_sid'] && isset($refs[$m['quoted_sid']])): ?>
                             <blockquote>↪ <i><?php echo htmlspecialchars($refs[$m['quoted_sid']]['message']); ?></i></blockquote>
                         <?php endif; ?>
-                        <?php echo nl2br(htmlspecialchars($m['message'])); ?>
+                        <?php
+                            // Mostrar mensaje de texto
+                            $mensaje = htmlspecialchars($m['message']);
+                            echo nl2br($mensaje);
+
+                            // Buscar enlaces de imágenes embebidas en el texto del mensaje (como ![alt](URL))
+                            if (preg_match('/!\\[.*?\\]\\((https?:\\/\\/[^\\s)]+)\\)/', $m['message'], $match)) {
+                                $imgbb_url = htmlspecialchars($match[1]);
+                                echo "<div><img class='msg-image' src='$imgbb_url' alt='Imagen recibida'></div>";
+                            }
+                        ?>
                         <?php if ($m['media_url']): ?>
                             <?php
                                 $url = $m['media_url'];

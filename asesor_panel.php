@@ -120,12 +120,7 @@ if (isset($_SESSION['nombre_usuario'])) {
                 <a href="historial_asesor.php">Historial de Pedidos</a>
             </div>
         </div>
-        <div class="section" style="background-color:rgb(110, 196, 30);">
-            <h3>AURORA</h3>
-            <div class="dropdown">
-                <a href="panel_aurora.php">Panel Aurora</a>
-            </div>
-        </div>
+        
     </div>
 
 

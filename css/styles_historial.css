@@ -461,8 +461,7 @@ tr:hover {
     /* Contenedor general para alinear el formulario a la izquierda */
     .filtro-contenedor {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start; /* Para alinear los elementos de izquierda a derecha */
+        justify-content: space-between; /* Para alinear los elementos de izquierda a derecha */
         gap: 20px; /* Espacio entre los dos bloques */
         padding: 20px;
     }
@@ -470,7 +469,7 @@ tr:hover {
 /* Estilos del formulario */
 .filtro-formulario {
     background-color: #fff5f5;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 250px;
@@ -478,11 +477,7 @@ tr:hover {
     flex: 1; /* Para que ocupe el espacio necesario pero no se expanda demasiado */
 }
 
-.filters-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+
 
 /* Título del formulario */
 .filtro-formulario h2 {

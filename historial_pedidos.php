@@ -51,25 +51,6 @@
         </form>
     </div>
 
-    <div class="filtro-formulario">
-        <form id="date-filter-form" action="historial_pedidos.php" method="GET">
-            <h2>Buscar por fecha límite</h2>
-            <div class="filters-container">
-                <label for="fecha_limite">Seleccione una fecha:</label>
-                <input type="date" name="fecha_limite" id="fecha_limite" required>
-            </div>
-            <button type="submit" class="button">Aplicar</button>
-            <button type="button" class="button" onclick="limpiarFecha()">Limpiar</button>
-        </form>
-    </div>
-
-    <script>
-    function limpiarFecha() {
-        document.getElementById('fecha_limite').value = '';
-        window.location.href = 'historial_pedidos.php';
-    }
-    </script>
-
     <!-- Sección de búsquedas -->
     <div class="search-container">
         <!-- Buscar por número de ID pedido -->
@@ -135,15 +116,6 @@ if (isset($_GET['cuenta_regresiva_hoy']) && $_GET['cuenta_regresiva_hoy'] === 'h
     $conditions[] = "p.fecha_limite::date = CURRENT_DATE";
 } 
 
-// Filtro por fecha límite
-if (isset($_GET['fecha_limite']) && !empty($_GET['fecha_limite'])) {
-    $fecha_limite = $_GET['fecha_limite'];
-    // Validar formato de fecha
-    if (DateTime::createFromFormat('Y-m-d', $fecha_limite) !== false) {
-        $conditions[] = "p.fecha_limite::date = :fecha_limite";
-    }
-}
-
 // Filtro de pedidos sin separar
 if (isset($_GET['sin_separar']) && $_GET['sin_separar'] === 'sin_separar') {
     $conditions[] = "EXISTS (SELECT 1 FROM detalle_pedido dp WHERE dp.id_pedido = p.id_pedido AND CAST(dp.actualizado AS INTEGER) = 0)";
@@ -177,10 +149,6 @@ if (isset($id_pedido)) {
 }
 if (isset($cliente_cedula)) {
     $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
-}
-
-if (isset($fecha_limite)) {
-    $stmt->bindValue(':fecha_limite', $fecha_limite, PDO::PARAM_STR);
 }
 
 try {

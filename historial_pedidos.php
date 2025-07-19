@@ -51,6 +51,19 @@
         </form>
     </div>
 
+    <div class="filtro-formulario">
+        <form id="fecha-form" action="historial_pedidos.php" method="GET">
+            <h2>Buscar OP cerradas</h2>
+            <div class="filters-container">
+                <label for="fecha_busqueda">Selecciona una fecha límite:</label>
+                <input type="date" name="fecha_busqueda" id="fecha_busqueda" required>
+            </div>
+            <button type="submit" class="button">Aplicar</button>
+            <button type="button" class="button" onclick="window.location.href='historial_pedidos.php';">Limpiar</button>
+        </form>
+    </div>
+
+
     <!-- Sección de búsquedas -->
     <div class="search-container">
         <!-- Buscar por número de ID pedido -->
@@ -137,6 +150,17 @@ if (isset($_GET['cliente_cedula'])) {
 if (!empty($conditions)) {
     $query .= " WHERE " . implode(" AND ", $conditions);
 }
+
+// Filtro por fecha límite exacta
+if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
+    $fecha_filtrada = $_GET['fecha_busqueda'];
+    $conditions[] = "DATE(p.fecha_limite) = :fecha_busqueda";
+}
+
+if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
+    $stmt->bindValue(':fecha_busqueda', $_GET['fecha_busqueda']);
+}
+
 
 // Agrupar y ordenar los resultados
 $query .= " GROUP BY p.id_pedido, c.nombre, p.estado ORDER BY p.fecha_pedido DESC LIMIT 50";

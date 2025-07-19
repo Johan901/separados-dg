@@ -4,6 +4,9 @@ require_once 'config.php';
 require_once 'vendor/autoload.php';
 use Twilio\Rest\Client;
 date_default_timezone_set('America/Bogota');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $fecha = $_GET['fecha'] ?? date('Y-m-d');
 $numero = $_GET['numero'] ?? null;
@@ -14,7 +17,7 @@ $stmt->execute([':fecha' => $fecha]);
 $chats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['numero']) && isset($_POST['respuesta'])) {
-    $numero = $_POST['numero'];
+    $numero = str_replace('whatsapp:', '', $_POST['numero']); // corrección
     $respuesta = $_POST['respuesta'];
     $sid = getenv('TWILIO_ACCOUNT_SID');
     $token = getenv('TWILIO_AUTH_TOKEN');
@@ -35,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['numero']) && isset($_
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && isset($_POST['numero_imagen'])) {
-    $numero = $_POST['numero_imagen'];
+    $numero = str_replace('whatsapp:', '', $_POST['numero_imagen']); // <--- 🔥 corrección
     $mensaje = $_POST['mensaje_imagen'] ?? '';
     $api_key = getenv('IMGBB_API_KEY');
 

@@ -116,15 +116,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && isset($
                             <blockquote>↪ <i><?php echo htmlspecialchars($refs[$m['quoted_sid']]['message']); ?></i></blockquote>
                         <?php endif; ?>
                         <?php
-                            // Mostrar mensaje de texto
-                            $mensaje = htmlspecialchars($m['message']);
-                            echo nl2br($mensaje);
+                        // Primero extraemos la URL si hay una imagen markdown
+                        if (preg_match('/\[(.*?)\]\((https?:\/\/[^\s]+)\)/', $m['message'], $match)) {
+                            $img_url = htmlspecialchars($match[2]);
+                            // Mostramos el texto antes del link
+                            $texto = preg_replace('/\[(.*?)\]\((https?:\/\/[^\s]+)\)/', '', $m['message']);
+                            echo nl2br(htmlspecialchars(trim($texto)));
 
-                            // Buscar enlaces de imágenes embebidas en el texto del mensaje (como ![alt](URL))
-                            if (preg_match('/!\\[.*?\\]\\((https?:\\/\\/[^\\s)]+)\\)/', $m['message'], $match)) {
-                                $imgbb_url = htmlspecialchars($match[1]);
-                                echo "<div><img class='msg-image' src='$imgbb_url' alt='Imagen recibida'></div>";
-                            }
+                            // Ahora mostramos la imagen real con img src
+                            echo "<div><img class='msg-image' src='$img_url' alt='Imagen recibida' style='max-width:300px;'></div>";
+                        } else {
+                            // No tiene imagen, solo mostramos el mensaje normal
+                            echo nl2br(htmlspecialchars($m['message']));
+                        }
                         ?>
                         <?php if ($m['media_url']): ?>
                             <?php

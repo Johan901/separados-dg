@@ -2,6 +2,7 @@
     "name": "dg/separados",
     "description": "Sistemas de separado e inventario",
     "require": {
-      "php": ">=7.4"
+      "php": ">=7.4",
+        "twilio/sdk": "^8.6"
     }
   }

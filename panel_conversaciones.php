@@ -117,7 +117,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && isset($
                         <?php endif; ?>
                         <?php echo nl2br(htmlspecialchars($m['message'])); ?>
                         <?php if ($m['media_url']): ?>
-                            <div><img class="msg-image" src="<?php echo $m['media_url']; ?>"></div>
+                            <?php if (strpos($m['media_url'], 'twilio.com') !== false): ?>
+                                <div><img class="msg-image" src="ver_imagen_twilio.php?url=<?php echo urlencode($m['media_url']); ?>"></div>
+                            <?php else: ?>
+                                <div><img class="msg-image" src="<?php echo $m['media_url']; ?>"></div>
+                            <?php endif; ?>
                         <?php endif; ?>
                         <hr>
                     </div>

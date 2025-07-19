@@ -108,6 +108,12 @@ $query = "SELECT p.id_pedido, p.cliente_cedula, p.fecha_pedido, p.fecha_limite,
 
 $conditions = [];
 
+// Filtro por fecha límite exacta
+if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
+    $fecha_filtrada = $_GET['fecha_busqueda'];
+    $conditions[] = "DATE(p.fecha_limite) = :fecha_busqueda";
+}
+
 // Filtros de estado
 if (isset($_GET['estado']) && is_array($_GET['estado'])) {
     $estado_filtro = array_map(function($estado) use ($conn) {
@@ -151,16 +157,6 @@ if (!empty($conditions)) {
     $query .= " WHERE " . implode(" AND ", $conditions);
 }
 
-// Filtro por fecha límite exacta
-if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
-    $fecha_filtrada = $_GET['fecha_busqueda'];
-    $conditions[] = "DATE(p.fecha_limite) = :fecha_busqueda";
-}
-
-if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
-    $stmt->bindValue(':fecha_busqueda', $_GET['fecha_busqueda']);
-}
-
 
 // Agrupar y ordenar los resultados
 $query .= " GROUP BY p.id_pedido, c.nombre, p.estado ORDER BY p.fecha_pedido DESC LIMIT 50";
@@ -173,6 +169,10 @@ if (isset($id_pedido)) {
 }
 if (isset($cliente_cedula)) {
     $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
+}
+
+if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
+    $stmt->bindValue(':fecha_busqueda', $_GET['fecha_busqueda']);
 }
 
 try {

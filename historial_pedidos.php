@@ -51,19 +51,6 @@
         </form>
     </div>
 
-    <div class="filtro-formulario">
-        <form id="fecha-form" action="historial_pedidos.php" method="GET">
-            <h2>Buscar OP cerradas</h2>
-            <div class="filters-container">
-                <label for="fecha_busqueda">Selecciona una fecha límite:</label>
-                <input type="date" name="fecha_busqueda" id="fecha_busqueda" required>
-            </div>
-            <button type="submit" class="button">Aplicar</button>
-            <button type="button" class="button" onclick="window.location.href='historial_pedidos.php';">Limpiar</button>
-        </form>
-    </div>
-
-
     <!-- Sección de búsquedas -->
     <div class="search-container">
         <!-- Buscar por número de ID pedido -->
@@ -108,7 +95,6 @@ $query = "SELECT p.id_pedido, p.cliente_cedula, p.fecha_pedido, p.fecha_limite,
 
 $conditions = [];
 
-
 // Filtros de estado
 if (isset($_GET['estado']) && is_array($_GET['estado'])) {
     $estado_filtro = array_map(function($estado) use ($conn) {
@@ -147,17 +133,10 @@ if (isset($_GET['cliente_cedula'])) {
     $conditions[] = "p.cliente_cedula = :cliente_cedula";
 }
 
-// Filtro por fecha límite exacta (debe ir antes del WHERE)
-if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
-    $fecha_filtrada = $_GET['fecha_busqueda'];
-    $conditions[] = "DATE(p.fecha_limite) = :fecha_busqueda";
-}
-
 // Agregar las condiciones de filtro
 if (!empty($conditions)) {
     $query .= " WHERE " . implode(" AND ", $conditions);
 }
-
 
 // Agrupar y ordenar los resultados
 $query .= " GROUP BY p.id_pedido, c.nombre, p.estado ORDER BY p.fecha_pedido DESC LIMIT 50";
@@ -170,10 +149,6 @@ if (isset($id_pedido)) {
 }
 if (isset($cliente_cedula)) {
     $stmt->bindValue(':cliente_cedula', $cliente_cedula, PDO::PARAM_STR);
-}
-
-if (isset($_GET['fecha_busqueda']) && !empty($_GET['fecha_busqueda'])) {
-    $stmt->bindValue(':fecha_busqueda', $_GET['fecha_busqueda']);
 }
 
 try {

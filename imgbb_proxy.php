@@ -16,6 +16,7 @@ if (!$twilio_url || strpos($twilio_url, 'twilio.com') === false) {
 // Paso 1: Descargar imagen de Twilio
 $ch = curl_init($twilio_url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 curl_setopt($ch, CURLOPT_USERPWD, "$sid:$token");
 $image_data = curl_exec($ch);
 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
